@@ -24,6 +24,7 @@ typedef struct polygon {
     int num_vert;
     // the vertices
     vertex* verts;
+    float bound_min_x,bound_min_y,bound_max_x,bound_max_y;
 } polygon;
 
 
@@ -51,6 +52,16 @@ int polygon_read(char* filename,polygon* poly);
  * @param poly
  */
 void polygon_print(polygon* poly);
+
+
+/**
+ * Checks if a point is within a
+ * @param x x pos
+ * @param y y pos
+ * @param poly
+ * @return 1 if point in contained within figure, 0 else
+ */
+int polygon_contains(float x, float y,polygon* poly);
 
 #endif	/* POLYGON_H */
 

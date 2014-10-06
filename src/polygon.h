@@ -14,6 +14,7 @@ typedef struct vertex {
     float y;
     struct vertex* next;
     struct vertex* prev;
+    double line_a,line_b;
 } vertex;
 
 /**

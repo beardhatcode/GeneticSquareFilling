@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "polygon.h"
+#include "genetic_base.h"
 
 int polygon_init(int size, polygon* poly) {
 
@@ -28,6 +29,7 @@ int polygon_init(int size, polygon* poly) {
  * @param poly an initiated empty (0) pollygon
  * @return 0 on succes, 
  *         less than 0 on failed malloc or read, 
+ * @todo crap
  */
 int polygon_read(char* filename, polygon* poly) {
     FILE *fptr = fopen(filename, "r"); //Open file
@@ -41,8 +43,8 @@ int polygon_read(char* filename, polygon* poly) {
         return r;
 
     polygon_init(num, poly);
-    
-    
+
+
     while (EOF != fscanf(fptr, "%f %f\n", &x, &y)) {
         poly->verts[i].id = i;
         poly->verts[i].x = x;
@@ -93,7 +95,7 @@ void polygon_print(polygon* poly) {
 int polygon_contains(float x, float y, polygon* poly) {
     int i, count = 0;
     double a, b, yintersect;
-    
+
     //Loop over the vertices
     for (i = 0; i < poly->num_vert; i++) {
         a = poly->verts[i].line_a;
@@ -102,13 +104,20 @@ int polygon_contains(float x, float y, polygon* poly) {
 
         if (!isinf(a)) {
             //"if not line that is parallel to y axis"
-            
-            //Use product of differences to determine if within points on line
+
+            //Use product of differences to determine if between points on line
             double deltaproduct = (poly->verts[i].x - x) * (poly->verts[i].next->x - x);
             if (deltaproduct <= 0 && yintersect >= y) {
+
+                //special case: point on line -> accept
+                if (yintersect == y)
+                    return 1;
+
                 if (!(deltaproduct == 0 && poly->verts[i].x == x && poly->verts[i].next->x != x)) {
                     //If deltaproduct == 0 it is exactly beneath a point (don't double count it)
                     count++;
+                    if (count > 1)
+                        break;
                 }
             }
         }
@@ -117,3 +126,29 @@ int polygon_contains(float x, float y, polygon* poly) {
     return count == 1;
 }
 
+/**
+ * Fill's the given array with number random points within 
+ * the polygon
+ * 
+ * @param number of places to fill
+ * @param container ALLOCATED pointer to array;
+ * @return 0 on succes
+ */
+int polygon_random_points(int number, point* container, polygon* poly) {
+    float dx = poly->bound_max_x - poly->bound_min_x;
+    float dy = poly->bound_max_y - poly->bound_min_y;
+    float x, y;
+    int i;
+    for (i = 0; i < number; i++) {
+        do {
+            x = poly->bound_min_x + ((double) rand() / (double) RAND_MAX) * dx;
+            y = poly->bound_min_y + ((double) rand() / (double) RAND_MAX) * dy;
+                    
+        } while (!polygon_contains(x, y, poly));
+
+        container[i].x = x;
+        container[i].y = y;
+    }
+
+    return 0;
+}

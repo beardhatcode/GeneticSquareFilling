@@ -8,6 +8,11 @@
 #ifndef POLYGON_H
 #define	POLYGON_H
 
+typedef struct _point{
+    float x,y;
+} point;
+
+
 typedef struct vertex {
     int id;
     float x;
@@ -64,5 +69,14 @@ void polygon_print(polygon* poly);
  */
 int polygon_contains(float x, float y,polygon* poly);
 
+/**
+ * Fill's the given array with number random points within 
+ * the polygon
+ * 
+ * @param number of places to fill
+ * @param container ALLOCATED pointer to array;
+ * @return 0 on succes, -1 else
+ */
+int polygon_random_points(int number, point* container, polygon* poly);
 #endif	/* POLYGON_H */
 

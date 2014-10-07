@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pgfplots}
+\usepackage{multirow}
+\floatname{algorithm}{Algoritme}
+
+
+\usepackage[font=small,labelfont=bf]{caption}
+\captionsetup[table]{aboveskip=-0.8em}
+\captionsetup[table]{belowskip=-0.7pt}
+
+
+\lhead {DAII Project: bomen optimaliseren} 
+\chead{BAZ(~ \thepage ~ )NGA} 
+\rhead{Robbert Gurdeep Singh}
+
+
+\cfoot{} % get rid of the page number 
+
+\usepackage{hyperref}
+\usepackage{chngcntr}
+\counterwithin*{section}{part}
+\counterwithin{algorithm}{section}
+\counterwithin{table}{section}
+\counterwithin{figure}{section}
+
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\author{Robbert Gurdeep Singh}
+\title{{Project Algoritmen en datastructuren III}\\ \Huge Genetische algoritmen}
+\date{}
+
+
+
+\begin{document}
+
+\twocolumn[\begin{@twocolumnfalse}
+    \maketitle
+\end{@twocolumnfalse}]
+
+
+\section{Inleiding}
+\label{sec:inleiding}
+Het probleem dat we trachten op te lossen is het volgende: %TODO
+Als we het vanaf nu hebben over een veelhoek dan bedoelen we een convexe veelhoek.
+% section inleiding (end)
+
+
+\section{Algoritmen}
+\label{sec:algoritmen}
+
+\subsection{Punt in veelhoek}
+\label{sub:algo-pt-in-poly}
+Om te kijken of een punt in een veelhoek ligt kunnen we een lijn vanuit het punt naar boven 
+trekken en dan tellen hoeveel keer de veelhoek is gesneden.
+
+We kunnen 3 gevallen onderscheiden:
+\begin{itemize}
+\item We snijden de veelhoek niet: We weten dat we ons niet binnen de veelhoek bevonden.
+\item We snijden de veelhoek juist 1 keer: Nu zijn we zeker in de veelhoek. 
+\item We snijden de veelhoek 2 of meer keer: Liggen onder en dus ook buiten de veelhoek.
+\end{itemize}
+
+\subsubsection{Bewijs geldigheid}
+\begin{proof}
+ogeozjs
+\end{proof}
+
+% subsection  (end)
+
+% section algoritmen (end)
+
+
+\end{document}

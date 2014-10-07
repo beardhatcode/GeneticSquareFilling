@@ -11,8 +11,11 @@
 #include <assert.h>
 
 #include "polygon.h"
+#include "genetic_base.h"
 
-void test_polygon_init_in() {
+#ifdef TESTINIT
+
+void test() {
     polygon poly = {0};
     printf("Testing polygon read and contains\n\n");
     assert(polygon_read("../tests/soos.poly", &poly) == 0);
@@ -27,15 +30,38 @@ void test_polygon_init_in() {
     polygon_print(&poly);
 
 }
+#endif
+
+
+#ifdef TESTRAND
+
+void test() {
+    polygon poly = {0};
+
+    int i;
+    point stuff[9] = {0};
+    printf("Testing polygon read and contains\n\n");
+    assert(polygon_read("../tests/soos.poly", &poly) == 0);
+    assert(polygon_random_points(9, stuff, &poly) == 0);
+
+
+    printf("1337\n");
+    for (i = 0; i < 9; i++) {
+        printf("%f %f\n", stuff[i].x, stuff[i].y);
+
+    }
+
+}
+#endif
 
 int main(int argc, char** argv) {
 
-#ifdef TESTINIT
-    test_polygon_init_in();
+#if TESTINIT || TESTRAND
+    test();
     return 0;
 #else
-    
-    
+
+
     polygon poly = {0};
 
     printf("I've got %d tickets to paradise\n", argc);

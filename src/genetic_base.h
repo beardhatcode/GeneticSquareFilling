@@ -9,44 +9,84 @@
 #define	GENETIC_BASE_H
 
 #include "polygon.h"
+#include "settings.h"
+
 
 typedef struct _individu{
-    float fitness;
+    double fitness;
     point* points;
+    struct _population* population;
     
 } individu;
 
 typedef struct _population{
-    float best_fitness;
+    double best_fitness;
     individu* best;
-    int size;
-    individu* list;
+    individu list[NUM_INDIVIDUS];
+    int numpoints;
+    polygon* polygon;
 } population;
-//
-//
-//int init_population(int size, polygon* poly , population* population);
-//
-//int init_individu(int numpoints, individu* individu);
-//
-//int free_population(population* population);
-//
-///**
-// * It frees Willy
-// * @param willy
-// * @return 
-// */
-//int free_individu(individu* willy);
-//
-//int get_fitness(individu* individu);
-//
-//int invalidate_fitness(individu* individu);
-//
-//int do_sex(population* population);
-//
-//int do_crossover(individu* papa, individu* mama);
-//
-//int do_mutation(individu* );
 
+/**
+ * Creates an empty population of a certain size
+ * @param size number of individus
+ * @param poly pointer to pollygon
+ * @param population ponter that is returned (will be allocated)
+ * @return 
+ */
+int init_population(int numpoints, polygon* poly , population* population);
+
+/**
+ * Intialize individu with random points and allocate space
+ * @param numpoints number of points
+ * @param individu ppointer to store stuff in
+ * @return 
+ */
+int init_individu(population* popu, individu* solution);
+
+
+/**
+ * Free allocated meomory of the population including it's individu's
+ * @param population pointer to what to clear;
+ * @return 
+ */
+void free_population(population* population);
+
+/**
+ * It frees Willy
+ * @param willy
+ * @return 
+ */
+void free_individu(individu* willy);
+
+/**
+ * Calculates the fitness of an individu and returns it
+ * @param individu
+ * @return 
+ */
+double get_fitness(individu* individu);
+
+/**
+ * Does a random mutation and/or crossover on a select number of individu's
+ * @param population
+ * @return 
+ */
+int do_sex(population* population);
+
+/**
+ * Selects a biased random mate
+ * @param population
+ * @return 
+ */
+int do_mate_selection(population* population,int* indices);
+
+int do_crossover(individu* papa, individu* mama);
+
+int do_mutation(individu* individu);
+
+void population_print(population* individu);
+
+void individu_print(individu* individu);
 
 #endif	/* GENETIC_BASE_H */
 

@@ -9,9 +9,11 @@
 #include <stdlib.h>
 #include <mpi.h>
 #include <assert.h>
+#include <time.h>  
 
 #include "polygon.h"
 #include "genetic_base.h"
+#include "settings.h"
 
 #ifdef TESTINIT
 
@@ -35,28 +37,46 @@ void test() {
 
 #ifdef TESTRAND
 
+#define TESTRANDNUM 500
 void test() {
     polygon poly = {0};
-
     int i;
-    point stuff[9] = {0};
-    printf("Testing polygon read and contains\n\n");
+    point stuff[TESTRANDNUM] = {0};
     assert(polygon_read("../tests/soos.poly", &poly) == 0);
-    assert(polygon_random_points(9, stuff, &poly) == 0);
+    assert(polygon_random_points(TESTRANDNUM, stuff, &poly) == 0);
 
 
     printf("1337\n");
-    for (i = 0; i < 9; i++) {
+    for (i = 0; i < TESTRANDNUM; i++) {
         printf("%f %f\n", stuff[i].x, stuff[i].y);
 
     }
+}
+#undef TESTRANDNUM
+#endif
 
+
+#ifdef TESPOPULATOR
+
+void test() {
+    polygon poly = {0};
+    population popu = {0};
+    assert(polygon_read("../tests/soos.poly", &poly) == 0);
+    init_population(5,&poly,&popu);
+    population_print(&popu);
+    
+    do_sex(&popu);
+    
+    free_population(&popu);
+    polygon_free(&poly);
 }
 #endif
 
-int main(int argc, char** argv) {
 
-#if TESTINIT || TESTRAND
+
+int main(int argc, char** argv) {
+    srand(time(NULL));
+#if TESTINIT || TESTRAND || TESPOPULATOR
     test();
     return 0;
 #else

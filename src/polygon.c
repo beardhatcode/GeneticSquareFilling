@@ -23,6 +23,10 @@ int polygon_init(int size, polygon* poly) {
     return 0;
 }
 
+void polygon_free(polygon* poly){
+    free(poly->verts);
+}
+
 /**
  * Insert the data of a file into a pollygon
  * @param filename woth polygon points
@@ -65,7 +69,7 @@ int polygon_read(char* filename, polygon* poly) {
         i++;
     }
 
-
+    fclose(fptr);
     //Generate a function for each of the edges (y=ax+b)
     for (i = 0; i < poly->num_vert; i++) {
         dx = (double) poly->verts[i].x - (double) poly->verts[i].next->x;
@@ -76,7 +80,7 @@ int polygon_read(char* filename, polygon* poly) {
         poly->verts[i].line_a = a;
         poly->verts[i].line_b = b;
     }
-
+    
     return 0;
 }
 

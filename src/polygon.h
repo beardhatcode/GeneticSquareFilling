@@ -43,6 +43,8 @@ typedef struct polygon {
  */
 int polygon_init(int size ,polygon* poly);
 
+void polygon_free(polygon* poly);
+
 /**
  * Insert the data of a file into a pollygon
  * @param filename woth polygon points

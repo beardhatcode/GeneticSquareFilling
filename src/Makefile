@@ -1,14 +1,11 @@
 
 
-all: testrandomgenerator
+all: test
 maxdist: *.c
-	mpicc  -Wall -std=c99 -DDEBUG -g  -o maxdist  *.c -I.
+	mpicc  -Wall -std=c99 -DDEBUG -g  -o maxdist  *.c -I. -lm
 	
-testcontains: *.c
-	mpicc  -Wall -std=c99 -DDEBUG -DTESTINIT -g  -o maxdist  *.c -I.
-
-testrandomgenerator: *.c
-	mpicc  -Wall -std=c99 -DDEBUG -DTESTRAND -g  -o maxdist  *.c -I.
+test: *.c
+	mpicc  -Wall -std=c99 -DDEBUG -DTESPOPULATOR -g  -o maxdist  *.c -I. -lm
 	
 clean: 
 	rm -f  maxdist

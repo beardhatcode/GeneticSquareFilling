@@ -1,4 +1,4 @@
-#:
+#!python
 '''
 Python scripts that plots solution
 INPUT is two arguments : filename of polygon information and solution

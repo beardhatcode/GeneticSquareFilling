@@ -115,13 +115,13 @@ int do_iterations(population* population, int num_generations)
     /* Allocate an array to store the indices of the individus that pair*/
     int *lovers_indices = (int*) malloc(population->num_lovers * sizeof (int));
 
-    int i, j;
+    int i, j, num_kids;
     double avg;
     double prev_avg = 0.0;
 
-    if(NULL == lovers_indices)
+    if (NULL == lovers_indices)
         return -1;
-    
+
     /* In debug print a table of the progress */
     log_dbg("|  GEN  | FITNESS |   DELTA  |\n");
 
@@ -129,10 +129,10 @@ int do_iterations(population* population, int num_generations)
     for (i = 0; i < num_generations; i++)
     {
         /* Make kids and add them to the array (index in [size,size+lovers])*/
-        do_sex(population, lovers_indices);
-
+        num_kids = do_sex(population, lovers_indices);
+       
         /* Kill individus to keep population size fixed*/
-        do_deathmatch(population, population->num_lovers);
+        do_deathmatch(population, num_kids);
 
 
         /* Get average fitness */
@@ -155,43 +155,41 @@ int do_iterations(population* population, int num_generations)
     return 0;
 }
 
-/**
- * Does a random mutation and/or crossover on a select number of individu's
- * @param population
- * @return 
- */
-int do_sex(population* population, int* lovers)
+int do_sex(population* population, int* lovers_indices)
 {
     int size = population->size;
     individu* list = population->list;
     int i;
 
-    do_mate_selection(population, lovers);
+    /* fill lovers_indices with stochastically chosen mates */
+    do_mate_selection(population, lovers_indices);
 
+    /* Loop over mates in pairs of 2 */
     for (i = 0; i < population->num_lovers; i += 2)
     {
+        /* Do crossover of the selected mates from the [0,size-1] part of the */
+        /* population and store their childs in the [size, size + num_lovers] */
+        /* part of the array                                                  */
         do_crossover(
                      population,
-                     list + lovers[i], list + lovers[i + 1],
-                     list + size + i, list + size + i + 1
+                     list + (lovers_indices[i]), list + (lovers_indices[i + 1]),
+                     list + (size + i), list + (size + i + 1)
                      );
 
-
+        /* Mutate kids ? */
         if (rand() % MUTATION_1_IN == 0)
-        { // MOVE
             do_mutation(population, list + size + i);
-        }
-        if (rand() % MUTATION_1_IN == 0)
-        { // MOVE
-            do_mutation(population, list + size + i + 1);
-        }
 
+        if (rand() % MUTATION_1_IN == 0)
+            do_mutation(population, list + size + i + 1);
+
+        /* Get fitness of childs and store in child->fitness  */
         get_fitness(population, list + size + i);
         get_fitness(population, list + size + i + 1);
     }
 
 
-    return -1;
+    return i;
 }
 
 /**

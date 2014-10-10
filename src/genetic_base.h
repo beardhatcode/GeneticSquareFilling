@@ -90,9 +90,10 @@ int get_best(population* population);
 int do_iterations(population* population, int num_iterations);
 
 /**
- * Does a random mutation and/or crossover on a select number of individu's
- * @param population
- * @return 
+ * Forms pairs and creates children (that may mutate) and add them after the
+ * population->list array (that is indices [size, size+num_lovers - 1])
+ * @param population        the population to work with
+ * @return number of generated children
  */
 int do_sex(population* population, int* lovers);
 

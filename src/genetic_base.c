@@ -112,13 +112,37 @@ double get_fitness(individu* indi) {
     return result;
 }
 
+int do_iterations(population* population, int num_iterations) {
+    int *lovers = (int*) malloc(population->lovers * sizeof (int));
+    int i, j;
+    double avg;
+    double prev_avg = 0.0;
+    log_dbg("|  GEN  | FITNESS |   DELTA  |\n");
+    for (i = 0; i < num_iterations; i++) {
+        do_sex(population, lovers);
+        do_deathmatch(population, population->lovers);
+
+        avg = 0.0;
+        for (j = 0; j < population->size; j++) {
+            avg += population->list[i].fitness;
+        }
+        avg = avg / (double) population->size;
+        log_dbg("|  %-3d  | % 3.3f | %+3.3f |\n", i, avg, avg - prev_avg);
+        prev_avg = avg;
+
+    }
+
+
+    free(lovers);
+    return 0;
+}
+
 /**
  * Does a random mutation and/or crossover on a select number of individu's
  * @param population
  * @return 
  */
-int do_sex(population* population) {
-    int *lovers = (int*) malloc(population->lovers * sizeof (int));
+int do_sex(population* population, int* lovers) {
     int size = population->size;
     individu* list = population->list;
     int i;
@@ -127,7 +151,7 @@ int do_sex(population* population) {
     //
     //for (i = 0; i < population->size; i++) {
     //    printf("Person %2d :    (%f)\n", i, population->list[i].fitness);
-//
+    //
     //}
 
     for (i = 0; i < population->lovers; i += 2) {
@@ -147,11 +171,12 @@ int do_sex(population* population) {
         //individu_print(list + size + i + 1);
 
         if (rand() % MUTATION_1_IN == 0) { // MOVE
-            printf("MUTAION\n");
             do_mutation(list + size + i);
+        }
+        if (rand() % MUTATION_1_IN == 0) { // MOVE
             do_mutation(list + size + i + 1);
         }
-        
+
         get_fitness(list + size + i);
         get_fitness(list + size + i + 1);
         //printf("- - - - - - - - - - - -\n");
@@ -160,9 +185,7 @@ int do_sex(population* population) {
         //printf("=======================\n");
     }
 
-    do_deathmatch(population, population->lovers);
 
-    free(lovers);
     return -1;
 }
 

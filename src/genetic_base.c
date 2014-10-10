@@ -79,11 +79,6 @@ void free_population(population** popu)
     *popu = NULL;
 }
 
-/**
- * Calculates the fitness of an individu and returns it
- * @param individu
- * @return 
- */
 double get_fitness(population* population, individu* indi)
 {
     int i, j;
@@ -93,6 +88,7 @@ double get_fitness(population* population, individu* indi)
     {
         for (j = 0; j < population->numpoints; j++)
         {
+            /* add sqrt(euclidian distance)*/
             result += sqrt(sqrt((l[i].x - l[j].x)*(l[i].x - l[j].x)+(l[i].y - l[j].y)*(l[i].y - l[j].y)));
         }
     }

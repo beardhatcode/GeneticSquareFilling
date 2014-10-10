@@ -60,7 +60,11 @@ int init_individu(population* popu, individu* solution, point* point_ptr);
 void free_population(population** population);
 
 /**
- * Calculates the fitness of an individu and returns it
+ * (Re)Calculates the fitness of an individu stores it for later use
+ * and returns it.
+ * 
+ * Use individu->fitness to get value if you know it's calculated
+ * 
  * @param individu
  * @return 
  */

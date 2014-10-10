@@ -88,6 +88,7 @@ void test() {
 #endif
 
 int main(int argc, char** argv) {
+    int result=-1;
 #if TESTINIT || TESTRAND || TESPOPULATOR
     srand(time(NULL));
     test();
@@ -96,6 +97,9 @@ int main(int argc, char** argv) {
     polygon poly = {0};
     population* popu = NULL;
     int best, i;
+    
+    
+    srand(time(NULL));
 
     if (argc != 3) {
         printf("USAGE: %s num file\n", argv[0]);
@@ -107,8 +111,12 @@ int main(int argc, char** argv) {
     }
 
 
-    init_population(NUM_INDIVIDUS, atoi(argv[1]), &poly, &popu);
-
+    result = init_population(NUM_INDIVIDUS, atoi(argv[1]), &poly, &popu);
+    
+    if(result < 0){
+        fprintf(stderr,"Could not allocate enough space!\n");
+    }
+    
     do_iterations(popu, INTERATIONS);
 
     best = get_best(popu);

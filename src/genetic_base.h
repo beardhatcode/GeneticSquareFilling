@@ -23,21 +23,26 @@ typedef struct _individu{
 
 typedef struct _population{
     individu* list;
-    point* _allpoints;
     int numpoints;
-    int lovers; 
+    int num_lovers; 
     int size;
     polygon* polygon;
+    
+    point* _allpoints; /* pointer for easy freeing*/
 } population;
 
 /**
  * Creates an empty population of a certain size
- * @param size number of individus
- * @param poly pointer to pollygon
- * @param population ponter that is returned (will be allocated)
- * @return 
+ * @param size           Number of individus in the population
+ * @param numpoints      Number of points per individu
+ * @param poly           The polygon this population is in
+ * @param popu_ptr       A pointer to a pointer to store stuff in
+ * @return 0 on succed, negative on failed alloc
+ *         -1 : failed to alloc population
+ *         -2 : failed to alloc Array of individu's
+ *         -3 : failed to alloc point array
  */
-int init_population(int size,int numpoints, polygon* poly , population** population);
+int init_population(int size,int numpoints, polygon* poly , population** popu_ptr);
 
 /**
  * Intialize individu with random points and allocate space

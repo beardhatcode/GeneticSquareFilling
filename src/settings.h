@@ -8,8 +8,13 @@
 #ifndef SETTINGS_H
 #define	SETTINGS_H
 
-#define NUM_INDIVIDUS 30
-#define NUM_LOVERS    10
+#define NUM_INDIVIDUS 20
+#define LOVER_PERCENT 10
+
+#define MUTATION_1_IN 2
+
+#define SELECTION_PRESSUERE 10
+
 
 #endif	/* SETTINGS_H */
 

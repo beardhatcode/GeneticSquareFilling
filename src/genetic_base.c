@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "genetic_base.h"
 #include "settings.h"
@@ -120,16 +121,47 @@ int do_sex(population* population) {
     int size = population->size;
     individu* list = population->list;
     int i;
-    for (i = 0; i < NUM_INDIVIDUS; i++) {
-        printf("Person %d :    (%f)\n", i,population->list[i].fitness);
 
+    do_mate_selection(population, lovers);
+    //
+    //for (i = 0; i < population->size; i++) {
+    //    printf("Person %2d :    (%f)\n", i, population->list[i].fitness);
+//
+    //}
+
+    for (i = 0; i < population->lovers; i += 2) {
+        do_crossover(
+                population,
+                list + lovers[i], list + lovers[i + 1],
+                list + size + i, list + size + i + 1
+                );
+        //get_fitness(list + size + i);
+        //get_fitness(list + size + i + 1);
+        //printf("=======================\nMama:");
+        //individu_print(list + lovers[i]);
+        //printf("Mama:");
+        //individu_print(list + lovers[i + 1]);
+        //printf("= = = = = = = = = = = =\n");
+        //individu_print(list + size + i);
+        //individu_print(list + size + i + 1);
+
+        if (rand() % MUTATION_1_IN == 0) { // MOVE
+            printf("MUTAION\n");
+            do_mutation(list + size + i);
+            do_mutation(list + size + i + 1);
+        }
+        
+        get_fitness(list + size + i);
+        get_fitness(list + size + i + 1);
+        //printf("- - - - - - - - - - - -\n");
+        //individu_print(list + size + i);
+        //individu_print(list + size + i + 1);
+        //printf("=======================\n");
     }
 
-    for (i = 0; i < NUM_LOVERS; i++) {
-        printf("Lover %d :%d  (%f)\n", i, lovers[i], population->list[lovers[i]].fitness);
+    do_deathmatch(population, population->lovers);
 
-    }
-
+    free(lovers);
     return -1;
 }
 
@@ -146,47 +178,118 @@ int do_mate_selection(population* population, int* indices) {
     int curIndex = 0;
 
     //Calculate the total fitness
-    for (i = 0; i < NUM_INDIVIDUS; i++) {
+    for (i = 0; i < population->size; i++) {
         total_fitness += get_fitness(population->list + i);
     }
 
     //set the interval:
-    interval = total_fitness / (double) NUM_LOVERS;
+    interval = total_fitness / (double) population->lovers;
 
     //Make random offset
     offset = (double) rand() * interval / (double) RAND_MAX;
 
     target = offset;
 
-    for (i = 0; i < NUM_INDIVIDUS; i++) {
+    for (i = 0; i < population->size; i++) {
 
         counter += population->list[i].fitness;
         if (counter >= target) {
             indices[curIndex] = i;
             curIndex++;
-            if (curIndex >= NUM_LOVERS)
+            if (curIndex >= population->lovers)
                 break;
             target += interval;
         }
 
     }
 
+    //Shuffel list
+    // NO NEED
+
     return 0;
 }
 
-int do_crossover(individu* papa, individu* mama) {
-    return -1;
+int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter) {
+    int num = population->numpoints;
+    int split = 1 + (rand() % (num - 1));
+    int i;
+
+    //2 times for efficiency less checks
+    for (i = 0; i < split; i++) {
+        son->points[i] = papa->points[i];
+        daughter->points[i] = mama->points[i];
+    }
+    for (i = i; i < population->numpoints; i++) {
+        son->points[i] = mama->points[i];
+        daughter->points[i] = papa->points[i];
+    }
+    return 0;
 }
 
 int do_mutation(individu* individu) {
+    int randindex = rand() % individu->population->numpoints;
+    float baseX = individu->points[randindex].x;
+    float baseY = individu->points[randindex].y;
+    float new_x, new_y;
+    float max_delta = individu->population->polygon->diagonal / 5;
+    do {
+        max_delta = max_delta / 2.0;
+        new_x = baseX + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1 : -1);
+        new_y = baseY + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1 : -1);
+    } while (!polygon_contains(new_x, new_y, individu->population->polygon));
+
+    individu->points[randindex].x = new_x;
+    individu->points[randindex].y = new_y;
+
     return -1;
+}
+
+int do_deathmatch(population* plebs, int to_kill) {
+    int left, victim;
+    int group_size = plebs->size * 100 / SELECTION_PRESSUERE;
+    for (left = to_kill; left >= 0; left--) {
+        victim = do_tournament_selection(plebs, group_size, left);
+
+        //printf("We'll kill nr %d or %p", victim ,plebs->list + victim);
+        //individu_print(plebs->list + victim);
+
+        /* plebs[victim] to be replaced by  plebs[size + left - 1] */
+        plebs->list[victim].fitness = plebs->list[plebs->size + left - 1].fitness;
+
+        memcpy(
+                plebs->list[victim].points,
+                plebs->list[plebs->size + left - 1].points,
+                plebs->numpoints * sizeof (float)
+                );
+
+
+        //individu_print(plebs->list + victim);
+        //individu_print(plebs->list + plebs->size + left - 1);
+
+        //printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n %d left ~~~~",left);
+    }
+
+    return left;
+}
+
+int do_tournament_selection(population* plebs, int group_size, int over_size) {
+    int population_size = plebs->size + over_size;
+    int worst_ID = rand() % population_size;
+    int i, cur_id;
+    for (i = 0; i < group_size; i++) {
+        cur_id = rand() % population_size;
+        if (plebs->list[cur_id].fitness < plebs->list[worst_ID].fitness)
+            worst_ID = cur_id;
+    }
+
+    return worst_ID;
 }
 
 void population_print(population* population) {
     int i;
-    printf("Printing population of size %d\n", NUM_INDIVIDUS);
+    printf("Printing population of size %d\n", population->size);
 
-    for (i = 0; i < NUM_INDIVIDUS; i++) {
+    for (i = 0; i < population->size; i++) {
         get_fitness(population->list + i);
         individu_print(population->list + i);
     }

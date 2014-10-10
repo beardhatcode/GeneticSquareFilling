@@ -22,8 +22,10 @@ typedef struct _individu{
 typedef struct _population{
     double best_fitness;
     individu* best;
-    individu list[NUM_INDIVIDUS];
+    individu* list; //size = size + lovers
     int numpoints;
+    int lovers; // EVEN!!!
+    int size;
     polygon* polygon;
 } population;
 
@@ -80,9 +82,20 @@ int do_sex(population* population);
  */
 int do_mate_selection(population* population,int* indices);
 
-int do_crossover(individu* papa, individu* mama);
+int do_crossover(population* population,individu* papa, individu* mama,individu* son, individu* daughter);
 
 int do_mutation(individu* individu);
+
+int do_deathmatch(population* plebs, int to_kill);
+
+/**
+ * 
+ * @param plebs
+ * @param group_size
+ * @param over_size
+ * @return ID to ill
+ */
+int do_tournament_selection(population* plebs, int group_size,int over_size);
 
 void population_print(population* individu);
 

@@ -19,17 +19,35 @@
  * @param population ponter that is returned (will be allocated)
  * @return 
  */
-int init_population(int numpoints, polygon* poly, population* popu) {
+int init_population(int size, int numpoints, polygon* poly, population** popul) {
     int i;
+    population* popu;
+    *popul = (population*) malloc(sizeof (population));
+    if (NULL == popul)
+        return -1;
+    popu = *popul;
+
 
     popu->polygon = poly;
+
     popu->numpoints = numpoints;
     popu->best_fitness = -1.0;
     popu->best = NULL;
+    popu->size = size;
+    popu->lovers = ((int) (size * LOVER_PERCENT / 200)) *2; // force even
 
-    for (i = 0; i < NUM_INDIVIDUS; i++) {
+    popu->list = (individu*) malloc(sizeof (individu) * (size + popu->lovers));
+    if (NULL == popu->list) {
+        free(popu);
+        return -2;
+    }
+
+    for (i = 0; i < size + popu->lovers; i++) {
         init_individu(popu, popu->list + i);
     }
+
+
+
 
     return 0;
 }
@@ -54,11 +72,14 @@ int init_individu(population* popu, individu* solution) {
  * @param population pointer to what to clear;
  * @return 
  */
-void free_population(population* popu) {
+void free_population(population** popu) {
     int i;
-    for (i = 0; i < NUM_INDIVIDUS; i++) {
-        free_individu(&(popu->list[i]));
+    for (i = 0; i < (*popu)->size + (*popu)->lovers; i++) {
+        free_individu(&((*popu)->list[i]));
     }
+    free((*popu)->list);
+    free(*popu);
+    *popu = NULL;
 }
 
 /**
@@ -67,6 +88,7 @@ void free_population(population* popu) {
  * @return 
  */
 void free_individu(individu* willy) {
+
     free(willy->points);
 }
 
@@ -94,8 +116,9 @@ double get_fitness(individu* indi) {
  * @return 
  */
 int do_sex(population* population) {
-    int lovers[NUM_LOVERS] = {-1};
-    do_mate_selection(population, lovers);
+    int *lovers = (int*) malloc(population->lovers * sizeof (int));
+    int size = population->size;
+    individu* list = population->list;
     int i;
     for (i = 0; i < NUM_INDIVIDUS; i++) {
         printf("Person %d :    (%f)\n", i,population->list[i].fitness);

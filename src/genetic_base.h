@@ -34,7 +34,7 @@ typedef struct _population{
  * @param population ponter that is returned (will be allocated)
  * @return 
  */
-int init_population(int numpoints, polygon* poly , population* population);
+int init_population(int size,int numpoints, polygon* poly , population** population);
 
 /**
  * Intialize individu with random points and allocate space
@@ -50,7 +50,7 @@ int init_individu(population* popu, individu* solution);
  * @param population pointer to what to clear;
  * @return 
  */
-void free_population(population* population);
+void free_population(population** population);
 
 /**
  * It frees Willy

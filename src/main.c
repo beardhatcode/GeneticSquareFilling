@@ -38,6 +38,7 @@ void test() {
 #ifdef TESTRAND
 
 #define TESTRANDNUM 500
+
 void test() {
     polygon poly = {0};
     int i;
@@ -60,19 +61,18 @@ void test() {
 
 void test() {
     polygon poly = {0};
-    population popu = {0};
+    population* popu = NULL;
     assert(polygon_read("../tests/soos.poly", &poly) == 0);
-    init_population(5,&poly,&popu);
-    population_print(&popu);
-    
-    do_sex(&popu);
-    
+    init_population(NUM_INDIVIDUS, 5, &poly, &popu);
+    population_print(popu);
+
+    do_sex(popu);
+    population_print(popu);
+
     free_population(&popu);
     polygon_free(&poly);
 }
 #endif
-
-
 
 int main(int argc, char** argv) {
     srand(time(NULL));

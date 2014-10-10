@@ -1,6 +1,8 @@
 /* 
+ * Header file for the GA
+ * 
  * File:   genetic_base.h
- * Author: garonn
+ * Author: Robbert Gurdeep Singh
  *
  * Created on 06 October 2014, 22:00
  */

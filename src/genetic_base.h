@@ -98,9 +98,11 @@ int do_iterations(population* population, int num_iterations);
 int do_sex(population* population, int* lovers);
 
 /**
- * Tries to select population->lovers random partners
- * @param population
- * @param indices
+ * Tries to select population->lovers random partners from the population using
+ * Stochastic universal sampling. 
+ * @todo  write about no shuffle
+ * @param population    population to work with
+ * @param indices       array to store indices in (existing allocated pointer)
  * @return number of found partners
  */
 int do_mate_selection(population* population, int* indices);

@@ -159,13 +159,14 @@ int do_sex(population* population, int* lovers_indices)
 {
     int size = population->size;
     individu* list = population->list;
-    int i;
+    int i, num_mates;
 
     /* fill lovers_indices with stochastically chosen mates */
-    do_mate_selection(population, lovers_indices);
-
+    num_mates = do_mate_selection(population, lovers_indices);
+    num_mates = (num_mates / 2 )*2; /* make even */
+    
     /* Loop over mates in pairs of 2 */
-    for (i = 0; i < population->num_lovers; i += 2)
+    for (i = 0; i < num_mates; i += 2)
     {
         /* Do crossover of the selected mates from the [0,size-1] part of the */
         /* population and store their childs in the [size, size + num_lovers] */
@@ -192,37 +193,31 @@ int do_sex(population* population, int* lovers_indices)
     return i;
 }
 
-/**
- * Selects a biased random mate
- * @param population
- * @param indices array of int[NUM_LOVERS] 
- * @return 
- */
 int do_mate_selection(population* population, int* indices)
 {
     int i = 0;
     double total_fitness = 0.0;
-    double offset = 0.0, interval = 0.0, target = 0.0, counter = 0.0;
+    double offset,interval,target,counter;
     int curIndex = 0;
 
-    //Calculate the total fitness
+    /* Calculate the total fitness */
     for (i = 0; i < population->size; i++)
-    {
         total_fitness += get_fitness(population, population->list + i);
-    }
 
-    //set the interval:
+    /* set the interval size */
     interval = total_fitness / (double) population->num_lovers;
 
-    //Make random offset
+    /* Make random offset */
     offset = (double) rand() * interval / (double) RAND_MAX;
 
+    /* start Stochastic universal sampling  */
     target = offset;
-
     for (i = 0; i < population->size; i++)
     {
-
+        /* increment counter */
         counter += population->list[i].fitness;
+        
+        /* if reached target: add index to list and increment target*/
         if (counter >= target)
         {
             indices[curIndex] = i;
@@ -233,9 +228,6 @@ int do_mate_selection(population* population, int* indices)
         }
 
     }
-
-    //Shuffel list
-    // NO NEED
 
     return curIndex;
 }

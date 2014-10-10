@@ -128,6 +128,13 @@ int do_crossover(population* population, individu* papa, individu* mama, individ
  */
 int do_mutation(population* population, individu* individu);
 
+/**
+ * Kills to_kill individues from the population and fills the gaps in the list 
+ * with the individus recently created (in do_sex)
+ * @param plebs     the population
+ * @param to_kill   number of individus to kill
+ * @return 0 on success, number of unkilled else
+ */
 int do_deathmatch(population* plebs, int to_kill);
 
 /**

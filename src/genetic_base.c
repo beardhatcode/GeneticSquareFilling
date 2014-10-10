@@ -294,32 +294,25 @@ int do_mutation(population* population, individu* individu)
 int do_deathmatch(population* plebs, int to_kill)
 {
     int left, victim, i;
-    int group_size = (plebs->size + plebs->num_lovers) * 100 / SELECTION_PRESSUERE;
+    
+    /* Group size for tournament selection:     */
+    /* SELECTION_PRESSURE percent of the total  */
+    int group_size = (plebs->size + to_kill) * SELECTION_PRESSURE / 100;
+    
+    /* to_kill times*/
     for (left = to_kill; left >= 0; left--)
     {
+        /* Get the id of an individu to remove*/
         victim = do_tournament_selection(plebs, group_size, left);
 
-        //printf("We'll kill nr %d or %p", victim ,plebs->list + victim);
-        //individu_print(plebs->list + victim);
-
+        /* fill hole created by killing victim with a new child    */
         /* plebs[victim] to be replaced by  plebs[size + left - 1] */
         plebs->list[victim].fitness = plebs->list[plebs->size + left - 1].fitness;
-        /*
-                memcpy(
-                        plebs->list[victim].points,
-                        plebs->list[plebs->size + left - 1].points,
-                        plebs->numpoints * sizeof (point)
-                        );
-         */
+        
         for (i = 0; i < plebs->numpoints; i++)
         {
             plebs->list[victim].points[i] = plebs->list[plebs->size + left - 1].points[i];
         }
-
-        //individu_print(plebs->list + victim);
-        //individu_print(plebs->list + plebs->size + left - 1);
-
-        //printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \n %d left ~~~~",left);
     }
 
     return left;

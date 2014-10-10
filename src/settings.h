@@ -16,7 +16,14 @@
 #define MUTATION_1_IN 3
 #define MUTATION_DELTA 5.0
 
-#define SELECTION_PRESSUERE 50
+/*
+ * SELECTION PRESURE
+ * type: integer (positive)
+ * 
+ * The selection pressure is the likelyhood that only the best individus will
+ * keep living.
+ */
+#define SELECTION_PRESSURE 50
 
 
 #endif	/* SETTINGS_H */

@@ -107,6 +107,15 @@ int do_sex(population* population, int* lovers);
  */
 int do_mate_selection(population* population, int* indices);
 
+/**
+ * Does a one point crossover of mama and papa into son and daughter (pointers)
+ * @param population    population we are working with
+ * @param papa          parent 1
+ * @param mama          parent 2
+ * @param son           child 1
+ * @param daughter      child 2
+ * @return 0 on success
+ */
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter);
 
 int do_mutation(population* population, individu* individu);

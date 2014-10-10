@@ -234,16 +234,16 @@ int do_mate_selection(population* population, int* indices)
 
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter)
 {
-    int num = population->numpoints;
-    int split = 1 + (rand() % (num - 1));
+    int split_index = 1 + (rand() % (population->numpoints - 1));
     int i;
 
-    //2 times for efficiency less checks
-    for (i = 0; i < split; i++)
+    /* first part */
+    for (i = 0; i < split_index; i++)
     {
         son->points[i] = papa->points[i];
         daughter->points[i] = mama->points[i];
     }
+    /* continue with second part*/
     for (i = i; i < population->numpoints; i++)
     {
         son->points[i] = mama->points[i];

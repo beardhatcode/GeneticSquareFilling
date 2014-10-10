@@ -318,11 +318,14 @@ int do_deathmatch(population* plebs, int to_kill)
     return left;
 }
 
-int do_tournament_selection(population* plebs, int group_size, int over_size)
+int do_tournament_selection(population* plebs, int group_size, int excess_num)
 {
-    int population_size = plebs->size + over_size;
+    int population_size = plebs->size + excess_num;
+    /* Select a random individu as current worst*/
     int worst_ID = rand() % population_size;
     int i, cur_id;
+    
+    /* Try to find a worse individu by selecting group_size random opponents */
     for (i = 0; i < group_size; i++)
     {
         cur_id = rand() % population_size;

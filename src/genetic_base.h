@@ -138,13 +138,13 @@ int do_mutation(population* population, individu* individu);
 int do_deathmatch(population* plebs, int to_kill);
 
 /**
- * 
- * @param plebs
- * @param group_size
- * @param over_size
- * @return ID to ill
+ * Does a tournament selection to find 1 individu to kill
+ * @param plebs         the population
+ * @param group_size    number of individus in the tournament
+ * @param excess_num    number of excess individus in population->list
+ * @return index of individu to kill
  */
-int do_tournament_selection(population* plebs, int group_size, int over_size);
+int do_tournament_selection(population* plebs, int group_size, int excess_num);
 
 void population_print(population* individu);
 

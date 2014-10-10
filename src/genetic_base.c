@@ -68,16 +68,14 @@ int init_individu(population* popu, individu* solution, point* point_ptr)
     return 0;
 }
 
-/**
- * Free allocated meomory of the population including it's individu's
- * @param population pointer to what to clear;
- * @return 
- */
 void free_population(population** popu)
 {
+    /* And the memory lived free and happily ever after*/
     free((*popu)->_allpoints);
     free((*popu)->list);
     free(*popu);
+    
+    /* Set pointer to NULL to avoid dangling pointers*/
     *popu = NULL;
 }
 

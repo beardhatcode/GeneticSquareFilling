@@ -53,9 +53,9 @@ int init_population(int size,int numpoints, polygon* poly , population** popu_pt
 int init_individu(population* popu, individu* solution, point* point_ptr);
 
 /**
- * Free allocated meomory of the population including it's individu's
- * @param population pointer to what to clear;
- * @return 
+ * Free allocated meomory of the population including it's individus
+ * and their points
+ * @param population    pointer to free
  */
 void free_population(population** population);
 

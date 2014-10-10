@@ -31,6 +31,7 @@ typedef struct polygon {
     // the vertices
     vertex* verts;
     float bound_min_x,bound_min_y,bound_max_x,bound_max_y;
+    float diagonal; //WET FINGER
 } polygon;
 
 

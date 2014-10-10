@@ -81,6 +81,12 @@ int polygon_read(char* filename, polygon* poly) {
         poly->verts[i].line_b = b;
     }
     
+    //Rough approximation of diameter
+    poly->diagonal = sqrt(
+            (poly->bound_min_x -poly->bound_max_x)*(poly->bound_min_x -poly->bound_max_x) + 
+            (poly->bound_min_y -poly->bound_max_y)*(poly->bound_min_y -poly->bound_max_y)
+            );
+    
     return 0;
 }
 

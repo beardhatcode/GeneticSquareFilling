@@ -1,0 +1,3 @@
+#!/bin/bash
+./maxdist $1 $2 > result.points
+../extra/checksolution.py $2 result.points

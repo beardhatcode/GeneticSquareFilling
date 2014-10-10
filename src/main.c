@@ -10,6 +10,7 @@
 #include <mpi.h>
 #include <assert.h>
 #include <time.h>  
+#include "debugmacro.h"
 
 #include "polygon.h"
 #include "genetic_base.h"

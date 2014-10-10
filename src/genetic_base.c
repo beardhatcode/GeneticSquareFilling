@@ -12,6 +12,7 @@
 
 #include "genetic_base.h"
 #include "settings.h"
+#include "debugmacro.h"
 
 /**
  * Creates an filed population of a certain size initited randomly

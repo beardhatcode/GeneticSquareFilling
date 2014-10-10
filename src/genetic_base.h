@@ -109,6 +109,7 @@ int do_mate_selection(population* population, int* indices);
 
 /**
  * Does a one point crossover of mama and papa into son and daughter (pointers)
+ * Note: get_fitness MUST be run on the children after this operation
  * @param population    population we are working with
  * @param papa          parent 1
  * @param mama          parent 2
@@ -118,6 +119,13 @@ int do_mate_selection(population* population, int* indices);
  */
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter);
 
+/**
+ * Picks a random point from the child and modifies it a little bit
+ * Note: get_fitness MUST be run on the children after this operation
+ * @param population    population we are working with
+ * @param individu      the individu from the population that needs to be mutated
+ * @return 0 on success; -1 on failed mutation
+ */
 int do_mutation(population* population, individu* individu);
 
 int do_deathmatch(population* plebs, int to_kill);

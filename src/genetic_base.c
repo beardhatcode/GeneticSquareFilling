@@ -254,24 +254,37 @@ int do_crossover(population* population, individu* papa, individu* mama, individ
 
 int do_mutation(population* population, individu* individu)
 {
+    /* get a random point */
     int randindex = rand() % population->numpoints;
-    float baseX = individu->points[randindex].x;
-    float baseY = individu->points[randindex].y;
+    
+    /* store start values*/
+    float base_x = individu->points[randindex].x;
+    float base_y = individu->points[randindex].y;
+    
     float new_x, new_y;
+    
+    /* maximum change is a fraction of the maximum distance in the polygon */
     float max_delta = population->polygon->diagonal / (float) MUTATION_DELTA;
+    
+    
+    /* Add/subtract random small values from the point; */
+    /* reduce max if result out of polygon */
     do
     {
         max_delta = max_delta / 2.0;
         if (max_delta < FLT_MIN)
         {
-            log_dbg("FAILED to mutate\n");
+            log_dbg("[warn] FAILED to mutate\n");
             return -1;
         }
-        new_x = baseX + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
-        new_y = baseY + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
+        
+        /* generate new coordinated*/
+        new_x = base_x + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
+        new_y = base_y + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
     }
     while (!polygon_contains(new_x, new_y, population->polygon));
 
+    /* set new coordinates */
     individu->points[randindex].x = new_x;
     individu->points[randindex].y = new_y;
 

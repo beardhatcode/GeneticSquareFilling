@@ -68,12 +68,16 @@ void free_individu(individu* willy);
  */
 double get_fitness(individu* individu);
 
+int get_best(population* population);
+
+int do_iterations(population* population, int num_iterations);
+
 /**
  * Does a random mutation and/or crossover on a select number of individu's
  * @param population
  * @return 
  */
-int do_sex(population* population);
+int do_sex(population* population,int* lovers);
 
 /**
  * Selects a biased random mate

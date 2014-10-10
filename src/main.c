@@ -27,9 +27,11 @@ void test() {
     assert(polygon_contains(4.628, 1.156, &poly) == 0);
     assert(polygon_contains(4.772, 3.799, &poly) == 0);
     assert(polygon_contains(1.444, 3.606, &poly) == 0);
+    assert(polygon_contains(4.994639, 0.934278, &poly) == 0);
     assert(polygon_contains(1.684, 1.681, &poly) == 1);
     assert(polygon_contains(3.000, 1.848, &poly) == 1);
     assert(polygon_contains(2.260, 1.751, &poly) == 1);
+    printf("%s", polygon_contains(4.994639, 0.934278, &poly) ? "T" : "F");
     polygon_print(&poly);
 
 }
@@ -63,12 +65,22 @@ void test() {
 void test() {
     polygon poly = {0};
     population* popu = NULL;
+    int best, i;
     assert(polygon_read("../tests/soos.poly", &poly) == 0);
-    init_population(NUM_INDIVIDUS, 5, &poly, &popu);
-    population_print(popu);
 
-    do_sex(popu);
-    population_print(popu);
+    init_population(NUM_INDIVIDUS, 8, &poly, &popu);
+    //population_print(popu);
+
+    do_iterations(popu, INTERATIONS);
+    //population_print(popu);
+
+    best = get_best(popu);
+
+    printf("%f\n", popu->list[best].fitness);
+    for (i = 0; i < popu->numpoints; i++) {
+        printf("%f %f\n", popu->list[best].points[i].x, popu->list[best].points[i].y);
+
+    }
 
     free_population(&popu);
     polygon_free(&poly);
@@ -76,16 +88,15 @@ void test() {
 #endif
 
 int main(int argc, char** argv) {
-    srand(time(NULL));
 #if TESTINIT || TESTRAND || TESPOPULATOR
+    srand(time(NULL));
     test();
     return 0;
 #else
-
-
     polygon poly = {0};
+    population* popu = NULL;
+    int best, i;
 
-    printf("I've got %d tickets to paradise\n", argc);
     if (argc != 3) {
         printf("USAGE: %s num file\n", argv[0]);
         printf("num \t Number of points to add \n"
@@ -95,6 +106,20 @@ int main(int argc, char** argv) {
         polygon_read(argv[2], &poly);
     }
 
-    polygon_print(&poly);
+
+    init_population(NUM_INDIVIDUS, atoi(argv[1]), &poly, &popu);
+
+    do_iterations(popu, INTERATIONS);
+
+    best = get_best(popu);
+
+    printf("%f\n", popu->list[best].fitness);
+    for (i = 0; i < popu->numpoints; i++) {
+        printf("%f %f\n", popu->list[best].points[i].x, popu->list[best].points[i].y);
+
+    }
+
+    free_population(&popu);
+    polygon_free(&poly);
 #endif
 }

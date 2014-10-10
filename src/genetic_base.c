@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <float.h>
 
 #include "genetic_base.h"
 #include "settings.h"
@@ -110,6 +111,19 @@ double get_fitness(individu* indi) {
     }
     indi->fitness = result;
     return result;
+}
+
+int get_best(population* population) {
+    int best = 0;
+    int i;
+    for (i = 1; i < population->size; i++) {
+        if (population->list[i].fitness > population->list[best].fitness)
+            best = i;
+
+    }
+
+    return best;
+
 }
 
 int do_iterations(population* population, int num_iterations) {
@@ -255,22 +269,26 @@ int do_mutation(individu* individu) {
     float baseX = individu->points[randindex].x;
     float baseY = individu->points[randindex].y;
     float new_x, new_y;
-    float max_delta = individu->population->polygon->diagonal / 5;
+    float max_delta = individu->population->polygon->diagonal / (float)MUTATION_DELTA;
     do {
         max_delta = max_delta / 2.0;
-        new_x = baseX + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1 : -1);
-        new_y = baseY + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1 : -1);
+        if (max_delta < FLT_MIN) {
+            log_dbg("FAILED to mutate\n");
+            return -1;
+        }
+        new_x = baseX + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
+        new_y = baseY + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
     } while (!polygon_contains(new_x, new_y, individu->population->polygon));
 
     individu->points[randindex].x = new_x;
     individu->points[randindex].y = new_y;
 
-    return -1;
+    return 0;
 }
 
 int do_deathmatch(population* plebs, int to_kill) {
-    int left, victim;
-    int group_size = plebs->size * 100 / SELECTION_PRESSUERE;
+    int left, victim,i;
+    int group_size = (plebs->size + plebs->lovers) * 100 / SELECTION_PRESSUERE;
     for (left = to_kill; left >= 0; left--) {
         victim = do_tournament_selection(plebs, group_size, left);
 
@@ -279,13 +297,16 @@ int do_deathmatch(population* plebs, int to_kill) {
 
         /* plebs[victim] to be replaced by  plebs[size + left - 1] */
         plebs->list[victim].fitness = plebs->list[plebs->size + left - 1].fitness;
-
-        memcpy(
-                plebs->list[victim].points,
-                plebs->list[plebs->size + left - 1].points,
-                plebs->numpoints * sizeof (float)
-                );
-
+        /*
+                memcpy(
+                        plebs->list[victim].points,
+                        plebs->list[plebs->size + left - 1].points,
+                        plebs->numpoints * sizeof (point)
+                        );
+         */
+        for (i = 0; i < plebs->numpoints; i++) {
+           plebs->list[victim].points[i] =  plebs->list[plebs->size + left - 1].points[i];
+        }
 
         //individu_print(plebs->list + victim);
         //individu_print(plebs->list + plebs->size + left - 1);

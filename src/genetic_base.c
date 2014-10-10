@@ -25,6 +25,7 @@
 int init_population(int size, int numpoints, polygon* poly, population** popul) {
     int i;
     population* popu;
+
     *popul = (population*) malloc(sizeof (population));
     if (NULL == popul)
         return -1;
@@ -146,11 +147,6 @@ int do_sex(population* population, int* lovers) {
     int i;
 
     do_mate_selection(population, lovers);
-    //
-    //for (i = 0; i < population->size; i++) {
-    //    printf("Person %2d :    (%f)\n", i, population->list[i].fitness);
-    //
-    //}
 
     for (i = 0; i < population->lovers; i += 2) {
         do_crossover(
@@ -158,15 +154,7 @@ int do_sex(population* population, int* lovers) {
                 list + lovers[i], list + lovers[i + 1],
                 list + size + i, list + size + i + 1
                 );
-        //get_fitness(list + size + i);
-        //get_fitness(list + size + i + 1);
-        //printf("=======================\nMama:");
-        //individu_print(list + lovers[i]);
-        //printf("Mama:");
-        //individu_print(list + lovers[i + 1]);
-        //printf("= = = = = = = = = = = =\n");
-        //individu_print(list + size + i);
-        //individu_print(list + size + i + 1);
+
 
         if (rand() % MUTATION_1_IN == 0) { // MOVE
             do_mutation(list + size + i);
@@ -177,10 +165,6 @@ int do_sex(population* population, int* lovers) {
 
         get_fitness(list + size + i);
         get_fitness(list + size + i + 1);
-        //printf("- - - - - - - - - - - -\n");
-        //individu_print(list + size + i);
-        //individu_print(list + size + i + 1);
-        //printf("=======================\n");
     }
 
 
@@ -194,9 +178,9 @@ int do_sex(population* population, int* lovers) {
  * @return 
  */
 int do_mate_selection(population* population, int* indices) {
-    int i;
+    int i=0;
     double total_fitness = 0.0;
-    double offset, interval, target, counter;
+    double offset=0.0, interval=0.0, target=0.0, counter=0.0;
     int curIndex = 0;
 
     //Calculate the total fitness
@@ -228,7 +212,7 @@ int do_mate_selection(population* population, int* indices) {
     //Shuffel list
     // NO NEED
 
-    return 0;
+    return curIndex;
 }
 
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter) {
@@ -253,7 +237,7 @@ int do_mutation(individu* individu) {
     float baseX = individu->points[randindex].x;
     float baseY = individu->points[randindex].y;
     float new_x, new_y;
-    float max_delta = individu->population->polygon->diagonal / (float)MUTATION_DELTA;
+    float max_delta = individu->population->polygon->diagonal / (float) MUTATION_DELTA;
     do {
         max_delta = max_delta / 2.0;
         if (max_delta < FLT_MIN) {
@@ -271,7 +255,7 @@ int do_mutation(individu* individu) {
 }
 
 int do_deathmatch(population* plebs, int to_kill) {
-    int left, victim,i;
+    int left, victim, i;
     int group_size = (plebs->size + plebs->lovers) * 100 / SELECTION_PRESSUERE;
     for (left = to_kill; left >= 0; left--) {
         victim = do_tournament_selection(plebs, group_size, left);
@@ -289,7 +273,7 @@ int do_deathmatch(population* plebs, int to_kill) {
                         );
          */
         for (i = 0; i < plebs->numpoints; i++) {
-           plebs->list[victim].points[i] =  plebs->list[plebs->size + left - 1].points[i];
+            plebs->list[victim].points[i] = plebs->list[plebs->size + left - 1].points[i];
         }
 
         //individu_print(plebs->list + victim);

@@ -20,9 +20,10 @@ typedef struct _individu{
 } individu;
 
 typedef struct _population{
-    individu* list; //size = size + lovers
+    individu* list;
+    point* _allpoints;
     int numpoints;
-    int lovers; // EVEN!!!
+    int lovers; 
     int size;
     polygon* polygon;
 } population;
@@ -42,8 +43,7 @@ int init_population(int size,int numpoints, polygon* poly , population** populat
  * @param individu ppointer to store stuff in
  * @return 
  */
-int init_individu(population* popu, individu* solution);
-
+int init_individu(population* popu, individu* solution, point* point_ptr);
 
 /**
  * Free allocated meomory of the population including it's individu's
@@ -51,13 +51,6 @@ int init_individu(population* popu, individu* solution);
  * @return 
  */
 void free_population(population** population);
-
-/**
- * It frees Willy
- * @param willy
- * @return 
- */
-void free_individu(individu* willy);
 
 /**
  * Calculates the fitness of an individu and returns it
@@ -78,9 +71,10 @@ int do_iterations(population* population, int num_iterations);
 int do_sex(population* population,int* lovers);
 
 /**
- * Selects a biased random mate
+ * Tries to select population->lovers random partners
  * @param population
- * @return 
+ * @param indices
+ * @return number of found partners
  */
 int do_mate_selection(population* population,int* indices);
 

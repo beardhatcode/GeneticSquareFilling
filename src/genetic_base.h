@@ -16,9 +16,7 @@
 
 typedef struct _individu{
     double fitness;
-    point* points;
-    struct _population* population;
-    
+    point* points;    
 } individu;
 
 typedef struct _population{
@@ -45,10 +43,12 @@ typedef struct _population{
 int init_population(int size,int numpoints, polygon* poly , population** popu_ptr);
 
 /**
- * Intialize individu with random points and allocate space
- * @param numpoints number of points
- * @param individu ppointer to store stuff in
- * @return 
+ * Initialize a solution with a pointer to it's points array 
+ * and fill this array randomly
+ * @param popu          population the individu is in
+ * @param solution      pointer to the meomory location of the indivdual
+ * @param point_ptr     pointer to the start of the array of points
+ * @return 0 on succes
  */
 int init_individu(population* popu, individu* solution, point* point_ptr);
 
@@ -64,7 +64,7 @@ void free_population(population** population);
  * @param individu
  * @return 
  */
-double get_fitness(individu* individu);
+double get_fitness(population* population,individu* individu);
 
 int get_best(population* population);
 
@@ -87,7 +87,7 @@ int do_mate_selection(population* population,int* indices);
 
 int do_crossover(population* population,individu* papa, individu* mama,individu* son, individu* daughter);
 
-int do_mutation(individu* individu);
+int do_mutation(population* population, individu* individu);
 
 int do_deathmatch(population* plebs, int to_kill);
 
@@ -102,7 +102,7 @@ int do_tournament_selection(population* plebs, int group_size,int over_size);
 
 void population_print(population* individu);
 
-void individu_print(individu* individu);
+void individu_print(population* population,individu* individu);
 
 #endif	/* GENETIC_BASE_H */
 

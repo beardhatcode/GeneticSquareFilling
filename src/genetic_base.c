@@ -15,7 +15,7 @@
 #include "settings.h"
 #include "debugmacro.h"
 
-int init_population(int size, int numpoints, polygon* poly, population** popu_ptr)
+int init_population(int size,int numpoints, polygon* poly , population** popu_ptr)
 {
     int i;
     population* popu;
@@ -58,17 +58,13 @@ int init_population(int size, int numpoints, polygon* poly, population** popu_pt
     return 0;
 }
 
-/**
- * Intialize individu with random points and allocate space
- * @param numpoints number of points
- * @param individu ppointer to store stuff in
- * @return 0 on succes and -1 on failed malloc
- */
 int init_individu(population* popu, individu* solution, point* point_ptr)
 {
     solution->points = point_ptr;
-    solution->population = popu;
     polygon_random_points(popu->numpoints, solution->points, popu->polygon);
+    
+    /* Calculate fitness */
+    get_fitness(popu,solution);
     return 0;
 }
 
@@ -90,14 +86,14 @@ void free_population(population** popu)
  * @param individu
  * @return 
  */
-double get_fitness(individu* indi)
+double get_fitness(population* population, individu* indi)
 {
     int i, j;
     double result = 0.0;
     point* l = indi->points;
-    for (i = 0; i < indi->population->numpoints; i++)
+    for (i = 0; i < population->numpoints; i++)
     {
-        for (j = 0; j < indi->population->numpoints; j++)
+        for (j = 0; j < population->numpoints; j++)
         {
             result += sqrt(sqrt((l[i].x - l[j].x)*(l[i].x - l[j].x)+(l[i].y - l[j].y)*(l[i].y - l[j].y)));
         }
@@ -173,15 +169,15 @@ int do_sex(population* population, int* lovers)
 
         if (rand() % MUTATION_1_IN == 0)
         { // MOVE
-            do_mutation(list + size + i);
+            do_mutation(population,list + size + i);
         }
         if (rand() % MUTATION_1_IN == 0)
         { // MOVE
-            do_mutation(list + size + i + 1);
+            do_mutation(population,list + size + i + 1);
         }
 
-        get_fitness(list + size + i);
-        get_fitness(list + size + i + 1);
+        get_fitness(population, list + size + i);
+        get_fitness(population, list + size + i + 1);
     }
 
 
@@ -204,7 +200,7 @@ int do_mate_selection(population* population, int* indices)
     //Calculate the total fitness
     for (i = 0; i < population->size; i++)
     {
-        total_fitness += get_fitness(population->list + i);
+        total_fitness += get_fitness(population,population->list + i);
     }
 
     //set the interval:
@@ -256,13 +252,13 @@ int do_crossover(population* population, individu* papa, individu* mama, individ
     return 0;
 }
 
-int do_mutation(individu* individu)
+int do_mutation(population* population, individu* individu)
 {
-    int randindex = rand() % individu->population->numpoints;
+    int randindex = rand() % population->numpoints;
     float baseX = individu->points[randindex].x;
     float baseY = individu->points[randindex].y;
     float new_x, new_y;
-    float max_delta = individu->population->polygon->diagonal / (float) MUTATION_DELTA;
+    float max_delta = population->polygon->diagonal / (float) MUTATION_DELTA;
     do
     {
         max_delta = max_delta / 2.0;
@@ -274,7 +270,7 @@ int do_mutation(individu* individu)
         new_x = baseX + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
         new_y = baseY + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
     }
-    while (!polygon_contains(new_x, new_y, individu->population->polygon));
+    while (!polygon_contains(new_x, new_y, population->polygon));
 
     individu->points[randindex].x = new_x;
     individu->points[randindex].y = new_y;
@@ -338,16 +334,16 @@ void population_print(population* population)
 
     for (i = 0; i < population->size; i++)
     {
-        get_fitness(population->list + i);
-        individu_print(population->list + i);
+        get_fitness(population,population->list + i);
+        individu_print(population,population->list + i);
     }
 }
 
-void individu_print(individu* individu)
+void individu_print(population* population,individu* individu)
 {
     int i;
     printf("Individu %p: %f\n", individu, individu->fitness);
-    for (i = 0; i < individu->population->numpoints; i++)
+    for (i = 0; i < population->numpoints; i++)
     {
         printf("\t%f\t%f\n", individu->points[i].x, individu->points[i].y);
     }

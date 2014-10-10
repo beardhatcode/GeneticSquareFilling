@@ -36,6 +36,7 @@ GET SOLUTION INFO
 '''
 solution = open(solutionfile, 'r')
 lines = solution.readlines()
+fitness = lines[0].rstrip('\n');
 xco = []
 yco = []
 for i in range(1,len(lines)):
@@ -63,6 +64,7 @@ directions.append(Path.CLOSEPOLY)
 
 path = Path(coordinates, directions)
 fig = plt.figure()
+fig.suptitle("Fitness " + fitness);
 ax = fig.add_subplot(111)
 patch = patches.PathPatch(path, facecolor='white', lw=2)
 ax.add_patch(patch)

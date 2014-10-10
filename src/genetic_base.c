@@ -43,8 +43,9 @@ int init_population(int size, int numpoints, polygon* poly, population** popul) 
         return -2;
     }
 
+    popu->_allpoints = (point*) malloc(sizeof (point) * (size + popu->lovers) *  numpoints);
     for (i = 0; i < size + popu->lovers; i++) {
-        init_individu(popu, popu->list + i);
+        init_individu(popu, popu->list + i,popu->_allpoints + (i * numpoints));
     }
 
 
@@ -59,10 +60,8 @@ int init_population(int size, int numpoints, polygon* poly, population** popul) 
  * @param individu ppointer to store stuff in
  * @return 0 on succes and -1 on failed malloc
  */
-int init_individu(population* popu, individu* solution) {
-    solution->points = (point*) malloc(popu->numpoints * sizeof (point));
-    if (NULL == solution->points)
-        return -1;
+int init_individu(population* popu, individu* solution, point* point_ptr) {
+    solution->points = point_ptr;
     solution->population = popu;
     polygon_random_points(popu->numpoints, solution->points, popu->polygon);
     return 0;
@@ -74,23 +73,10 @@ int init_individu(population* popu, individu* solution) {
  * @return 
  */
 void free_population(population** popu) {
-    int i;
-    for (i = 0; i < (*popu)->size + (*popu)->lovers; i++) {
-        free_individu(&((*popu)->list[i]));
-    }
+    free((*popu)->_allpoints);
     free((*popu)->list);
     free(*popu);
     *popu = NULL;
-}
-
-/**
- * free the point array of the individu
- * @param willy
- * @return 
- */
-void free_individu(individu* willy) {
-
-    free(willy->points);
 }
 
 /**

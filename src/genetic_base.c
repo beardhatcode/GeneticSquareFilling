@@ -34,8 +34,6 @@ int init_population(int size, int numpoints, polygon* poly, population** popul) 
     popu->polygon = poly;
 
     popu->numpoints = numpoints;
-    popu->best_fitness = -1.0;
-    popu->best = NULL;
     popu->size = size;
     popu->lovers = ((int) (size * LOVER_PERCENT / 200)) *2; // force even
 

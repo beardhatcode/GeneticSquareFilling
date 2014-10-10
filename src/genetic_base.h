@@ -20,8 +20,6 @@ typedef struct _individu{
 } individu;
 
 typedef struct _population{
-    double best_fitness;
-    individu* best;
     individu* list; //size = size + lovers
     int numpoints;
     int lovers; // EVEN!!!

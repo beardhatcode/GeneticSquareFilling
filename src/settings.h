@@ -8,9 +8,9 @@
 #ifndef SETTINGS_H
 #define	SETTINGS_H
 
-#define INTERATIONS  300
+#define INTERATIONS  1280
 
-#define NUM_INDIVIDUS 2000
+#define NUM_INDIVIDUS 1501
 #define LOVER_PERCENT 10
 
 #define MUTATION_1_IN 3

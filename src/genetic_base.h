@@ -146,8 +146,17 @@ int do_deathmatch(population* plebs, int to_kill);
  */
 int do_tournament_selection(population* plebs, int group_size, int excess_num);
 
-void population_print(population* individu);
+/**
+ * Prints population
+ * @param population
+ */
+void population_print(population* population);
 
+/**
+ * Prints individu
+ * @param population population of individu
+ * @param individu   individu
+ */
 void individu_print(population* population, individu* individu);
 
 #endif	/* GENETIC_BASE_H */

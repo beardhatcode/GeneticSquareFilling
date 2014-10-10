@@ -15,7 +15,7 @@
 #include "settings.h"
 #include "debugmacro.h"
 
-int init_population(int size,int numpoints, polygon* poly , population** popu_ptr)
+int init_population(int size, int numpoints, polygon* poly, population** popu_ptr)
 {
     int i;
     population* popu;
@@ -62,9 +62,9 @@ int init_individu(population* popu, individu* solution, point* point_ptr)
 {
     solution->points = point_ptr;
     polygon_random_points(popu->numpoints, solution->points, popu->polygon);
-    
+
     /* Calculate fitness */
-    get_fitness(popu,solution);
+    get_fitness(popu, solution);
     return 0;
 }
 
@@ -74,7 +74,7 @@ void free_population(population** popu)
     free((*popu)->_allpoints);
     free((*popu)->list);
     free(*popu);
-    
+
     /* Set pointer to NULL to avoid dangling pointers*/
     *popu = NULL;
 }
@@ -110,31 +110,48 @@ int get_best(population* population)
     return best;
 }
 
-int do_iterations(population* population, int num_iterations)
+int do_iterations(population* population, int num_generations)
 {
-    int *lovers = (int*) malloc(population->num_lovers * sizeof (int));
+    /* Allocate an array to store the indices of the individus that pair*/
+    int *lovers_indices = (int*) malloc(population->num_lovers * sizeof (int));
+
     int i, j;
     double avg;
     double prev_avg = 0.0;
+
+    if(NULL == lovers_indices)
+        return -1;
+    
+    /* In debug print a table of the progress */
     log_dbg("|  GEN  | FITNESS |   DELTA  |\n");
-    for (i = 0; i < num_iterations; i++)
+
+    /* Do num_generations times */
+    for (i = 0; i < num_generations; i++)
     {
-        do_sex(population, lovers);
+        /* Make kids and add them to the array (index in [size,size+lovers])*/
+        do_sex(population, lovers_indices);
+
+        /* Kill individus to keep population size fixed*/
         do_deathmatch(population, population->num_lovers);
 
+
+        /* Get average fitness */
+        /* note: compiler will remove this if we're not debugging */
         avg = 0.0;
         for (j = 0; j < population->size; j++)
         {
             avg += population->list[i].fitness;
         }
         avg = avg / (double) population->size;
+
+        /* In debug print a table of the progress */
         log_dbg("|  %-3d  | % 3.3f | %+3.3f |\n", i, avg, avg - prev_avg);
         prev_avg = avg;
 
     }
 
-
-    free(lovers);
+    /* free the array of indices */
+    free(lovers_indices);
     return 0;
 }
 
@@ -162,11 +179,11 @@ int do_sex(population* population, int* lovers)
 
         if (rand() % MUTATION_1_IN == 0)
         { // MOVE
-            do_mutation(population,list + size + i);
+            do_mutation(population, list + size + i);
         }
         if (rand() % MUTATION_1_IN == 0)
         { // MOVE
-            do_mutation(population,list + size + i + 1);
+            do_mutation(population, list + size + i + 1);
         }
 
         get_fitness(population, list + size + i);
@@ -193,7 +210,7 @@ int do_mate_selection(population* population, int* indices)
     //Calculate the total fitness
     for (i = 0; i < population->size; i++)
     {
-        total_fitness += get_fitness(population,population->list + i);
+        total_fitness += get_fitness(population, population->list + i);
     }
 
     //set the interval:
@@ -327,12 +344,12 @@ void population_print(population* population)
 
     for (i = 0; i < population->size; i++)
     {
-        get_fitness(population,population->list + i);
-        individu_print(population,population->list + i);
+        get_fitness(population, population->list + i);
+        individu_print(population, population->list + i);
     }
 }
 
-void individu_print(population* population,individu* individu)
+void individu_print(population* population, individu* individu)
 {
     int i;
     printf("Individu %p: %f\n", individu, individu->fitness);

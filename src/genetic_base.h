@@ -78,6 +78,15 @@ double get_fitness(population* population, individu* individu);
  */
 int get_best(population* population);
 
+/**
+ * Fakes num_generations generations of evolution
+ * 
+ * @param population        the populationin that will evolve
+ * @param num_iterations    number of generations
+ * @todo  enable auto averaging
+ * @return 0 on success,
+ *        -1 on failed allocation of array of indices
+ */
 int do_iterations(population* population, int num_iterations);
 
 /**

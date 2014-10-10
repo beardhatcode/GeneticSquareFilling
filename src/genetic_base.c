@@ -100,15 +100,14 @@ int get_best(population* population)
 {
     int best = 0;
     int i;
+    /* loop over all individus */
     for (i = 1; i < population->size; i++)
     {
         if (population->list[i].fitness > population->list[best].fitness)
             best = i;
 
     }
-
     return best;
-
 }
 
 int do_iterations(population* population, int num_iterations)

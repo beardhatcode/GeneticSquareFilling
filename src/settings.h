@@ -75,6 +75,7 @@
 /**
  * The chance that a child will mutate
  * Type: INT positive
+ * Default: 3
  */
 #ifndef MUTATION_1_IN
 #define MUTATION_1_IN 3
@@ -83,6 +84,8 @@
 
 /**
  * The size of the mutation
+ * Type: DOUBLE
+ * Default: 5.0
  */
 #ifndef MUTATION_DELTA
 #define MUTATION_DELTA 5.0

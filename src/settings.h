@@ -8,25 +8,26 @@
 #ifndef SETTINGS_H
 #define	SETTINGS_H
 
-/* 
- * Complile with -DO_ALT_SETTINGS
- * and other settings as -D...=... to change
- */
-#ifndef O_ALT_SETTINGS 
 
 /**
  * Minimum number of iterations 
  * Type: INT 
  * Default: 200
  */
+#ifndef MIN_ITERATIONS
 #define MIN_ITERATIONS  1000
+#endif
+
 
 /**
  * Maximum number of iterations 
  * Type: INT 
  * Default: 2000
  */
+#ifndef MAX_INTERATIONS
 #define MAX_INTERATIONS 2000
+#endif
+
 
 /**
  * If the exponentially weighted moving average of the difference of the 
@@ -35,7 +36,10 @@
  * Type: Positive number
  * Default: 0.001
  */
+#ifndef MIN_PRECISION
 #define MIN_PRECISION  0.001
+#endif
+
 
 /**
  * Amount that the previous average counts in the  exponentially weighted moving 
@@ -43,7 +47,9 @@
  * Type: DOUBLE between 0 and 1
  * Default: 0.95
  */
+#ifndef WEIGHTING_DECREASE
 #define WEIGHTING_DECREASE 0.95
+#endif
 
 
 /**
@@ -51,25 +57,47 @@
  * Type: INT
  * Default: 1500;
  */
+#ifndef NUM_INDIVIDUS
 #define NUM_INDIVIDUS 256
+#endif
+
 
 /**
  * Percent of the population that will take part in mating each iteration
  * Type: INT between 0 and 100
  * Default: 10
  */
+#ifndef LOVER_PERCENT
 #define LOVER_PERCENT 10
+#endif
 
+
+/**
+ * The chance that a child will mutate
+ * Type: INT positive
+ */
+#ifndef MUTATION_1_IN
 #define MUTATION_1_IN 3
+#endif
+
+
+/**
+ * The size of the mutation
+ */
+#ifndef MUTATION_DELTA
 #define MUTATION_DELTA 5.0
+#endif
+
 
 /*
  * Likelyhood that only the best individus will keep living.
  * Type: INT greater than 0
  * Default:  50
  */
+#ifndef SELECTION_PRESSURE
 #define SELECTION_PRESSURE 50
-
 #endif
+
+
 #endif	/* SETTINGS_H */
 

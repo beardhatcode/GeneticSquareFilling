@@ -116,21 +116,22 @@ int do_iterations(population* population, int num_generations)
     int *lovers_indices = (int*) malloc(population->num_lovers * sizeof (int));
 
     int i, j, num_kids;
-    double avg;
-    double prev_avg = 0.0;
+    double avg = 13.37;
+    double avg_diff = 13.37;
+    double prev_avg = 1183;
 
     if (NULL == lovers_indices)
         return -1;
 
     /* In debug print a table of the progress */
-    log_dbg("|  GEN  | FITNESS |   DELTA  |\n");
+    log_dbg("|  GEN  | FITNESS |     DELTA   | ACCU WEIGHT |\n");
 
     /* Do num_generations times */
-    for (i = 0; i < num_generations; i++)
+    for (i = 0; (avg_diff >  MIN_PRECISION &&  i < num_generations); i++)
     {
         /* Make kids and add them to the array (index in [size,size+lovers])*/
         num_kids = do_sex(population, lovers_indices);
-       
+
         /* Kill individus to keep population size fixed*/
         do_deathmatch(population, num_kids);
 
@@ -140,14 +141,17 @@ int do_iterations(population* population, int num_generations)
         avg = 0.0;
         for (j = 0; j < population->size; j++)
         {
-            avg += population->list[i].fitness;
+            avg += population->list[j].fitness;
         }
         avg = avg / (double) population->size;
 
         /* In debug print a table of the progress */
-        log_dbg("|  %-3d  | % 3.3f | %+3.3f |\n", i, avg, avg - prev_avg);
-        prev_avg = avg;
+        avg_diff = avg_diff * (double) WEIGHTING_DECREASE 
+                + (((double)1 - (double) WEIGHTING_DECREASE) * fabs(avg - prev_avg));
 
+        log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, avg, avg - prev_avg, avg_diff);
+        
+        prev_avg = avg;
     }
 
     /* free the array of indices */
@@ -163,8 +167,8 @@ int do_sex(population* population, int* lovers_indices)
 
     /* fill lovers_indices with stochastically chosen mates */
     num_mates = do_mate_selection(population, lovers_indices);
-    num_mates = (num_mates / 2 )*2; /* make even */
-    
+    num_mates = (num_mates / 2)*2; /* make even */
+
     /* Loop over mates in pairs of 2 */
     for (i = 0; i < num_mates; i += 2)
     {
@@ -197,7 +201,7 @@ int do_mate_selection(population* population, int* indices)
 {
     int i = 0;
     double total_fitness = 0.0;
-    double offset,interval,target,counter;
+    double offset, interval, target, counter = 0;
     int curIndex = 0;
 
     /* Calculate the total fitness */
@@ -216,7 +220,7 @@ int do_mate_selection(population* population, int* indices)
     {
         /* increment counter */
         counter += population->list[i].fitness;
-        
+
         /* if reached target: add index to list and increment target*/
         if (counter >= target)
         {
@@ -256,17 +260,17 @@ int do_mutation(population* population, individu* individu)
 {
     /* get a random point */
     int randindex = rand() % population->numpoints;
-    
+
     /* store start values*/
     float base_x = individu->points[randindex].x;
     float base_y = individu->points[randindex].y;
-    
+
     float new_x, new_y;
-    
+
     /* maximum change is a fraction of the maximum distance in the polygon */
     float max_delta = population->polygon->diagonal / (float) MUTATION_DELTA;
-    
-    
+
+
     /* Add/subtract random small values from the point; */
     /* reduce max if result out of polygon */
     do
@@ -277,7 +281,7 @@ int do_mutation(population* population, individu* individu)
             log_dbg("[warn] FAILED to mutate\n");
             return -1;
         }
-        
+
         /* generate new coordinated*/
         new_x = base_x + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
         new_y = base_y + max_delta * ((double) rand() / (double) RAND_MAX)*(rand() % 2 ? 1.0 : -1.0);
@@ -294,11 +298,11 @@ int do_mutation(population* population, individu* individu)
 int do_deathmatch(population* plebs, int to_kill)
 {
     int left, victim, i;
-    
+
     /* Group size for tournament selection:     */
     /* SELECTION_PRESSURE percent of the total  */
     int group_size = (plebs->size + to_kill) * SELECTION_PRESSURE / 100;
-    
+
     /* to_kill times*/
     for (left = to_kill; left >= 0; left--)
     {
@@ -308,7 +312,7 @@ int do_deathmatch(population* plebs, int to_kill)
         /* fill hole created by killing victim with a new child    */
         /* plebs[victim] to be replaced by  plebs[size + left - 1] */
         plebs->list[victim].fitness = plebs->list[plebs->size + left - 1].fitness;
-        
+
         for (i = 0; i < plebs->numpoints; i++)
         {
             plebs->list[victim].points[i] = plebs->list[plebs->size + left - 1].points[i];
@@ -324,7 +328,7 @@ int do_tournament_selection(population* plebs, int group_size, int excess_num)
     /* Select a random individu as current worst*/
     int worst_ID = rand() % population_size;
     int i, cur_id;
-    
+
     /* Try to find a worse individu by selecting group_size random opponents */
     for (i = 0; i < group_size; i++)
     {

@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
     polygon poly = {0};
     population* popu = NULL;
     int best, i;
-    
+    int numpoints;
     
     srand(time(NULL));
 
@@ -105,19 +105,21 @@ int main(int argc, char** argv) {
         printf("USAGE: %s num file\n", argv[0]);
         printf("num \t Number of points to add \n"
                 "file \t A file containing data\n\n");
-        polygon_read("../tests/soos.poly", &poly);
+        polygon_read("../tests/vierkant.poly", &poly);
+        numpoints = 5;
     } else {
         polygon_read(argv[2], &poly);
+        numpoints = atoi(argv[1]);
     }
 
 
-    result = init_population(NUM_INDIVIDUS, atoi(argv[1]), &poly, &popu);
+    result = init_population(NUM_INDIVIDUS, numpoints, &poly, &popu);
     
     if(result < 0){
         fprintf(stderr,"Could not allocate enough space!\n");
     }
     
-    do_iterations(popu, INTERATIONS);
+    do_iterations(popu, MAX_INTERATIONS);
 
     best = get_best(popu);
 

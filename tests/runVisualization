@@ -1,0 +1,7 @@
+#!/bin/bash
+cd ../src
+make all
+echo "COMPILED!"
+cd -
+../src/maxdist $1 $2 | tee result.points
+../extra/checksolution.py $2 result.points

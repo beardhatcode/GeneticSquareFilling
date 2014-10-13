@@ -1,3 +1,0 @@
-#!/bin/bash
-./maxdist $1 $2 | tee result.points
-../extra/checksolution.py $2 result.points

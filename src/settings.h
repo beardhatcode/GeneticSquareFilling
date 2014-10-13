@@ -29,8 +29,8 @@
 #define MAX_INTERATIONS 2000
 
 /**
- * If the exponentially weighted moving average of the diference of the 
- * average fitness is below this, the program will considder the answer good 
+ * If the exponentially weighted moving average of the difference of the 
+ * average fitness is below this, the program will consider the answer good 
  * enough, and will stop. 
  * Type: Positive number
  * Default: 0.001

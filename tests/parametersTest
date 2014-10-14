@@ -82,8 +82,8 @@ for testName in tests:
                 sumTime = 0.0;
                 sumIterations = 0;
                 sumFitness = 0.0;
-                for i in range(1,5):
-                    #time.sleep(1)
+                for i in range(1,50):
+                    time.sleep(1)
                     cur = doRun(problemSize);
                     #print(cur);
                     results.append(cur);

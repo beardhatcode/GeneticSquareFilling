@@ -206,7 +206,7 @@ int do_mate_selection(population* population, int* indices)
 
     /* Calculate the total fitness */
     for (i = 0; i < population->size; i++)
-        total_fitness += get_fitness(population, population->list + i);
+        total_fitness += population->list[i].fitness;
 
     /* set the interval size */
     interval = total_fitness / (double) population->num_lovers;

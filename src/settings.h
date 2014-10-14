@@ -48,7 +48,7 @@
  * Default: 0.95
  */
 #ifndef WEIGHTING_DECREASE
-#define WEIGHTING_DECREASE 0.95
+#define WEIGHTING_DECREASE 0.45
 #endif
 
 

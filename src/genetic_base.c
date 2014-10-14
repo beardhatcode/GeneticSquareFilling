@@ -116,7 +116,7 @@ int do_iterations(population* population, int num_generations)
     int *lovers_indices = (int*) malloc(population->num_lovers * sizeof (int));
 
     int i, j, num_kids;
-    double avg = 13.37;
+    double avg = 13.37; /* elite magic number for good luck */
     double avg_diff = 13.37;
     double prev_avg = 1183;
 
@@ -127,7 +127,7 @@ int do_iterations(population* population, int num_generations)
     log_dbg("|  GEN  | FITNESS |     DELTA   | ACCU WEIGHT |\n");
 
     /* Do num_generations times */
-    for (i = 0; (avg_diff >  MIN_PRECISION &&  i < num_generations); i++)
+    for (i = 0; i < num_generations; i++)
     {
         /* Make kids and add them to the array (index in [size,size+lovers])*/
         num_kids = do_sex(population, lovers_indices);
@@ -137,7 +137,6 @@ int do_iterations(population* population, int num_generations)
 
 
         /* Get average fitness */
-        /* note: compiler will remove this if we're not debugging */
         avg = 0.0;
         for (j = 0; j < population->size; j++)
         {
@@ -149,14 +148,21 @@ int do_iterations(population* population, int num_generations)
         avg_diff = avg_diff * (double) WEIGHTING_DECREASE 
                 + (((double)1 - (double) WEIGHTING_DECREASE) * fabs(avg - prev_avg));
 
+
+        
         log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, avg, avg - prev_avg, avg_diff);
         
         prev_avg = avg;
+        
+        if(i > MIN_ITERATIONS && avg_diff <  MIN_PRECISION){
+            break;
+        }
+        
     }
 
     /* free the array of indices */
     free(lovers_indices);
-    return 0;
+    return i;
 }
 
 int do_sex(population* population, int* lovers_indices)

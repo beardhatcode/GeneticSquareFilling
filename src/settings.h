@@ -15,7 +15,7 @@
  * Default: 200
  */
 #ifndef MIN_ITERATIONS
-#define MIN_ITERATIONS  1000
+#define MIN_ITERATIONS  -1
 #endif
 
 
@@ -25,7 +25,7 @@
  * Default: 2000
  */
 #ifndef MAX_INTERATIONS
-#define MAX_INTERATIONS 2000
+#define MAX_INTERATIONS 50000
 #endif
 
 
@@ -37,15 +37,15 @@
  * Default: 0.001
  */
 #ifndef MIN_PRECISION
-#define MIN_PRECISION  0.001
+#define MIN_PRECISION  0.00000000001
 #endif
 
 
 /**
  * Amount that the previous average counts in the  exponentially weighted moving 
  * average.
- * Type: DOUBLE between 0 and 1
- * Default: 0.95
+ * Type: DOUBLE between 0 and 1 (preveribly below 0.5)
+ * Default: 0.45
  */
 #ifndef WEIGHTING_DECREASE
 #define WEIGHTING_DECREASE 0.45

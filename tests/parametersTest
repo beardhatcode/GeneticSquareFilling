@@ -61,9 +61,8 @@ def writeCSV(taget_file,keys,dictarray):
 
 
 problemSizes = [2,5,15,20,50]
-problemSizes = [5]
 
-numTests = 5;
+numTests = 50;
 
 tests = {
         "NUM_INDIVIDUS":[{"NUM_INDIVIDUS":a}
@@ -81,7 +80,7 @@ tests = {
 
 polygons = ["soos","vierkant","icosagon"]
 
-for testName in ["LOVER_PERCENT"]:
+for testName in tests:
     tableData = [];
     for setting in tests[testName]:
         print("Working on:",testName,"-",setting);

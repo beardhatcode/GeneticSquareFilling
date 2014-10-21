@@ -2,9 +2,14 @@
 import glob, os, shutil
 import subprocess, re
 import csv
-import time
+import time,datetime
 
 depend=["genetic_base.c","main.c","polygon.c"]
+
+now_dir = os.path.join(os.getcwd(),"param_results",
+        datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+os.makedirs(now_dir)
+
 
 def doCompile(settings):
     settings_list = ["-D"+key+"="+str(settings[key]) for key in settings];
@@ -21,8 +26,8 @@ def doCompile(settings):
 
     return True;
 
-def doRun(num):
-    cmd = [os.path.join("..","src","maxdist"), str(num), "../tests/soos.poly"]
+def doRun(num,poly):
+    cmd = [os.path.join("..","src","maxdist"), str(num), "../tests/"+poly+".poly"]
     start = time.time();
     p=subprocess.Popen(cmd, cwd=os.path.join("..","src"),stdout=subprocess.PIPE,stderr=subprocess.PIPE);
     out, err = p.communicate();
@@ -56,10 +61,13 @@ def writeCSV(taget_file,keys,dictarray):
 
 
 problemSizes = [2,5,15,20,50]
+problemSizes = [5]
+
+numTests = 5;
 
 tests = {
         "NUM_INDIVIDUS":[{"NUM_INDIVIDUS":a}
-                            for a in [10,20,50,100,250,500,750,1000,1500,2500]],
+                            for a in [10,20,25,50,75,100,250,500,750,1000,1500,2500]],
         "LOVER_PERCENT":[{"NUM_INDIVIDUS":256,"LOVER_PERCENT":a}
                             for a in [0,5,10,20,30,40,50,60,70,80,90,100]],
         "SELECTION_PRESSURE":[{"SELECTION_PRESSURE":a}
@@ -71,33 +79,36 @@ tests = {
 }
 
 
-for testName in tests:
+polygons = ["soos","vierkant","icosagon"]
+
+for testName in ["LOVER_PERCENT"]:
     tableData = [];
     for setting in tests[testName]:
         print("Working on:",testName,"-",setting);
         if doCompile(setting):
             for problemSize in problemSizes:
-                results = []
-                numSucces = 0;
-                sumTime = 0.0;
-                sumIterations = 0;
-                sumFitness = 0.0;
-                for i in range(1,50):
-                    time.sleep(1)
-                    cur = doRun(problemSize);
-                    #print(cur);
-                    results.append(cur);
-                    if cur["i"] < 50000:
-                        sumIterations = sumIterations + cur["i"];
-                        sumTime = sumTime + cur["t"];
-                        sumFitness = sumFitness + cur["f"];
-                        numSucces = numSucces +1;
-                if numSucces != 0:
-                    print(setting,problemSize,{"i":sumIterations/numSucces,"f":sumFitness/numSucces,"t":sumTime/ numSucces,"s":numSucces});
-                    tableData.append({"testName":testName,"testValue":setting[testName],"n":problemSize,"i":sumIterations/numSucces,"f":sumFitness/numSucces,"t":sumTime/ numSucces,"s":numSucces})
-                else:
-                    print(setting, problemSize, "failed");
+                for poly in polygons:
+                    results = []
+                    numSucces = 0;
+                    sumTime = 0.0;
+                    sumIterations = 0;
+                    sumFitness = 0.0;
+                    for i in range(1,numTests):
+                        time.sleep(1)
+                        cur = doRun(problemSize,poly);
+                        #print(cur);
+                        results.append(cur);
+                        if cur["i"] < 50000:
+                            sumIterations = sumIterations + cur["i"];
+                            sumTime = sumTime + cur["t"];
+                            sumFitness = sumFitness + cur["f"];
+                            numSucces = numSucces +1;
+                    if numSucces != 0:
+                        print(setting,problemSize,{"i":sumIterations/numSucces,"f":sumFitness/numSucces,"t":sumTime/ numSucces,"s":numSucces});
+                        tableData.append({"testName":testName,"testValue":setting[testName],"n":problemSize,"p":poly,"i":sumIterations/numSucces,"f":sumFitness/numSucces,"t":sumTime/ numSucces,"s":numSucces})
+                    else:
+                        print(setting, problemSize, "failed");
 
 
-    print(tableData);
-    writeCSV(os.path.join("param_results",testName+".log"),["testName","testValue","n","i","f","t","s"],tableData);
+        print(tableData);
+        writeCSV(os.path.join(now_dir,testName +".log"),["p","n","testName","testValue","i","f","t","s"],tableData);

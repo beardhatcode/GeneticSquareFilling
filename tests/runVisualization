@@ -1,5 +1,6 @@
 #!/bin/bash
 cd ../src
+rm ../src/maxdist
 make all
 echo "COMPILED!"
 cd -

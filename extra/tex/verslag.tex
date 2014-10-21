@@ -1,6 +1,9 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[dutch]{babel}
+\usepackage{pgfplots}
+\usepgfplotslibrary{units}
+\usepackage{float}
 \usepackage{amsmath,amsthm}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -22,7 +25,7 @@
 \captionsetup[table]{belowskip=-0.7pt}
 
 
-\lhead {DAII Project: bomen optimaliseren} 
+\lhead {DAIII Project: punten plaatsen} 
 \chead{BAZ(~ \thepage ~ )NGA} 
 \rhead{Robbert Gurdeep Singh}
 
@@ -47,12 +50,114 @@
 
 
 
+\pgfplotsset{compat=1.8}
+
+
+\newcommand{\drawGraph}[5]{
+\begin{center}
+\begin{figure}[H]
+\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+	%change x base,x SI prefix=kilo,x unit=b/s,
+	change x base,x unit=#2,
+    xmin=0,
+	xlabel=#1,	
+	x filter/.code=\pgfmathparse{#1 + 6.90775527898214},
+	%y-as
+	ylabel=#3,
+	y unit=#4, 
+	%Style
+	height=20em,width=.85\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#5
+\end{axis}
+\end{tikzpicture}
+\caption{#1}
+\end{figure}
+\end{center}
+
+}
+
+
+
+
 \begin{document}
 
 \twocolumn[\begin{@twocolumnfalse}
     \maketitle
 \end{@twocolumnfalse}]
 
+
+\begin{center}
+\begin{figure}[H]
+\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+    xmin=0,
+	xlabel=Number of individus,	
+	%y-as
+	ylabel=Fitness,
+	ymin=0,
+	%Style
+	height=5em,width=.35\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+	\addlegendentry{50 ptn}
+	\addplot table [y=f, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
+	\addlegendentry{15 ptn}
+	\addplot table [y=f, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_15.log};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+    xmin=0,
+	xlabel=Number of individus,	
+	%y-as
+	ylabel=Iteraties,
+	%Style
+	height=5em,width=.35\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+	\addlegendentry{50 ptn}
+	\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
+	\addlegendentry{15 ptn}
+	\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_15.log};
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+    xmin=0,
+	xlabel=Number of individus,	
+	%y-as
+	ylabel=Tijd,
+	%Style
+	height=5em,width=.35\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+	\addlegendentry{50 ptn}
+	\addplot table [y=t, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
+	\addlegendentry{15 ptn}
+	\addplot table [y=t, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_15.log};
+\end{axis}
+\end{tikzpicture}
+
+
+\caption{Corelatie aantal individus en }
+\end{figure}
+\end{center}
+
+
+
+%	\addlegendentry{iteraties}
+%	\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
 
 \section{Inleiding}
 \label{sec:inleiding}
@@ -93,5 +198,8 @@ We hebben er voor gekozen om een array van individu's te gebruiken in de plaats 
 % subsection  (end)
 % section explainationcode (end)
 
+
+\section{Bronnen}
+Er moet vermeld worden dat het icosagon bestand afkomstig is van Jonathan Peck. 
 
 \end{document}

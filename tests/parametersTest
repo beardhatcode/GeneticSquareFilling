@@ -13,7 +13,7 @@ os.makedirs(now_dir)
 
 def doCompile(settings):
     settings_list = ["-D"+key+"="+str(settings[key]) for key in settings];
-    cmd = ["mpicc", "-Wall", "-std=c99", "-DDEBUG", "-DPERFORMANCE_PRINT"]
+    cmd = ["mpicc", "-Wall", "-std=c99", "-DPERFORMANCE_PRINT"]
     cmd = cmd + settings_list
     cmd = cmd + ["-g","-o","maxdist"] +depend + [ "-I.", "-lm"];
     print("Compiling...\n"," ".join(cmd));

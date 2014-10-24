@@ -1,0 +1,85 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{pgfplots}
+\usepgfplotslibrary{units}
+\usepackage{float}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{pgfplots}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\floatname{algorithm}{Algoritme}
+
+
+\usepackage[font=small,labelfont=bf]{caption}
+\captionsetup[table]{aboveskip=-0.8em}
+\captionsetup[table]{belowskip=-0.7pt}
+
+
+\lhead {DAIII Project: punten plaatsen} 
+\chead{BAZ(~ \thepage ~ )NGA} 
+\rhead{Robbert Gurdeep Singh}
+
+
+\cfoot{} % get rid of the page number 
+
+\usepackage{hyperref}
+\usepackage{chngcntr}
+\counterwithin*{section}{part}
+\counterwithin{algorithm}{section}
+\counterwithin{table}{section}
+\counterwithin{figure}{section}
+
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
+\author{Robbert Gurdeep Singh}
+\title{{Project Algoritmen en datastructuren III}\\ \Huge Genetische algoritmen}
+\date{}
+
+
+
+\pgfplotsset{compat=1.8}
+
+
+\newcommand{\drawGraph}[4]{
+\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+    xmin=0,
+	xlabel=#1,	
+	%y-as
+	ylabel=#2,
+	ymin=0,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
+\end{axis}
+\end{tikzpicture}
+}
+
+
+
+
+\begin{document}
+
+\twocolumn[\begin{@twocolumnfalse}
+    \maketitle
+\end{@twocolumnfalse}]

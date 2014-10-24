@@ -7,7 +7,7 @@ Trekken we een lijn vanuit het punt ``naar boven'', dan kunnen we 3 gevallen ond
 \item We snijden de veelhoek niet ($P_{1}$): \\
 		We weten dat we ons niet binnen de veelhoek bevonden.
 \item We snijden de veelhoek juist 1 keer ($P_{2}$):\\
-		Nu zijn we zeker in de veelhoek.
+		Nu zijn we zeker in de veelhoek. 
 \item We snijden de veelhoek juist\footnote{Merk op dat indien we de veelhoek meer dan 2 keer snijden, we kunnen aantonen dat de veelhoek niet convex is.} 2 keer ($P_{3}$):\\
 		We liggen onder en dus ook buiten de veelhoek.
 \end{itemize}
@@ -24,20 +24,20 @@ Trekken we een lijn vanuit het punt ``naar boven'', dan kunnen we 3 gevallen ond
 \foreach \y in {0,1,2,3,4}
     \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {\y};
 
-\draw[thick,fill=black, fill opacity=0.05]
-      (1,1) -- (1,2) --
-	  (3,4) -- (5,3) --
-	  (5,2) -- (4,1) --
+\draw[thick,fill=yellow, fill opacity=0.2] 
+      (1,1) -- (1,2) -- 
+	  (3,4) -- (5,3) -- 
+	  (5,2) -- (4,1) -- 
 	  (2,0.5) -- (1,1);
-
-
+	  
+	  
 \coordinate (out1)    at (1.5,3.5);
 \coordinate (out1top) at (1.5,4.5);
 \filldraw[black] (out1) circle (2pt) node[anchor=south east] {$P_{1}$};
 
 \coordinate (out2)    at (4.25,2);
 \coordinate (out2top) at (4.25,4.5);
-\filldraw[black] (out2) circle (2pt) node[anchor=south east] {$P_{2}$};
+\filldraw[blue] (out2) circle (2pt) node[anchor=south east] {$P_{2}$};
 
 \coordinate (out3)    at (3,0.5);
 \coordinate (out3top) at (3,4.5);
@@ -45,7 +45,7 @@ Trekken we een lijn vanuit het punt ``naar boven'', dan kunnen we 3 gevallen ond
 
 
 \draw[->] (out1) -- (out1top);
-\draw[->] (out2) -- (out2top);
+\draw[->,blue] (out2) -- (out2top);
 \draw[->] (out3) -- (out3top);
 \end{tikzpicture}
 \caption{Punten binnen en buiten de figuur \texttt{soos.poly} met snijpunten.}
@@ -57,8 +57,8 @@ juist één keer snijd.
 
 \subsubsection{Algoritme}
 Om te tellen hoe vaak we de veelhoek snijden, gaan we als volgt te werk:
-Bij het inlezen van de veelhoek stellen we vergelijkingen op van de zijden van de
-veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte evenwijdig is met de $y$-as.
+Bij het inlezen van de veelhoek stellen we vergelijkingen op van de zijden van de 
+veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte evenwijdig is met de $y$-as. 
 
 
 
@@ -69,11 +69,11 @@ veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte 
 		%\Ensure T is gebalanceerd
 		\Function{inPolygon}{$P_x$,$P_y$}
 		\State count $\gets$ 0
-
-		\For{\textbf{each} z $\in$ zijden}
+		
+		\For{\textbf{each} z $\in$ zijden} 
 		\State $(x_1,y_1)$ $\gets$ $1^{ste}$ gedefinieerde punt van z
 		\State $(x_2,y_2)$ $\gets$ $2^{de}$ gedefinieerde punt van z
-		\If{z.$a = \infty$} 	\Comment Als z $\parallel$ $y$-as
+		\If{z.$a = \infty$} 	\Comment Als z $\parallel$ $y$-as 
 			\If{$P_y \in  \left \lbrack y_1,y_2\right\lbrack$}
 			\State \Return \texttt{true} \Comment{Op lijn}
 			\ElsIf{$y_1 > P_y$}
@@ -82,26 +82,26 @@ veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte 
 		\Else	\Comment z $\not \parallel$ $y$-as
 			\State $y_{inter}  \gets$ z.$a\cdot P_x +$z.$b$
 			\If{$P_x \in  \left \lbrack x_1,x_2\right\lbrack$}
-
-			\If{ $y_{inter} = P_y$ }
+			
+			\If{ $y_{inter} = P_y$ } 
 				\State \Return \texttt{true} \Comment{Op lijn}
-			\ElsIf{ $y_{inter} > P_y $}
+			\ElsIf{ $y_{inter} > P_y $} 
 				\State count $\gets$ count$+1$
 			\EndIf
-
+				
 			\EndIf
-		\EndIf
+		\EndIf	
 
-		\EndFor
+		\EndFor		
 
 		\Return count == 1 ? \texttt{true} : \texttt{false}
 		\EndFunction
 		\end{algorithmic}
 		\label{alg:inPolygon}
-	\end{algorithm}
+	\end{algorithm}		
 
-Waarbij z$.a$ en z$.b$ de cooificienten zijn van de vergelijking $y=ax+b$ die de zijde
-voorstelt
+Waarbij z$.a$ en z$.b$ de cooificienten zijn van de vergelijking $y=ax+b$ die de zijde 
+voorstelt 
 
 \subsubsection{Complexiteit}
 Kijken we naar algoritme \ref{alg:inPolygon} dan is het duidelijk dat de complexiteit $O(z)$ is met $z$ het aantal zijden.
@@ -109,11 +109,11 @@ Kijken we naar algoritme \ref{alg:inPolygon} dan is het duidelijk dat de complex
 % subsection  (end)
 
 \subsubsection{Implementatie}
-Deze methode is geimplementeerd in \texttt{polygon.c} als \texttt{polygon\_contains()}.
+Deze methode is geimplementeerd in \texttt{polygon.c} als \texttt{polygon\_contains()}. 
 We wijzen nog even op enkele details:
 \begin{itemize}
-\item We gebruiken $(P_x-x_1)\cdot(P_x-x_2)\leq0$ om te bepalen of een waarde al dan niet
-		tussen 2 waarden ligt. We doen dit zo omdat we niet weten hoe $x_1$ en $x_2$
+\item We gebruiken $(P_x-x_1)\cdot(P_x-x_2)\leq0$ om te bepalen of een waarde al dan niet 
+		tussen 2 waarden ligt. We doen dit zo omdat we niet weten hoe $x_1$ en $x_2$ 
 		zich onderling verhouden.
 \item Om het herberekenen van $a$ en $b$ te vermijden, berekenen we deze eenmalig bij het inlezen van de veelhoek.
 
@@ -121,3 +121,4 @@ We wijzen nog even op enkele details:
 
 % subsection  (end)
 
+ 

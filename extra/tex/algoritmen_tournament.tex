@@ -1,0 +1,50 @@
+\subsection{Tournament Selection}
+\label{sub:tournament}
+We gebruiken ``tournament selectie'' om te bepalen welke individuën van onze populatie 
+zullen worden vermoord\footnote{Dat is dus verwijderd uit de populatie}. Om incest te 
+voorkomen kunnen we namelijk niet zomaar steeds de slechtste individuën verwijderen. Daarom kiezen we een methode waarbij de slechtste enkel een grotere kans heeft vermoord te worden.
+	\begin{algorithm}[H]
+	 	\caption{Tournament-Select}
+		\begin{algorithmic}
+		\Require 
+			\State $P$, te grote lijst van individuën 
+			\State $N_p$, gewenste populatiegrootte
+		\Ensure returnt de index van verliezer
+		\Function{tournamentSelection}{$P$,$N_t$}
+		\State loser $\gets$ arbitraire waarde uit $\lbrace 0, \dots, \abs{P} \rbrace$
+
+		\For{z $= 2 \rightarrow N_t$ } 
+		\State j $\gets$ arbitraire waarde uit $\lbrace 0, \dots, \abs{P} \rbrace$
+		\If{$f(X_j) < f(X_i)$}
+			\State $loser \gets j$
+		\EndIf
+		\EndFor		
+		\State \Return i
+		\EndFunction
+		\\
+		\\
+		\While{$\abs{P} >  N_p$}
+			\State $N_t \gets \left\lfloor\frac{\texttt{SELECTION\_PRESSURE}}{100} \cdot \abs{P}\right\rfloor$ 
+			\State slachtoffer $\gets$ \Call{tournamentSelect}{$P$,$N_t$}
+			\State $P \gets P\setminus$slachtoffer
+		\EndWhile
+		
+		\end{algorithmic}
+		\label{alg:tournament}
+	\end{algorithm}		
+\subsubsection{Complexiteit}
+In algoritme \ref{alg:tournament} wordt er $\abs{P}-N_p$ keer een slachtoffer gekozen door een tournooi uit te voeren. Tijdens een toernooi wordt er $N_t$ keer een willikeurig individu gekozen en vergeleken. De complexiteit is dus $\Theta((\abs{P}-N_p)\cdot N_t)$. Met $N_t$ de tournooigrootte\footnote{Zie sectie \ref{sub:selection_pressure}} en $N_p$ de gewenste populatiegrootte. We zien dat $N_t$ hier gelijk is aan
+ $\left\lfloor\frac{\texttt{SELECTION\_PRESSURE}}{100} \cdot \abs{P}\right\rfloor$.
+ We bekomen dus: \[\Theta\left(\left(\abs{P}-N_p\right)\cdot \texttt{SELECTION\_PRESSURE} \cdot \abs{P}\right)\]
+ Nu merken we op dat dit allemaal constanten\footnote{Enkel aanpasbaar bij compilatie} zijn binnen ons programmma dus hebben we dat de complexiteit $T(n) = \Theta(1)$. Voorgaande resultaten zullen we nog gebuiken verder in dit verslag. %TODO waar?
+
+% subsection  (end)
+
+\subsubsection{Implementatie}
+Het bestand \texttt{genetic\_base.c} bevat de implementatie van Algoritme \ref{alg:tournament} in de functies \begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+\item\texttt{do\_deathmatch()} en
+\item\texttt{do\_tournament\_selection()}.
+ \end{itemize}  

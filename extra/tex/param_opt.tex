@@ -1,68 +1,173 @@
+\input{header}
 \section{Parrameter Optimalisatie}
-\subsection{Aantal individüen}
+\subsection{Aantal individuën}
 \begin{center}
 \begin{figure}[H]
-\begin{tikzpicture}
-\begin{axis}[scale only axis, 
-	%x-as	
-    xmin=0,
-	xlabel=Aantal individus,	
-	%y-as
-	ylabel=Fitness,
-	ymin=0,
-	%Style
-	height=5em,width=.37\textwidth,
-	enlargelimits=0.05,
-	grid=major,	legend pos=south east
-]
+\rlxaxis{Fitness}{Aantal individus}{
 	\addlegendentry{50 ptn}
-	\addplot table [y=f, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
+	\addplotf{NUM_INDIVIDUS_vierkant_50};
 	\addlegendentry{15 ptn}
-	\addplot table [y=f, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_15.log};
-\end{axis}
-\end{tikzpicture}
-\begin{tikzpicture}
-\begin{axis}[scale only axis, 
-	%x-as	
-    xmin=0,
-	xlabel=Aantal individus,	
-	%y-as
-	ylabel=Iteraties,
-	%Style
-	height=5em,width=.37\textwidth,
-	enlargelimits=0.05,
-	grid=major,	legend pos=south east
-]
-	\addlegendentry{50 ptn}
-	\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
+	\addplotf{NUM_INDIVIDUS_soos_50};
 	\addlegendentry{15 ptn}
-	\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_15.log};
-\end{axis}
-\end{tikzpicture}
-\begin{tikzpicture}
-\begin{axis}[scale only axis, 
-	%x-as	
-    xmin=0,
-	xlabel=Aantal individus,	
-	%y-as
-	ylabel=Tijd,
-	y unit=s,
-	%Style
-	height=5em,width=.37\textwidth,
-	enlargelimits=0.05,
-	grid=major,	legend pos=south east
-]
+	\addplotf{NUM_INDIVIDUS_icosagon_50};
+}
+\lxaxis{Iteraties}{Aantal individus}{
 	\addlegendentry{50 ptn}
-	\addplot table [y=t, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_NEW_50.log};
-\end{axis}
-\end{tikzpicture}
+	\addploti{NUM_INDIVIDUS_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addploti{NUM_INDIVIDUS_soos_50};
+	\addlegendentry{\small 15 ptn}
+}
+\lxaxis{Tijd}{Aantal individus}{
+	\addlegendentry{vierkant}
+	\addplott{NUM_INDIVIDUS_vierkant_50};
+	\addlegendentry{soos}
+	\addplott{NUM_INDIVIDUS_soos_50};
+}
+
 
 
 \caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
 \end{figure}
 \end{center}
 
+Dit zijn resultaten die wij a priori niet verachten. We zien een lokaal minium op 100. Dis is dus ook de ideale waarde
 
 
-%	\addlegendentry{iteraties}
-%	\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/NUM_INDIVIDUS_50.log};
+
+\subsection{Hoeveelheid seks}
+\begin{center}
+\begin{figure}[H]
+\rnxaxis{Fitness}{Sekspercentage}{
+	\addlegendentry{50 ptn}
+	\addplotf{LOVER_PERCENT_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addplotf{LOVER_PERCENT_soos_50};
+	\addlegendentry{15 ptn}
+	\addplotf{LOVER_PERCENT_icosagon_50};
+}
+\nxaxis{Iteraties}{Sekspercenntage}{
+	\addlegendentry{50 ptn}
+	\addploti{LOVER_PERCENT_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addploti{LOVER_PERCENT_soos_50};
+}
+\nxaxis{Tijd}{Sekspercentage}{
+	\addlegendentry{vierkant}
+	\addplott{LOVER_PERCENT_vierkant_50};
+	\addlegendentry{soos}
+	\addplott{LOVER_PERCENT_soos_50};
+}
+
+
+
+\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\end{figure}
+\end{center}
+
+We zien dat we een afweging moeten maken tussen de hoeveellheid seks en de uitvoeringstijd.
+
+
+
+
+
+\subsection{Hoeveelheid mutatie}
+\begin{center}
+\begin{figure}[H]
+\rnxaxis{Fitness}{Delta}{
+	\addlegendentry{50 ptn}
+	\addplotf{MUTATION_DELTA_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addplotf{MUTATION_DELTA_soos_50};
+	\addlegendentry{15 ptn}
+	\addplotf{MUTATION_DELTA_icosagon_50};
+}
+\nxaxis{Iteraties}{Delta}{
+	\addlegendentry{50 ptn}
+	\addploti{MUTATION_DELTA_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addploti{MUTATION_DELTA_soos_50};
+}
+\nxaxis{Tijd}{Delta}{
+	\addlegendentry{vierkant}
+	\addplott{MUTATION_DELTA_vierkant_50};
+	\addlegendentry{soos}
+	\addplott{MUTATION_DELTA_soos_50};
+}
+
+
+
+\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\end{figure}
+\end{center}
+
+Hoe groter de mutatie hoe beter. (MUTATION\_DELTA is omgekeerd)
+
+
+\subsection{Mutatie kans}
+\begin{center}
+\begin{figure}[H]
+\rlxaxis{Fitness}{Kans (1 op ...)}{
+	\addlegendentry{50 ptn}
+	\addplotf{MUTATION_1_IN_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addplotf{MUTATION_1_IN_soos_50};
+	\addlegendentry{15 ptn}
+	\addplotf{MUTATION_1_IN_icosagon_50};
+}
+\lxaxis{Iteraties}{Kans (1 op ...)}{
+	\addlegendentry{50 ptn}
+	\addploti{MUTATION_1_IN_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addploti{MUTATION_1_IN_soos_50};
+}
+\lxaxis{Tijd}{Kans (1 op ...)}{
+	\addlegendentry{vierkant}
+	\addplott{MUTATION_1_IN_vierkant_50};
+	\addlegendentry{soos}
+	\addplott{MUTATION_1_IN_soos_50};
+}
+
+
+
+\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\end{figure}
+\end{center}
+
+Hoe kleiner de kans hoe lager de fitness
+
+
+
+\subsection{Selectie druk}
+\begin{center}
+\begin{figure}[H]
+\nxaxis{Fitness}{Toernooigrootte}{
+	\addlegendentry{50 ptn}
+	\addplotf{SELECTION_PRESSURE_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addplotf{SELECTION_PRESSURE_soos_50};
+	\addlegendentry{15 ptn}
+	\addplotf{SELECTION_PRESSURE_icosagon_50};
+}
+\nxaxis{Iteraties}{Toernooigrootte}{
+	\addlegendentry{50 ptn}
+	\addploti{SELECTION_PRESSURE_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addploti{SELECTION_PRESSURE_soos_50};
+}
+\nxaxis{Tijd}{Toernooigrootte}{
+	\addlegendentry{50 ptn}
+	\addplott{SELECTION_PRESSURE_vierkant_50};
+	\addlegendentry{15 ptn}
+	\addplott{SELECTION_PRESSURE_soos_50};
+}
+
+
+
+\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\end{figure}
+\end{center}
+
+Hoe groter de mutd
+
+\input{footer}

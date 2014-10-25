@@ -58,7 +58,7 @@
  * Default: 1500;
  */
 #ifndef NUM_INDIVIDUS
-#define NUM_INDIVIDUS 256
+#define NUM_INDIVIDUS 100
 #endif
 
 
@@ -68,7 +68,7 @@
  * Default: 10
  */
 #ifndef LOVER_PERCENT
-#define LOVER_PERCENT 10
+#define LOVER_PERCENT 20
 #endif
 
 
@@ -78,7 +78,7 @@
  * Default: 3
  */
 #ifndef MUTATION_1_IN
-#define MUTATION_1_IN 3
+#define MUTATION_1_IN 2
 #endif
 
 
@@ -88,7 +88,7 @@
  * Default: 5.0
  */
 #ifndef MUTATION_DELTA
-#define MUTATION_DELTA 5.0
+#define MUTATION_DELTA 1.0
 #endif
 
 

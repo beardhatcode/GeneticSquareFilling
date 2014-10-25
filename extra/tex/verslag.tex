@@ -9,13 +9,25 @@
 \label{sec:inleiding}
 Het probleem dat we trachten op te lossen is het volgende: %TODO
 Als we het vanaf nu hebben over een veelhoek dan bedoelen we een convexe veelhoek.
+
+\subsection{Gebruikte symbolen}
+Tenzij anders vermeld betekenen volgende symbolen het volgende:
+\begin{itemize}
+\itemMB{n} Het aantal te plaatsen punten
+\itemMB{X_i} Het i-de individu 
+\itemMB{z} Het aantal zijden van de veelhoek
+\itemMB{N_p} Populatiegrootte
+\itemMB{P_M} Mutatiedruk 
+\itemMB{f} De fitheidsfunctie \[f(X_k)= \sum_{P_1 \in X_k}\sum_{P_2 \in X_k} \sqrt{d_2(P_1,P_2)} \]
+\end{itemize}
+
 % section inleiding (end)
 
 \section{Algortitmen}
 \input{algoritmen_inpoly}
+\input{algoritmen_tournament}
 
-
-\include{param_opt}
+\input {param_opt}
 
 \section{Toelichting Code}
 Life is life, nanananana....

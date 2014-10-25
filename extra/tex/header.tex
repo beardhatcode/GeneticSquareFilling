@@ -49,7 +49,7 @@
 
 \author{Robbert Gurdeep Singh}
 \title{{Project Algoritmen en datastructuren III}\\ \Huge Genetische algoritmen}
-\date{}
+%\date{}
 
 
 
@@ -76,7 +76,93 @@
 }
 
 
+\newcommand{\lxaxis}[3]{\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+    xmode=log,
+    log ticks with fixed point,
+	%x-as	
+	xlabel=#2,	
+	%y-as
+	ylabel=#1,
+	ymin=0,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
 
+\end{axis}
+\end{tikzpicture}}
+
+\newcommand{\rlxaxis}[3]{\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+    xmode=log,
+    log ticks with fixed point,
+	%x-as	
+	xlabel=#2,	
+	%y-as
+	ylabel=#1,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
+
+\end{axis}
+\end{tikzpicture}}
+
+\newcommand{\nxaxis}[3]{\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+    xmin=0,
+	xlabel=#2,	
+	%y-as
+	ylabel=#1,
+	ymin=0,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
+
+\end{axis}
+\end{tikzpicture}}
+
+
+\newcommand{\rnxaxis}[3]{\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+	%x-as	
+    xmin=0,
+	xlabel=#2,	
+	%y-as
+	ylabel=#1,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
+
+\end{axis}
+\end{tikzpicture}}
+
+\newcommand{\itemMB}[1]{
+	\item[$\boldsymbol{#1}$:]
+}
+
+
+
+
+\newcommand{\abs}[1]{
+	\lvert #1 \rvert
+}
+
+\newcommand{\addploti}[1]{\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/#1.log};}
+\newcommand{\addplotf}[1]{\addplot table [y=f, x=testValue, col sep=comma] {../../tests/param_results/#1.log};}
+\newcommand{\addplott}[1]{\addplot table [y=t, x=testValue, col sep=comma] {../../tests/param_results/#1.log};}
 
 \begin{document}
 

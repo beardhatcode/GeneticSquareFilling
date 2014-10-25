@@ -1,8 +1,8 @@
 \subsection{Tournament Selection}
 \label{sub:tournament}
-We gebruiken ``tournament selectie'' om te bepalen welke individuën van onze populatie 
-zullen worden vermoord\footnote{Dat is dus verwijderd uit de populatie}. Om incest te 
-voorkomen kunnen we namelijk niet zomaar steeds de slechtste individuën verwijderen. Daarom kiezen we een methode waarbij de slechtste enkel een grotere kans heeft vermoord te worden.
+Tijdens de uitvoering van het genetisch algoriptme zullen er steeds meer individuën bijkomen. We willen er echter voor zorgen dat onze populatie een vaste grootte ($N_p$) behoud. Er zullen dus individuën moeten worden vermoord.
+
+Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie} gebruiken we ``tournament selection''. Bij deze selectie word er telkens een vast aantal arbitraire individüen gekozen. Het individu met de slechtste fitheid uit te groep wordt telkens vermoord.
 	\begin{algorithm}[H]
 	 	\caption{Tournament-Select}
 		\begin{algorithmic}

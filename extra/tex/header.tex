@@ -78,6 +78,7 @@
 
 \newcommand{\lxaxis}[3]{\begin{tikzpicture}
 \begin{axis}[scale only axis, 
+cycle list name=exotic,
     xmode=log,
     log ticks with fixed point,
 	%x-as	
@@ -97,6 +98,7 @@
 
 \newcommand{\rlxaxis}[3]{\begin{tikzpicture}
 \begin{axis}[scale only axis, 
+cycle list name=exotic,
     xmode=log,
     log ticks with fixed point,
 	%x-as	
@@ -114,7 +116,8 @@
 \end{tikzpicture}}
 
 \newcommand{\nxaxis}[3]{\begin{tikzpicture}
-\begin{axis}[scale only axis, 
+\begin{axis}[scale only axis,
+cycle list name=exotic, 
 	%x-as	
     xmin=0,
 	xlabel=#2,	
@@ -134,6 +137,7 @@
 
 \newcommand{\rnxaxis}[3]{\begin{tikzpicture}
 \begin{axis}[scale only axis, 
+cycle list name=exotic,
 	%x-as	
     xmin=0,
 	xlabel=#2,	
@@ -163,6 +167,8 @@
 \newcommand{\addploti}[1]{\addplot table [y=i, x=testValue, col sep=comma] {../../tests/param_results/#1.log};}
 \newcommand{\addplotf}[1]{\addplot table [y=f, x=testValue, col sep=comma] {../../tests/param_results/#1.log};}
 \newcommand{\addplott}[1]{\addplot table [y=t, x=testValue, col sep=comma] {../../tests/param_results/#1.log};}
+
+\definecolor{mymark}{HTML}{EBB8B8}
 
 \begin{document}
 

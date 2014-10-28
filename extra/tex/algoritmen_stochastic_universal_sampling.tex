@@ -1,0 +1,78 @@
+%\input{header}
+\subsection{Stochastic Universal Sampeling}
+\label{sub:SUS}
+In het genetisch algoritme moeten er individuen worden geselecteerd die seks zullen hebben ter vorming van nieuwe individuen.
+Tijdens deze selectie moeten we er op letten dat dat we niet enkel de fitste individuen kiezen. De kans is namelijk reëel dat de genetische informatie van een ``slecht"" individu aanleiding kan geven tot een zeer goed individu na paring. Natuurlijk willen we diegenen met een hogere fitheid wel een grotere kans geven zich voort te planten.
+
+\subsubsection{Idee}
+Stellen we onze individuen voor als blokjes met een grote die evenredig is met hun fitheid, dan kunnen we ze na elkaar plaatsen en iets bekomen als in figuur \ref{fig:SUS}. 
+We kunnen dan ergens stappen en met gelijke stappen vooruitgaan. Bij elke stap nemen we het stuk waar we bijstaan. Zo is de kans dat een stuk gekozen wordt recht evenredig met zijn fitness.
+%todo
+
+\begin{center}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+
+\foreach \x in {0.7,2.7,4.7,6.7}
+    \draw[->>] (\x cm,-0.4cm) -- (\x cm,-2pt);
+
+\draw[fill=black,fill opacity=0.1] (0,0) rectangle (7,0.5);
+
+\foreach \x in {0.4,0.8,1.7,3,3.8,4.8,6}
+    \draw (\x cm,0pt) -- (\x cm,0.5);
+
+\draw[fill=mymark] (0.4,0) rectangle node {1} (0.8,0.5);
+\draw[fill=mymark] (1.7,0) rectangle node {2} (3.0,0.5);
+\draw[fill=mymark] (3.8,0) rectangle node {3} (4.8,0.5);
+\draw[fill=mymark] (6.0,0) rectangle node {4} (7.0,0.5);
+
+\draw[|<->|,black,opacity=0.7] (0,0.7) -- node[above] {\small Totale fitheid ($F$)} (7,0.7);
+\draw[|<->|,black,opacity=0.7] (2.7,-0.6) -- node[below] {\small $F/N$} (4.7,-0.6);
+\draw[|<->|,black,opacity=0.7] (0,-0.6) -- node[below] {\small rand} (0.7,-0.6);
+
+%node[anchor=north] {\x};
+\end{tikzpicture}
+\caption{Visualisatie Stochastic Universal Sampling}
+\label{fig:SUS}
+\end{figure}
+\end{center}
+
+
+\subsubsection{Algoritme}
+Het algoritme die het voorgaande idee implementeert heeft volgende vorm:
+	\begin{algorithm}[H]
+	 	\caption{Stochastic Universal Sampeling}
+		\begin{algorithmic}
+		\Require 
+			\State $P$, te grote lijst van individuën 
+			\State $N_l$, gewenste aantal individuen
+		\Ensure returnt een lijst van gekozen individuen
+		\Function{SUS}{$P$,$N_t$}
+		\State Q $\gets \emptyset$
+		\State total $\gets \sum_{x \in P} f(x)$ 
+		\State size $\gets \frac{\text{total}}{N_l}$
+		\State offset $\gets$ arbitraire waarde uit $\left\lbrack 0,\text{size} \right\rbrack$
+		\State $t \gets$ offset
+		\For{\textbf{each} $p \in P$} 
+		\State $t = t-p.$fitness
+		\If{$t<0$}
+			\State $Q = Q \cup \lbrace p \rbrace$
+			\State $t = t+$offset
+		\EndIf
+		\EndFor		
+		\State \Return i
+		\EndFunction
+
+		
+		\end{algorithmic}
+		\label{alg:SUS}
+	\end{algorithm}		
+% subsubsection  (end)
+
+\subsubsection{Complexiteit}
+\label{ssub:SUSComplexity}
+We moeten nagenoeg alle individuen in de populatie overopen. We kunnen dus stellen dat de complexiteit $ \Theta(\abs{P})$ is, met $\abs{P}$ de grootte van de populatie. Nu is $\abs{P}$ geen argument van ons programma. Dus bekomen we een complexiteit van \[T(n) = \Theta(1)\]
+% subsubsection  (end)
+
+%\input{footer}

@@ -1,0 +1,45 @@
+%\input{header}
+\subsection{Mutation}
+\label{sub:Mutation}
+We willen er voor zorgend dat de diversiteit in de samenleving niet verdwijnt. Daarom zullen we kleine afwijkingen introduceren.
+
+\subsubsection{Idee}
+Nadat er een kind gevormd is zullen we het met een bepaalde kans laten veranderen. Dat is dus dat er 1 punt lichtjes wordt verplaatst. Deze verplaatsing doen we door een nieuw punt te kiezen in de omgeving van het oorspronkelijk punt. Als dit gerandomiseerd punt buiten de figuur valt, proberen we het opnieuw met een kleinere omgeving.
+
+\subsubsection{Algoritme}
+\label{ssub:MutationAlgorithm}
+Het algoritme die het voorgaande idee implementeert heeft volgende vorm:
+	\begin{algorithm}[H]
+	 	\caption{Mutatie}
+		\begin{algorithmic}
+		\Require \State $I$, een individu \State $poly$ de veelhoek
+		\Ensure $I$ is mischien gemuteeerd 
+		
+		\If{\texttt{rand() \% MUTATION\_1\_IN} = 0}
+			\State $P \gets$ arbitrair punt van $I$ 
+			\State $r \gets$ diameter van poly / \texttt{MUTATION\_DELTA}
+			\Repeat 
+			\State kies $(x_{new},y_{new}) \in \mathring{B}(P,r)$
+			\State $r \gets r/2$
+			\Until{$(x_{new},y_{new}) \in poly$}
+		\EndIf		
+		\end{algorithmic}
+		\label{alg:Mutation}
+	\end{algorithm}		
+% subsubsection  (end)
+Hierbij is de ``diameter van poly'' de maximale afstand tussen 2 punten van de convexe veelhoek.
+
+\subsubsection{Implementatie}
+\label{ssub:MutationImplementation}
+De diagonaal die we in sectie \ref{ssub:MutationAlgorithm} beschouwen, word bij de implementatie zeer ruw benaderd door de diagonaal van het omgestoten vierkant te bepalen.
+
+De implementatie is terug te vinden in \\
+\texttt{do\_mutation()} van \texttt{genetic\_base.c}
+% subsubsection  (end)
+
+\subsubsection{Complexiteit}
+\label{ssub:MutationComplexity}
+Het kiezen van een nieuw punt is een operatie die in constante tijd kan gebeuren. Het nagaan dat het in de figuur ligt vraagt echter $\Theta(z)$ met $z$ het aantal zijden in de veelhoek\footnote{Zie Subsectie \ref{sub:algo-pt-in-poly}}.
+% subsubsection  (end)
+
+%\input{footer}

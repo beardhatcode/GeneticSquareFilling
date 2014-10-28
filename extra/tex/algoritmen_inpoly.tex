@@ -24,7 +24,7 @@ Trekken we een lijn vanuit het punt ``naar boven'', dan kunnen we 3 gevallen ond
 \foreach \y in {0,1,2,3,4}
     \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {\y};
 
-\draw[thick,fill=yellow, fill opacity=0.2] 
+\draw[thick,fill=mymark] 
       (1,1) -- (1,2) -- 
 	  (3,4) -- (5,3) -- 
 	  (5,2) -- (4,1) -- 
@@ -109,7 +109,7 @@ Kijken we naar algoritme \ref{alg:inPolygon} dan is het duidelijk dat de complex
 % subsection  (end)
 
 \subsubsection{Implementatie}
-Deze methode is geimplementeerd in \texttt{polygon.c} als \texttt{polygon\_contains()}. 
+Deze methode is geimplementeerd in \\ \texttt{polygon.c} als \\ \texttt{polygon\_contains()}. 
 We wijzen nog even op enkele details:
 \begin{itemize}
 \item We gebruiken $(P_x-x_1)\cdot(P_x-x_2)\leq0$ om te bepalen of een waarde al dan niet 

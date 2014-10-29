@@ -48,7 +48,6 @@
  * Default: 0.45
  */
 #ifndef WEIGHTING_DECREASE
-#define WEIGHTING_DECREASE 0.45
 #define WEIGHTING_DECREASE 0.90
 #endif
 
@@ -59,7 +58,7 @@
  * Default: 1500;
  */
 #ifndef NUM_INDIVIDUS
-#define NUM_INDIVIDUS 100
+#define NUM_INDIVIDUS 256
 #endif
 
 
@@ -79,7 +78,7 @@
  * Default: 3
  */
 #ifndef MUTATION_1_IN
-#define MUTATION_1_IN 2
+#define MUTATION_1_IN 3
 #endif
 
 
@@ -89,7 +88,7 @@
  * Default: 5.0
  */
 #ifndef MUTATION_DELTA
-#define MUTATION_DELTA 1.0
+#define MUTATION_DELTA 80.0
 #endif
 
 
@@ -99,7 +98,7 @@
  * Default:  50
  */
 #ifndef SELECTION_PRESSURE
-#define SELECTION_PRESSURE 50
+#define SELECTION_PRESSURE 10
 #endif
 
 

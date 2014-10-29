@@ -49,6 +49,7 @@
  */
 #ifndef WEIGHTING_DECREASE
 #define WEIGHTING_DECREASE 0.45
+#define WEIGHTING_DECREASE 0.90
 #endif
 
 
@@ -101,6 +102,16 @@
 #define SELECTION_PRESSURE 50
 #endif
 
+
+
+/*
+ * Likelyhood that only the best individus will keep living.
+ * Type: INT greater than 0
+ * Default:  50
+ */
+#ifndef SUS
+#define SUS 0
+#endif
 
 #endif	/* SETTINGS_H */
 

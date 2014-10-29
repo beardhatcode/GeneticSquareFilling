@@ -116,9 +116,9 @@ int do_iterations(population* population, int num_generations)
     int *lovers_indices = (int*) malloc(population->num_lovers * sizeof (int));
 
     int i, j, num_kids;
-    double avg = 13.37; /* elite magic number for good luck */
-    double avg_diff = 13.37;
-    double prev_avg = 1183;
+    double best = population->list[get_best(population)].fitness; /* elite magic number for good luck */
+    double best_diff = 50000;
+    double prev_best = best;
 
     if (NULL == lovers_indices)
         return -1;
@@ -136,28 +136,24 @@ int do_iterations(population* population, int num_generations)
         do_deathmatch(population, num_kids);
 
 
-        /* Get average fitness */
-        avg = 0.0;
-        for (j = 0; j < population->size; j++)
-        {
-            avg += population->list[j].fitness;
-        }
-        avg = avg / (double) population->size;
-
+        /* Get best fitness */
+        best = population->list[get_best(population)].fitness;
+       
         /* In debug print a table of the progress */
-        avg_diff = avg_diff * (double) WEIGHTING_DECREASE 
-                + (((double)1 - (double) WEIGHTING_DECREASE) * fabs(avg - prev_avg));
+        best_diff = best_diff * (double) WEIGHTING_DECREASE
+                + (((double) 1 - (double) WEIGHTING_DECREASE) * fabs(best - prev_best));
 
 
-        
-        log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, avg, avg - prev_avg, avg_diff);
-        
-        prev_avg = avg;
-        
-        if(i > MIN_ITERATIONS && avg_diff <  MIN_PRECISION){
+
+        log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, best, best - prev_best, best_diff);
+
+        prev_best = best;
+
+        if (i > MIN_ITERATIONS && best_diff < MIN_PRECISION)
+        {
             break;
         }
-        
+
     }
 
     /* free the array of indices */
@@ -202,6 +198,10 @@ int do_sex(population* population, int* lovers_indices)
 
     return i;
 }
+#if SUS
+/**
+ * MATE SELECTION IF SUS
+ */
 
 int do_mate_selection(population* population, int* indices)
 {
@@ -241,7 +241,36 @@ int do_mate_selection(population* population, int* indices)
 
     return curIndex;
 }
+#else
+/**
+ * MATE SELECTION IF NOSUS
+ */
+int do_mate_selection(population* plebs, int* indices)
+{
+    int population_size = plebs->size;
+    /* Select a random individu as current worst*/
+    int best_ID = rand() % population_size;
+    int i,j, cur_id;
+    int group_size =  population_size * SELECTION_PRESSURE / 100;
 
+
+    /* Try to find a worse individu by selecting group_size random opponents */
+    for (i = 0; i <  plebs->num_lovers; i++)
+    {
+        best_ID = rand() % population_size;
+        for(j=1; j < group_size; j++){
+        cur_id = rand() % population_size;
+        if (plebs->list[cur_id].fitness > plebs->list[best_ID].fitness)
+            best_ID = cur_id;
+        }
+        indices[i] = best_ID;
+    }
+
+    return  plebs->num_lovers;
+}
+
+#endif
+ 
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter)
 {
     int split_index = 1 + (rand() % (population->numpoints - 1));

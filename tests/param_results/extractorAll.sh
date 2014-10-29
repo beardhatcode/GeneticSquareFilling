@@ -2,8 +2,10 @@
 
 for test in {LOVER_PERCENT,MUTATION_DELTA,SELECTION_PRESSURE,MUTATION_1_IN,NUM_INDIVIDUS};
 do
-    for poly in {vierkant,icosagon,vierkant};
+    for poly in {vierkant,icosagon,soos};
     do
         ../extractor.sh $test $poly,50;
+        ../extractor.sh $test $poly,5;
+        ../extractor.sh $test $poly,15;
     done;
 done;

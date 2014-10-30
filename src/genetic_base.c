@@ -270,7 +270,24 @@ int do_mate_selection(population* plebs, int* indices)
 }
 
 #endif
- 
+
+#if RANDOM_CROSSOVER
+int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter)
+{
+    individu* parents[2] = {mama,papa};
+    int i,r;
+
+    /* first part */
+    for (i = 0; i < population->numpoints; i++)
+    {
+        r = rand()%2;
+        son->points[i] = parents[r]->points[i];
+        daughter->points[i] = parents[1-r]->points[i];
+    }
+    return 0;
+}
+
+#else
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter)
 {
     int split_index = 1 + (rand() % (population->numpoints - 1));
@@ -290,6 +307,7 @@ int do_crossover(population* population, individu* papa, individu* mama, individ
     }
     return 0;
 }
+#endif
 
 int do_mutation(population* population, individu* individu)
 {

@@ -49,6 +49,7 @@ int init_population(int size, int numpoints, polygon* poly, population** popu_pt
         return -3;
     }
 
+    popu->best = -1.0; //set firt as best
     /* Fill with random points */
     for (i = 0; i < size + popu->num_lovers; i++)
     {
@@ -92,6 +93,10 @@ double get_fitness(population* population, individu* indi)
             result += sqrt(sqrt((l[i].x - l[j].x)*(l[i].x - l[j].x)+(l[i].y - l[j].y)*(l[i].y - l[j].y)));
         }
     }
+    if (result > population->best)
+    {
+        population->best = result;
+    }
     indi->fitness = result;
     return result;
 }
@@ -101,7 +106,7 @@ int get_best(population* population)
     int best = 0;
     int i;
     /* loop over all individus */
-    for (i = 1; i < population->size; i++)
+    for (i = 0; i < population->size; i++)
     {
         if (population->list[i].fitness > population->list[best].fitness)
             best = i;
@@ -137,15 +142,14 @@ int do_iterations(population* population, int num_generations)
 
 
         /* Get best fitness */
-        best = population->list[get_best(population)].fitness;
-       
+        best = population->best;
         /* In debug print a table of the progress */
         best_diff = best_diff * (double) WEIGHTING_DECREASE
                 + (((double) 1 - (double) WEIGHTING_DECREASE) * fabs(best - prev_best));
 
 
 
-        log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, best, best - prev_best, best_diff);
+       log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, best, best - prev_best, best_diff);
 
         prev_best = best;
 
@@ -199,6 +203,7 @@ int do_sex(population* population, int* lovers_indices)
     return i;
 }
 #if SUS
+
 /**
  * MATE SELECTION IF SUS
  */
@@ -242,6 +247,7 @@ int do_mate_selection(population* population, int* indices)
     return curIndex;
 }
 #else
+
 /**
  * MATE SELECTION IF NOSUS
  */
@@ -250,44 +256,47 @@ int do_mate_selection(population* plebs, int* indices)
     int population_size = plebs->size;
     /* Select a random individu as current worst*/
     int best_ID = rand() % population_size;
-    int i,j, cur_id;
-    int group_size =  population_size * SELECTION_PRESSURE / 100;
+    int i, j, cur_id;
+    int group_size = population_size * SELECTION_PRESSURE / 100;
 
 
     /* Try to find a worse individu by selecting group_size random opponents */
-    for (i = 0; i <  plebs->num_lovers; i++)
+    for (i = 0; i < plebs->num_lovers; i++)
     {
         best_ID = rand() % population_size;
-        for(j=1; j < group_size; j++){
-        cur_id = rand() % population_size;
-        if (plebs->list[cur_id].fitness > plebs->list[best_ID].fitness)
-            best_ID = cur_id;
+        for (j = 1; j < group_size; j++)
+        {
+            cur_id = rand() % population_size;
+            if (plebs->list[cur_id].fitness > plebs->list[best_ID].fitness)
+                best_ID = cur_id;
         }
         indices[i] = best_ID;
     }
 
-    return  plebs->num_lovers;
+    return plebs->num_lovers;
 }
 
 #endif
 
 #if RANDOM_CROSSOVER
+
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter)
 {
-    individu* parents[2] = {mama,papa};
-    int i,r;
+    individu * parents[2] = {mama, papa};
+    int i, r;
 
     /* first part */
     for (i = 0; i < population->numpoints; i++)
     {
-        r = rand()%2;
+        r = rand() % 2;
         son->points[i] = parents[r]->points[i];
-        daughter->points[i] = parents[1-r]->points[i];
+        daughter->points[i] = parents[1 - r]->points[i];
     }
     return 0;
 }
 
 #else
+
 int do_crossover(population* population, individu* papa, individu* mama, individu* son, individu* daughter)
 {
     int split_index = 1 + (rand() % (population->numpoints - 1));
@@ -308,7 +317,6 @@ int do_crossover(population* population, individu* papa, individu* mama, individ
     return 0;
 }
 #endif
-
 
 int do_mutation(population* population, individu* individu)
 {

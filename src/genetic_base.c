@@ -115,7 +115,7 @@ int do_iterations(population* population, int num_generations)
     /* Allocate an array to store the indices of the individus that pair*/
     int *lovers_indices = (int*) malloc(population->num_lovers * sizeof (int));
 
-    int i, j, num_kids;
+    int i, num_kids;
     double best = population->list[get_best(population)].fitness; /* elite magic number for good luck */
     double best_diff = 50000;
     double prev_best = best;
@@ -308,6 +308,7 @@ int do_crossover(population* population, individu* papa, individu* mama, individ
     return 0;
 }
 #endif
+
 
 int do_mutation(population* population, individu* individu)
 {

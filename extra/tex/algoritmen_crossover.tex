@@ -1,0 +1,58 @@
+%\input{header}
+\subsection{Crossover}
+\label{sub:crossover}
+Als 2 individuen geselecteerd zijn om te paren, dan moeten wij daaruit een kind creeren dat eigenscchappen van beide ouders bevat. 
+Alternatief kunnen we er ook voor kiezen om een willikeurig aantal keer te wisslen.
+\subsubsection{Algoritme}
+	\begin{algorithm}[H]
+	 	\caption{1-point Crossover}
+		\begin{algorithmic}
+		\Require $mama, papa$ de ouders
+		\Ensure $kind$ is een nieuw kind dat genetisch gelijkend is met de ouders
+		
+		\State $n \gets $ aantal punten in $mama$
+		\State $r \gets$ arbitrair getal in $\lbrace 1, \dots , n-2\rbrace$
+		\For{i \textbf{from} 0 \textbf{to} $r$}
+			\State $kind$.punten[$i$] $\gets mama$.punten[$i$]
+		\EndFor
+		\For{i \textbf{from} $r+1$ \textbf{to} $n-1$}
+			\State $kind$.punten[$i$] $\gets papa$.punten[$i$]
+		\EndFor
+		\end{algorithmic}
+		\label{alg:crossover-1point}
+	\end{algorithm}		
+
+	\begin{algorithm}[H]
+	 	\caption{random Crossover}
+		\begin{algorithmic}
+		\Require $mama, papa$ de ouders
+		\Ensure $kind$ is een nieuw kind dat genetisch gelijkend is met de ouders
+		
+		\State $n \gets $ aantal punten in $mama$
+		\State $r \gets$ arbitrair getal in $\lbrace 1, \dots , n-2\rbrace$
+		\For{i \textbf{from} 0 \textbf{to} $n-1$}
+		\State $oud$ $\gets$ arbitrare waarde uit $\lbrace mama, papa \rbrace$
+		\State $kind$.punten[$i$] $\gets oud$.punten[$i$]
+			
+		\EndFor
+
+		\end{algorithmic}
+		\label{alg:crossover-random}
+	\end{algorithm}		
+
+
+
+\subsubsection{Complexiteit}
+Een crosover kopieert $n$ waarden. Het is dus $T(n)=\Theta(n)$
+
+
+% subsection  (end)
+
+
+\subsubsection{Implementatie}
+Het bestand \texttt{genetic\_base.c} bevat de implementatie van Algoritme \ref{alg:crossover-1point} en \ref{alg:crossover-random} in de functie 
+\\ \texttt{do\_crossover()}. 
+Het bestand bevat beide implementaties, bij compilatie kan er tussen beide gekozen worden door we waarde van \\ \texttt{RANDOM\_CROSSOVER} in te stellen met de \texttt{-D} vlag. Standaard staat deze waarde ingesteld op 1-point, de reden hiervoor vind u in sectie \ref{ssub:crossover_type}.
+
+
+%\input{footer}

@@ -112,5 +112,15 @@
 #define SUS 0
 #endif
 
+/*
+ * Use random crossover instead of 2 point
+ * Type: INT 0 (no) or 1 (yes)
+ * Default:  0
+ */
+#ifndef RANDOM_CROSSOVER
+#define RANDOM_CROSSOVER 0
+#endif
+
+
 #endif	/* SETTINGS_H */
 

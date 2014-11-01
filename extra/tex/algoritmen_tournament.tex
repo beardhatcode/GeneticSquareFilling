@@ -1,7 +1,8 @@
+%\input{header}
 \subsection{Tournament Selection}
 \label{sub:tournament}
 Tijdens de uitvoering van het genetisch algoriptme zullen er steeds meer individuën bijkomen. We willen er echter voor zorgen dat onze populatie een vaste grootte ($N_p$) behoud. Er zullen dus individuën moeten worden vermoord.
-
+\subsubsection{Algoritme}
 Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie} gebruiken we ``tournament selection''. Bij deze selectie word er telkens een vast aantal arbitraire individüen gekozen. Het individu met de slechtste fitheid uit te groep wordt telkens vermoord.
 	\begin{algorithm}[H]
 	 	\caption{Tournament-Select}
@@ -40,6 +41,14 @@ In algoritme \ref{alg:tournament} wordt er $\abs{P}-N_p$ keer een slachtoffer ge
 
 % subsection  (end)
 
+\subsubsection{Opmerking}
+\label{ssub:notetournament}
+Onder de aanvaarde aanname dat er minstens twee verschillende arbitraire indexen worden gekozen kunnen we stellen dat het beste individu steeds in de populatie blijft.
+\begin{proof}
+Stel dat het beste individu door tournament selection geselecteerd wordt om te vermoorden. Dan betekent dit dat hij een slechtere fitheid heeft dan de andere geselecteerden. Waaruit volgt dat hij niet het beste individu was.  \Lightning
+\end{proof}
+% subsubsection  (end)
+
 \subsubsection{Implementatie}
 Het bestand \texttt{genetic\_base.c} bevat de implementatie van Algoritme \ref{alg:tournament} in de functies \begin{itemize}
   \setlength{\itemsep}{1pt}
@@ -48,3 +57,6 @@ Het bestand \texttt{genetic\_base.c} bevat de implementatie van Algoritme \ref{a
 \item\texttt{do\_deathmatch()} en
 \item\texttt{do\_tournament\_selection()}.
  \end{itemize}  
+
+
+%\input{footer}

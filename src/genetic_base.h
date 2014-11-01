@@ -22,6 +22,7 @@ typedef struct _individu
 typedef struct _population
 {
     individu* list;
+    double best;
     int numpoints;
     int num_lovers;
     int size;

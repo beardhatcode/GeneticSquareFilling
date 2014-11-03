@@ -1,172 +1,207 @@
 %\input{header}
-\section{Parrameter Optimalisatie}
-\subsection{Aantal individuën}
-\begin{center}
+\section{Keuzes alogoritmen}
+Tijdens het optimaliseren van ons project hebben we hier en daar verschillende algoritmen uitgeprobeert om te zien welk resultaat ze opleveren. Hierna bespreken we welke dat zijn en welke we gekozen hebben.
+\subsection{Selectie methode geliefden}
+\label{sub:algLoverSelection}
+
+
+\begin{figure}[H]
+\nxaxis{Fitness}{Aantal punten}{
+	\addplotf{SUS_1_vierkant};
+	\addplotf{SUS_0_vierkant};
+}
+\nxaxis{Iteraties}{Aantal punten}{
+	\addploti{SUS_1_icosagon};
+	\addploti{SUS_0_icosagon};
+}
+\nxaxis{Tijd}{Aantal punten}{
+	\addplott{SUS_1_vierkant};
+	\addplott{SUS_0_vierkant};
+}
+\caption{Vergelijking van Stochastic Universal Sampling (blauw) en Tournament Selection (oranje) voor selectie van individu's om voort te planten bij het plaatsen van een variabel aantal punten in \texttt{vierkant}.}
+\label{graf:algLoverSelection}
+\end{figure}
+Kijken we naar de grafieken in figuur \ref{graf:algLoverSelection} dan zien we dat Stochastic Universal Sampeling steeds een factor slechter trager is terwijl het resultaat even goed is. We merken ook dat het tijdsverschil komt door het hoger aantal iteraties bij Sotochastic Universal Selection. Met andere woorden, hier hebben we getoond dat Tournament de betere keuze is in tegenstelling tot wat enkele bronnen ons trachten te doen geloven. Dit kan uiteraard liggen aan het soort probleem.
+
+% subsection  (end)
+
+\subsection{Crossover}
+We hebben nog niet genoeg seks gehad om dit te weten. (Lees: we hebben nog geen resultaten voor deze test, but hey we're woring on it)
+
+Maar hypothetisch gezien moet ons random algoritme slechter scoren, hier volgt mijn brainfart over hoe het in elkaar steekt.
+%todo
+
+We (zouden) zien dat het algoritme met random wijzigingen slechter presteert zowel in uitvoeringstijd als in kwaliteit.
+
+Dit is te verwachten omdat de fitheid afhangt van de onderlinge ligging van de punten. Als de punten random worden gekozen in de kinderen, verlies je de samenhang die er reeds bestond. Waardoor de fitheid over het algemeen slechter zal zijn dan bij 1-point crossover.
+
+\section{Parameter Optimalisatie}
+\subsection{Aantal individuen}
+Een eerste parameter die we zullen onderzoeken is \texttt{NUM\_INDIVIDUS}. Deze parameter stelt het aantal individuen in de populatie voor. In dit verslag wordt deze waarde ook $N_p$ genoemd.
 \begin{figure}[H]
 \rlxaxis{Fitness}{Aantal individus}{
-	\addlegendentry{50 ptn}
-	\addplotf{NUM_INDIVIDUS_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addplotf{NUM_INDIVIDUS_soos_50};
-	\addlegendentry{15 ptn}
-	\addplotf{NUM_INDIVIDUS_icosagon_50};
+	\addplotf{NUM_INDIVIDUS_vierkant_15};
 }
 \lxaxis{Iteraties}{Aantal individus}{
-	\addlegendentry{50 ptn}
-	\addploti{NUM_INDIVIDUS_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addploti{NUM_INDIVIDUS_soos_50};
-	\addlegendentry{\small 15 ptn}
+	\addploti{NUM_INDIVIDUS_vierkant_15};
 }
 \lxaxis{Tijd}{Aantal individus}{
-	\addlegendentry{vierkant}
-	\addplott{NUM_INDIVIDUS_vierkant_50};
-	\addlegendentry{soos}
-	\addplott{NUM_INDIVIDUS_soos_50};
+	\addplott{NUM_INDIVIDUS_vierkant_15};
 }
 
 
 
-\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+  \caption{Correlatie tussen het aantal individuen op convergentie snelheid en kwaliteit. Reslutaten voor het plaatsen van 15 punten in \texttt{vierkant.poly}.}
+  \label{graf:numIndividus}
 \end{figure}
-\end{center}
-
-Dit zijn resultaten die wij a priori niet verachten. We zien een lokaal minium op 100. Dis is dus ook de ideale waarde
-
-
-
+Kijken ze naar de grafieken uit figuur \ref{graf:numIndividus}, dan zien we dat het fitheid stijgt naarmate het het aantal individuen stijgt. Initieel is er een sterke stijging die afvlakt naarmate we honderd individuen bereiken. Helaas groeit de uitvoertijd ook lineair\footnote{Merk de logaritmische schaal van de $x$-as op.} met het aantal individuen. We kiezen voor een populatie van \textbf{100~individuen}. 
+% subsection  (end)
+%
+%
+%
+%
+%
 \subsection{Hoeveelheid seks}
-\begin{center}
+Nu onderzoeken we de invloed van \texttt{LOVER\_PERCENT}. Deze parameter geeft aan welk percentage van de populatie zich voortplant per iteratie.
 \begin{figure}[H]
 \rnxaxis{Fitness}{Sekspercentage}{
-	\addlegendentry{50 ptn}
-	\addplotf{LOVER_PERCENT_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addplotf{LOVER_PERCENT_soos_50};
-	\addlegendentry{15 ptn}
-	\addplotf{LOVER_PERCENT_icosagon_50};
+	\addplotf{LOVER_PERCENT_vierkant_15};
+	\addplotf{LOVER_PERCENT_soos_15};
 }
 \nxaxis{Iteraties}{Sekspercenntage}{
-	\addlegendentry{50 ptn}
-	\addploti{LOVER_PERCENT_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addploti{LOVER_PERCENT_soos_50};
+	\addploti{LOVER_PERCENT_vierkant_15};
+	\addploti{LOVER_PERCENT_soos_15}; 
 }
-\nxaxis{Tijd}{Sekspercentage}{
-	\addlegendentry{vierkant}
-	\addplott{LOVER_PERCENT_vierkant_50};
-	\addlegendentry{soos}
-	\addplott{LOVER_PERCENT_soos_50};
+\nxaxis{Tijd (s)}{Sekspercentage}{
+	\addplott{LOVER_PERCENT_vierkant_15};
+	\addplott{LOVER_PERCENT_soos_15};
 }
 
 
 
-\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\caption{Correlatie tussen de hoeveelheid seks en de convergentie snelheid en kwaliteit. Reslutaten voor het plaatsen van 15 punten in \texttt{vierkant.poly} (blauw) en \texttt{soos.poly} (oranje).}
+\label{graf:numLovers}
 \end{figure}
-\end{center}
+In de eerste grafiek van figuur \ref{graf:numLovers} zien we dat de aanwezigheid van seks noodzakelijk is voor het behalen van een optimale fitheid. Daarnaast zien we dat het niet echt uit maakt hoeveel seks er is, als het er maar is. De stijging vlakt snel af, na 5\% is de stijging nog maar miniem. De andere grafieken uit dezelfde figuur tonen ons dat hoe meer seks er is hoe langer het duurt om te convergeren. We kiezen ervoor om tijdens elke iteratie \textbf{30\%} van de populatie seks te laten hebben. Merk op dat we niet 5\% kiezen hoewel de grafiek dit suggereert. Als we de data grondiger bestuderen zien we dat de waarde van de fitheid monotoon blijft stijgen. We kiezen er voor om een wat tijd en ruimte op te offeren voor een iets beter resultaat.
 
-We zien dat we een afweging moeten maken tussen de hoeveellheid seks en de uitvoeringstijd.
-
-
+ % subsection  (end)
 
 
 
 \subsection{Hoeveelheid mutatie}
-\begin{center}
+Als kinderen geboren worden krijgen ze door ons genetisch algoritme een mutatie. Het is duidelijk dat de grootte van deze mutatie aangepast moet zijn aan de grootte van de figuur. Daarom kiezen we telkens een punt in een cirkel die als diameter een fractie van de diameter van de figuur heeft. Deze fractie wordt voorgesteld door de parameter \texttt{MUTATION\_DELTA}.
 \begin{figure}[H]
-\rnxaxis{Fitness}{Delta}{
-	\addlegendentry{50 ptn}
-	\addplotf{MUTATION_DELTA_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addplotf{MUTATION_DELTA_soos_50};
-	\addlegendentry{15 ptn}
-	\addplotf{MUTATION_DELTA_icosagon_50};
+\rlxaxis{Fitness}{\texttt{MUTATION\_DELTA}}{
+	\addplotf{MUTATION_DELTA_vierkant_15};
 }
-\nxaxis{Iteraties}{Delta}{
-	\addlegendentry{50 ptn}
-	\addploti{MUTATION_DELTA_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addploti{MUTATION_DELTA_soos_50};
+\rlxaxis{Fitness}{\texttt{MUTATION\_DELTA}}{
+	\addplotf{MUTATION_DELTA_soos_15};
 }
-\nxaxis{Tijd (s)}{Delta}{
-	\addlegendentry{vierkant}
-	\addplott{MUTATION_DELTA_vierkant_50};
-	\addlegendentry{soos}
-	\addplott{MUTATION_DELTA_soos_50};
+\rlxaxis{Fitness}{\texttt{MUTATION\_DELTA}}{
+	\addplotf{MUTATION_DELTA_icosagon_15};
 }
+\caption{Corelatie \texttt{MUTATION\_DELTA} en de bekomen fitheid voor het plaatsen van 15 punten in \texttt{vierkant}, \texttt{soos} en \texttt{icosagon} (van boven naar onder)}
 
-
-
-\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\label{graf:mutationDeltaFig}
 \end{figure}
-\end{center}
+\begin{figure}[H]
+\rnxaxis{Tijd (s)}{\texttt{MUTATION\_DELTA}}{
+	\addplott{MUTATION_DELTA_vierkant_15};
+}
 
-Hoe groter de mutatie hoe beter. (MUTATION\_DELTA is omgekeerd)
+\caption{Corelatie \texttt{MUTATION\_DELTA} en uitvoertijd voor 15 punten in \texttt{vierkant.poly}}
+\label{graf:mutationDeltaTime}
+\end{figure}
+In de grafieken van figuur~\ref{graf:mutationDeltaFig} zien we dat er telkens een waarde is voor \texttt{MUTATION\_DELTA} die de fitheid optimaliseerd. Helaas zien we ook dat deze sterk afhankelijk is van de figuur. Na veel testen kunnen we besluiten dat de waarde tussen 10 en 100 moet liggen.
+
+We merken op dat als \texttt{MUTATION\_DELTA} te groot is, dat betekend dus heel kleine stappen, de punten zich trager verplaatsen. Waardoor ze trager tot een optimum komen. Deze observatie zien we gereflecteerd in figuur \ref{graf:mutationDeltaTime}.
+
+We kiezen de waarde \texttt{MUTATION\_DELTA = 20}. Dit wil zeggen dat het nieuwe punt zal gekozen worden in een cirkel met diameter die een twintigste is van de totale diameter.
+
+% subsection  (end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 \subsection{Mutatie kans}
-\begin{center}
+Niet alle kinderen worden gemuteerd. De kans dat een kind muteert wordt voorgesteld door de parameter \texttt{MUTATION\_1\_IN}. De waarde van deze parameter geeft aan per hoeveel beschouwde kinderen er gemiddeld één muteert. 
 \begin{figure}[H]
 \rlxaxis{Fitness}{Kans (1 op ...)}{
-	\addlegendentry{50 ptn}
-	\addplotf{MUTATION_1_IN_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addplotf{MUTATION_1_IN_soos_50};
-	\addlegendentry{15 ptn}
-	\addplotf{MUTATION_1_IN_icosagon_50};
+	\addplotf{MUTATION_1_IN_vierkant_15};
+	\addplotf{MUTATION_1_IN_soos_15};
 }
 \lxaxis{Iteraties}{Kans (1 op ...)}{
-	\addlegendentry{50 ptn}
-	\addploti{MUTATION_1_IN_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addploti{MUTATION_1_IN_soos_50};
+	\addploti{MUTATION_1_IN_vierkant_15};
+	\addploti{MUTATION_1_IN_soos_15};
 }
-\lxaxis{Tijd}{Kans (1 op ...)}{
-	\addlegendentry{vierkant}
-	\addplott{MUTATION_1_IN_vierkant_50};
-	\addlegendentry{soos}
-	\addplott{MUTATION_1_IN_soos_50};
+\lxaxis{Tijd (s)}{Kans (1 op ...)}{
+	\addplott{MUTATION_1_IN_vierkant_15};
+	\addplott{MUTATION_1_IN_soos_15};
 }
 
+\caption{Corelatie mutatiekans en de bekomen fitheid voor het plaatsen van 15 punten in \texttt{vierkant} (blauw) en \texttt{soos} (oranje)}
 
-
-\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\label{graf:mutation1In}
 \end{figure}
-\end{center}
-
-Hoe kleiner de kans hoe lager de fitness
+De grafieken in Fig. \ref{graf:mutation1In} tonen ons dat hoe kleiner de kans om te muteren is, hoe slechter de fitheid. Om de fitheid te optimaiseren kiezen we dus best een grote kans. We kiezen: \textbf{1 mutatie per 3 kinderen}.
 
 
 
 \subsection{Selectie druk}
-\begin{center}
+De selectie druk is een maat voor de waarschijnlijkheid dat enkel de beste individuen zich kunnen voortplanten en lang kunnen leven. In ons programma is deze waarde voorgesteld door de parameter \texttt{SELECTION\_PRESSURE}. Deze parameter wordt gebruikt om de toernooigroote te bepalen bij tournament selection\footnote{Zie sectie \ref{sub:tournament}}.
 \begin{figure}[H]
-\nxaxis{Fitness}{Toernooigrootte}{
-	\addlegendentry{50 ptn}
-	\addplotf{SELECTION_PRESSURE_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addplotf{SELECTION_PRESSURE_soos_50};
-	\addlegendentry{15 ptn}
-	\addplotf{SELECTION_PRESSURE_icosagon_50};
+\lxaxis{Fitness}{Toernooigrootte}{
+	\addplotf{SELECTION_PRESSURE_vierkant_15};
+	\addplotf{SELECTION_PRESSURE_soos_15};
 }
-\nxaxis{Iteraties}{Toernooigrootte}{
-	\addlegendentry{50 ptn}
-	\addploti{SELECTION_PRESSURE_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addploti{SELECTION_PRESSURE_soos_50};
+\lxaxis{Iteraties}{Toernooigrootte}{
+	\addploti{SELECTION_PRESSURE_vierkant_15};
+	\addploti{SELECTION_PRESSURE_soos_15};
 }
-\nxaxis{Tijd}{Toernooigrootte}{
-	\addlegendentry{50 ptn}
-	\addplott{SELECTION_PRESSURE_vierkant_50};
-	\addlegendentry{15 ptn}
-	\addplott{SELECTION_PRESSURE_soos_50};
+\lxaxis{Tijd}{Toernooigrootte}{
+	\addplott{SELECTION_PRESSURE_vierkant_15};
+	\addplott{SELECTION_PRESSURE_soos_15};
 }
 
 
-
-\caption{Corelatie aantal individus op convergentie snelheid en kwaliteit}
+\caption{Inpact van de selectiedruk op de convergentie snelheid en kwaliteit voor het plaatsen van 15 punten in \texttt{vierkant} en \texttt{soos}}
+\label{graf:selectionPressure}
 \end{figure}
-\end{center}
+Kijken we naar de grafieken in figuur \ref{graf:selectionPressure}, dan zien we dat de bekomen fitheid nagenoeg constant blijft ongeacht de selectiedruk. Wat wel sterk beïnvloed wordt door de selectie druk is de uitvoertijd en het aantal iteraties. We zien dat de uitvoertijd stijgt als de druk te hoog wordt. Hiervoor kunnen we tweee verkklaringen geven. \begin{itemize}\item de uitvoertijd ligt hoger omdat de toernooien langer duren \item en de uitvoertijd ligt hoger odat enkel de besten gekozen worden waardoor de genetsche diversiteit vernietigd wordt en er dus enkel met mutaties tot een goede oplossing moet worden gekomen.\end{itemize}
 
-Hoe groter de mutd
+Wij hebben gekozen voor een selectiedruk van 5. Wat wil zeggen dat de toernooigrootte 5\% is van de populatiegrootte.
+
+% subsection  (end)
+
+\subsection{Weegfactor exponentieel lopend gemidelde}
+om te weten of het programma klaar is met optimalisteren, houden we een gewogen exponentieel gemiddelde bij\footnote{zie ook sectie~\ref{sub:stopcond}}. De weegfactor die we kiezen is dus ook een parrameter die wel willen optimaliseren.
+\begin{figure}[H]
+\rnxaxis{Fitness}{Weegfactor}{
+	\addplotf{WEIGHTING_DECREASE_vierkant_15};
+}
+\nxaxis{Iteraties}{Weegfactor}{
+	\addploti{WEIGHTING_DECREASE_vierkant_15};
+}
+\nxaxis{Tijd}{Weegfactor}{
+	\addplott{WEIGHTING_DECREASE_vierkant_15};
+}
+\caption{Correlatie weegfactor en convergentie snelheid en kwaliteit voor het plaatsen van 15 punten in \texttt{vierkant}}
+\label{graf:weightingFactor}
+\end{figure}
+We zien wat we verwachten te zien. Hoe hoger de weegfactor hoe beter het resultaat maar ook hoe langer het zal duren om tot dat resultaat te komen. 
+We kiezen voor een weegfactor van \textbf{0.95} omdat we een optimaal antwoord willen. Merk op dat we niet kiezen voor 100 omdat het algoritme dat niet meer de waarde zou updateën. 
+% subsection  (end)
+
 %\input{footer}

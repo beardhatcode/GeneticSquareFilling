@@ -48,7 +48,7 @@
  * Default: 0.45
  */
 #ifndef WEIGHTING_DECREASE
-#define WEIGHTING_DECREASE 0.90
+#define WEIGHTING_DECREASE 0.95
 #endif
 
 
@@ -58,7 +58,7 @@
  * Default: 1500;
  */
 #ifndef NUM_INDIVIDUS
-#define NUM_INDIVIDUS 256
+#define NUM_INDIVIDUS 100
 #endif
 
 
@@ -88,7 +88,7 @@
  * Default: 5.0
  */
 #ifndef MUTATION_DELTA
-#define MUTATION_DELTA 80.0
+#define MUTATION_DELTA 20.0
 #endif
 
 

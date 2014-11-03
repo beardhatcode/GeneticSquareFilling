@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   settings.h
  * Author: Robbert Gurdeep Singh
  *
@@ -10,8 +10,8 @@
 
 
 /**
- * Minimum number of iterations 
- * Type: INT 
+ * Minimum number of iterations
+ * Type: INT
  * Default: 200
  */
 #ifndef MIN_ITERATIONS
@@ -20,8 +20,8 @@
 
 
 /**
- * Maximum number of iterations 
- * Type: INT 
+ * Maximum number of iterations
+ * Type: INT
  * Default: 2000
  */
 #ifndef MAX_INTERATIONS
@@ -30,9 +30,9 @@
 
 
 /**
- * If the exponentially weighted moving average of the difference of the 
- * average fitness is below this, the program will consider the answer good 
- * enough, and will stop. 
+ * If the exponentially weighted moving average of the difference of the
+ * average fitness is below this, the program will consider the answer good
+ * enough, and will stop.
  * Type: Positive number
  * Default: 0.001
  */
@@ -42,7 +42,7 @@
 
 
 /**
- * Amount that the previous average counts in the  exponentially weighted moving 
+ * Amount that the previous average counts in the  exponentially weighted moving
  * average.
  * Type: DOUBLE between 0 and 1 (preveribly below 0.5)
  * Default: 0.45
@@ -104,9 +104,9 @@
 
 
 /*
- * Likelyhood that only the best individus will keep living.
- * Type: INT greater than 0
- * Default:  50
+ * Use Stochastic universal sampeling or not?
+ * Type: INT 0 (no) or 1 (yes)
+ * Default:  0
  */
 #ifndef SUS
 #define SUS 0

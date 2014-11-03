@@ -1,5 +1,5 @@
 \input{header}
-% grep  '\s*\\label' * | sed "s/\s\s*/ /g;s/:/+/;s/\+ /+/;s/^/%/" | column -t -s+
+% grep  '^[^%]*\s*\\label' * | sed "s/\s\s*/ /g;s/:/+/;s/\+ /+/;s/^/%/" | column -t -s+
 %algoritmen_crossover.tex                      \label{sub:crossover}
 %algoritmen_crossover.tex                      \label{alg:crossover-1point}
 %algoritmen_crossover.tex                      \label{alg:crossover-random}
@@ -18,9 +18,19 @@
 %algoritmen_tournament.tex                     \label{sub:tournament}
 %algoritmen_tournament.tex                     \label{alg:tournament}
 %algoritmen_tournament.tex                     \label{ssub:notetournament}
+%param_opt.tex                                 \label{sub:algLoverSelection}
+%param_opt.tex                                 \label{graf:algLoverSelection}
+%param_opt.tex                                 \label{graf:numIndividus}
+%param_opt.tex                                 \label{graf:numLovers}
+%param_opt.tex                                 \label{graf:mutationDeltaFig}
+%param_opt.tex                                 \label{graf:mutationDeltaTime}
+%param_opt.tex                                 \label{graf:mutation1In}
+%param_opt.tex                                 \label{graf:selectionPressure}
+%param_opt.tex                                 \label{graf:weightingFactor}
 %verslag.tex                                   \label{sec:inleiding}
 %verslag.tex                                   \label{sec:explainationcode}
 %verslag.tex                                   \label{sub:pointer}
+
 
 \part{Genetisch algoritme}
 \section{Inleiding}

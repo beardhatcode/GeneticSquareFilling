@@ -13,10 +13,10 @@
 #include <errno.h>
 #include <string.h>
 
+#define printfe(M, ...) fprintf(stderr, M,##__VA_ARGS__)
 #ifdef DEBUG
 
 #define log_dbg(M, ...) fprintf(stderr, M,##__VA_ARGS__)
-
 #else
 
 

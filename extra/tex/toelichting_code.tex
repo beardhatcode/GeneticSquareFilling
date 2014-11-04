@@ -1,0 +1,44 @@
+%\input{header}
+
+\section{Toelichting Code}
+In deze sectie gaan we wat dieper in op enkele programeerkeuzes
+die niet tot het algoritmische horen, maar die we wel graag vermelden.
+\label{sec:explainationcode}
+\subsection{Gebruik heap}
+\label{sub:heap}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\foreach \x in {0,1,2,3}{
+    \draw (1.5*\x,5) rectangle node {\tiny Individu \x~~~} (1.5*\x+1.5,4.5);
+    
+	\draw[->] (1.5*\x+1.35,4.75) .. controls (1.5*\x+1.35,4.2) and (1.5*\x-0.25,4.25) .. (1.5*\x,3.5);
+	\draw[fill=black] (1.5*\x+1.35,4.75) circle (1pt);
+	\foreach \y in {0,1,2}
+    	\draw (1.5*\x+0.5*\y,3) rectangle node {\tiny pt\y} (1.5*\x+0.5*\y+0.5,3.5);
+}
+
+\end{tikzpicture}
+\caption{De individu array en de punten array op de heap}
+\end{figure}
+Om de individuen bij te houden hebben we er voor gekozen ze in 1 lange rij op de heap te plaatsen. Dit zorgt ervoor dat we de populatiegrootte at runtime kunnen bepalen, wat handig kan zijn bij de parallelle  uitvoering. We houden ook 1 lange array van punten bij op de heap. Deze array bevat $n\cdot N_p$ punten. Elk van de individuen heeft een pointer die naar een plaats in deze array wijst. Het in één keer alloceren zorgt ervoor dat we tijdens de uitvoering geen overhead hebben door allocaties. Het zorgt er ook voor dat we minder gemakkelijk memory leaks enzo hebben.
+
+\subsection{Plaats kideren}
+Na het paren zijn er meer individuen in de populatie. Om deze een plaats in het geheugen te geven maken tijdens de initialisatie de arrays waarin we het in Sectie~\ref{sub:heap} hadden extra ``lege'' plaatsen. De kinderen worden dan gestokeerd vanaf index $N_p$.
+
+Door deze grotere array te nemen wordt het ook gemakelijker om tournament selection to te passen op heel de populatie.
+
+\subsection{Tests}
+\label{sub:explain_tests}
+Om te testen of bepaalde stukken code wel werkten hebben we testen geschreven. Deze zijn te vinden in \texttt{main.c} en kunnen worden geactiveerd met de \texttt{-D} vlag van de compiler.
+
+\subsection{Debuging}
+\label{sub:explain_debug_analyse}
+Tijdens de ontwikkeling wilden we graag zien hoe de fitheid verliep in de tijd. Hiervoor hebben we een \texttt{log\_dbg} macro geintroduceerd die enkel print als er gecompileerd werdt met \texttt{-DDEBUG}.
+
+Om de performantie gemakkelijk te testen met Python hebben we een {\em{Performance Print}} mode toegevoegd. Deze wordt geactiveerd door te compilen met  \texttt{-DPERFORMANCE\_PRINT}. In deze mode wordt enkel het aantal iteraties en de bekomen fitheid geprint.
+
+% subsection  (end)
+% section explainationcode (end)
+
+%\input{footer}

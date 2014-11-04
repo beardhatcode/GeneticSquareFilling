@@ -116,8 +116,11 @@ We wijzen nog even op enkele details:
 		tussen 2 waarden ligt. We doen dit zo omdat we niet weten hoe $x_1$ en $x_2$ 
 		zich onderling verhouden.
 \item Om het herberekenen van $a$ en $b$ te vermijden, berekenen we deze eenmalig bij het inlezen van de veelhoek.
-
 \end{itemize}
+
+\subsubsection{Genereren random punten}
+\label{ssub:rand_generation}
+Om random individuen voor de populatie te genereren genereren we telkens een random $x$ en $y$ binnen het omsloten vierkant en gaan we na of het ook wel degelijk in de veelhoek ligt. Telkens zo'n punt is gevonden wordt het toegevoegd aan het te genereren random individu tot er $n$ punten zijn. Voor het genereren van $N_p$ individuen heeft dit een complexiteit van $T(n)=\Theta(N_p\cdot n) = \Theta(n)$
 
 % subsection  (end)
 

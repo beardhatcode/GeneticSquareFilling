@@ -10,6 +10,7 @@ Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie
 		\Require 
 			\State $P$, te grote lijst van individuën 
 			\State $N_p$, gewenste populatiegrootte
+			\State $P_M$, de selectiedruk
 		\Ensure returnt de index van verliezer
 		\Function{tournamentSelection}{$P$,$N_t$}
 		\State loser $\gets$ arbitraire waarde uit $\lbrace 0, \dots, \abs{P} \rbrace$
@@ -25,7 +26,7 @@ Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie
 		\\
 		\\
 		\While{$\abs{P} >  N_p$}
-			\State $N_t \gets \left\lfloor\frac{\texttt{SELECTION\_PRESSURE}}{100} \cdot \abs{P}\right\rfloor$ 
+			\State $N_t \gets \left\lfloor\frac{P_M}{100} \cdot \abs{P}\right\rfloor$ 
 			\State slachtoffer $\gets$ \Call{tournamentSelect}{$P$,$N_t$}
 			\State $P \gets P\setminus$slachtoffer
 		\EndWhile
@@ -35,8 +36,8 @@ Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie
 	\end{algorithm}		
 \subsubsection{Complexiteit}
 In algoritme \ref{alg:tournament} wordt er $\abs{P}-N_p$ keer een slachtoffer gekozen door een tournooi uit te voeren. Tijdens een toernooi wordt er $N_t$ keer een willikeurig individu gekozen en vergeleken. De complexiteit is dus $\Theta((\abs{P}-N_p)\cdot N_t)$. Met $N_t$ de tournooigrootte\footnote{Zie sectie \ref{sub:selection_pressure}} en $N_p$ de gewenste populatiegrootte. We zien dat $N_t$ hier gelijk is aan
- $\left\lfloor\frac{\texttt{SELECTION\_PRESSURE}}{100} \cdot \abs{P}\right\rfloor$.
- We bekomen dus: \[\Theta\left(\left(\abs{P}-N_p\right)\cdot \texttt{SELECTION\_PRESSURE} \cdot \abs{P}\right)\]
+ $\left\lfloor\frac{P_M}{100} \cdot \abs{P}\right\rfloor$.
+ We bekomen dus: \[\Theta\left(\left(\abs{P}-N_p\right)\cdot P_m \cdot \abs{P}\right)\]
  Nu merken we op dat dit allemaal constanten\footnote{Enkel aanpasbaar bij compilatie} zijn binnen ons programmma dus hebben we dat de complexiteit $T(n) = \Theta(1)$. Voorgaande resultaten zullen we nog gebuiken verder in dit verslag. %TODO waar?
 
 % subsection  (end)

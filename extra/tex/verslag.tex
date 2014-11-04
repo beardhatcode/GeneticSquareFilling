@@ -29,7 +29,7 @@
 %param_opt.tex                                 \label{graf:weightingFactor}
 %verslag.tex                                   \label{sec:inleiding}
 %verslag.tex                                   \label{sec:explainationcode}
-%verslag.tex                                   \label{sub:pointer}
+%verslag.tex                                   \label{sub:heap}
 
 
 \part{Genetisch algoritme}
@@ -56,6 +56,8 @@ Tenzij anders vermeld betekenen volgende symbolen het volgende:
 % section inleiding (end)
 
 \section{Algortitmen}
+%\input{algoritmen_genetic_base}
+
 \input{algoritmen_inpoly}
 \input{algoritmen_tournament}
 \input{algoritmen_stochastic_universal_sampling}
@@ -63,15 +65,8 @@ Tenzij anders vermeld betekenen volgende symbolen het volgende:
 \input{algoritmen_crossover}
 
 \input {param_opt}
+\input {toelichting_code}
 
-\section{Toelichting Code}
-Life is life, nanananana....
-\label{sec:explainationcode}
-\subsection{Pointers}
-\label{sub:pointer}
-We hebben er voor gekozen om een array van individu's te gebruiken in de plaats van een array van pointers. We kiezen er ook voor om zo weinig \texttt{malloc} en \texttt{free} te gebruiken. Dat is dus dat we de bestaande individuen overschrijven in plaats van nieuwe ruimte te alloceren en dan de vorige te verwijderen.
-% subsection  (end)
-% section explainationcode (end)
 
 \part{Parralelisering}
 Nog niet gedaan...

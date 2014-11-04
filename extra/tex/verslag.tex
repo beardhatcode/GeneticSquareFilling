@@ -45,7 +45,8 @@ Tenzij anders vermeld betekenen volgende symbolen het volgende:
 \itemMB{X_i} Het i-de individu 
 \itemMB{z} Het aantal zijden van de veelhoek
 \itemMB{N_p} Populatiegrootte
-\itemMB{P_M} Mutatiedruk 
+\itemMB{N_l} Aantal geliefden
+\itemMB{P_M} Selectie druk 
 \itemMB{f} De fitheidsfunctie \[f(X_k)= \sum_{P_1 \in X_k}\sum_{P_2 \in X_k} \sqrt{d_2(P_1,P_2)} \]
 \end{itemize}
 
@@ -56,13 +57,14 @@ Tenzij anders vermeld betekenen volgende symbolen het volgende:
 % section inleiding (end)
 
 \section{Algortitmen}
-%\input{algoritmen_genetic_base}
 
 \input{algoritmen_inpoly}
 \input{algoritmen_tournament}
 \input{algoritmen_stochastic_universal_sampling}
 \input{algoritmen_mutation}
 \input{algoritmen_crossover}
+\input{algoritmen_stop}
+\input{algoritmen_genetic_base}
 
 \input {param_opt}
 \input {toelichting_code}

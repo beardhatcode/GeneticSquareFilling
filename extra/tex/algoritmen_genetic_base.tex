@@ -1,4 +1,4 @@
-\input{header}
+%\input{header}
 \subsection{Het genetisch algoritme}
 \label{ssub:genetic}
 Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het samenbrengen tot het geheel.
@@ -16,11 +16,12 @@ Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het
 		\Comment Sec \ref{ssub:stop_cond}
 			\State $L \gets$ \Call{selectLovers}{$N_l$} 
 			\Comment Sec \ref{sec:positiveTournament}
-			\For{$i\gets 0 \dots L/2$ }
+			\For{$i\gets 0 \dots \lfloor \abs{L}/2 \rfloor$ }
 				\State Maak 2 kinderen met ouders 
 				\State $L\lbrack2i\rbrack$ en  $L\lbrack2i+1\rbrack$ en voeg ze 
 				\State toe aan $P$ 
 				\Comment Sec \ref{sub:crossover}
+				\State Bereken fitheid kinden
 			\EndFor
 			\State \Call{tournament}{$P$,$N_p$} 
 			\Comment Sec \ref{sub:tournament}
@@ -36,10 +37,16 @@ Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het
 \begin{enumerate}
 	\itembf{Random generatie} Sectie~\ref{ssub:rand_generation} geeft ons:\\ $T_{gen}(n)=\Theta(N_p\cdot n) = \Theta(n)$ 
 	\itembf{Iteraties}
-	\begin{enumerate}
-	\itembf{Lover selection} \\$T(n)= \cdot P_M \cdot \abs{P} = \Theta(1)$ 
-	\end{enumerate}
-	
+		\begin{enumerate}
+			\itembf{Lover selection} \\$T(n)= \cdot P_M \cdot N_p = \Theta(1)$ 
+			\itembf{Crossover} Uit sectie \ref{sub:alg_crossover_compl}\\$T_{\text{1}}(n)= \Theta(N_l\cdot n) = \Theta(n)$
+			\itembf{Fitheid kinderen berekenen} \\$T_{\text{1}}(n)= \Theta(n^2)$
+			\itembf{Tournament Selection} \\$T(n)= \Theta(N_p\cdot P_M) = \Theta(1)$
+		\end{enumerate}
+	\itembf{Beste teruggeven}
+		\\Alles overlopen dus $T(n)=\Theta(N_p)=\Theta(1)$
 \end{enumerate}
 
-\input{footer}
+In de 2de grafiek van figuur \ref{graf:algLoverSelection} op pagina \pageref{graf:algLoverSelection} zien we dat het aantal iteraties $\Theta(n)$ is. We komen dus uit op een totale complexiteit van \[T(n)=\Theta\left(n^3\right)\]
+
+%\input{footer}

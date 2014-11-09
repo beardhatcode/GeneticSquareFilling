@@ -153,7 +153,7 @@ int do_iterations(population* population, int num_generations)
 
         prev_best = best;
 
-        if (i > MIN_ITERATIONS && best_diff < MIN_PRECISION)
+        if (i > MIN_ITERATIONS  &&best_diff < MIN_PRECISION)
         {
             break;
         }
@@ -254,23 +254,13 @@ int do_mate_selection(population* population, int* indices)
 int do_mate_selection(population* plebs, int* indices)
 {
     int population_size = plebs->size;
-    /* Select a random individu as current worst*/
-    int best_ID = rand() % population_size;
-    int i, j, cur_id;
+    int i;
     int group_size = population_size * SELECTION_PRESSURE / 100;
-
 
     /* Try to find a worse individu by selecting group_size random opponents */
     for (i = 0; i < plebs->num_lovers; i++)
     {
-        best_ID = rand() % population_size;
-        for (j = 1; j < group_size; j++)
-        {
-            cur_id = rand() % population_size;
-            if (plebs->list[cur_id].fitness > plebs->list[best_ID].fitness)
-                best_ID = cur_id;
-        }
-        indices[i] = best_ID;
+        indices[i] = do_pos_tournament(plebs,group_size);
     }
 
     return plebs->num_lovers;
@@ -369,7 +359,7 @@ int do_deathmatch(population* plebs, int to_kill)
     for (left = to_kill; left >= 0; left--)
     {
         /* Get the id of an individu to remove*/
-        victim = do_tournament_selection(plebs, group_size, left);
+        victim = do_neg_tournament(plebs, group_size, left);
 
         /* fill hole created by killing victim with a new child    */
         /* plebs[victim] to be replaced by  plebs[size + left - 1] */
@@ -384,7 +374,7 @@ int do_deathmatch(population* plebs, int to_kill)
     return left;
 }
 
-int do_tournament_selection(population* plebs, int group_size, int excess_num)
+int do_neg_tournament(population* plebs, int group_size, int excess_num)
 {
     int population_size = plebs->size + excess_num;
     /* Select a random individu as current worst*/
@@ -400,6 +390,18 @@ int do_tournament_selection(population* plebs, int group_size, int excess_num)
     }
 
     return worst_ID;
+}
+
+int do_pos_tournament(population* plebs, int group_size){
+        int best_ID = rand() % plebs->size;
+        int cur_id,j;
+        for (j = 1; j < group_size; j++)
+        {
+            cur_id = rand() % plebs->size;
+            if (plebs->list[cur_id].fitness > plebs->list[best_ID].fitness)
+                best_ID = cur_id;
+        }
+        return best_ID;
 }
 
 void population_print(population* population)

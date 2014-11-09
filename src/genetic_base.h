@@ -108,6 +108,8 @@ int do_sex(population* population, int* lovers);
  */
 int do_mate_selection(population* population, int* indices);
 
+
+
 /**
  * Does a one point crossover of mama and papa into son and daughter (pointers)
  * Note: get_fitness MUST be run on the children after this operation
@@ -145,7 +147,16 @@ int do_deathmatch(population* plebs, int to_kill);
  * @param excess_num    number of excess individus in population->list
  * @return index of individu to kill
  */
-int do_tournament_selection(population* plebs, int group_size, int excess_num);
+int do_neg_tournament(population* plebs, int group_size, int excess_num);
+
+/**
+ * Does a tournament selection to find 1 individu to pass on to the next 
+ * generation (Used if SUS = 0).
+ * @param plebs         the population
+ * @param group_size    number of individus in the tournament
+ * @return index of individu to kill
+ */
+int do_pos_tournament(population* plebs, int group_size);
 
 /**
  * Prints population

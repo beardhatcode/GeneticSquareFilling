@@ -13,7 +13,7 @@
 
 #define GENETIC_CONTINUE 0x6060
 #define GENETIC_NOT_BEST 0xFA11
-#define GENETIC_BEST     0xB00B
+#define GENETIC_BEST     0xB00B5
  
 typedef int (*loop_checker)(population*, int, int, int);
 

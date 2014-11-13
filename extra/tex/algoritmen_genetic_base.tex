@@ -1,7 +1,7 @@
 %\input{header}
 \subsection{Het genetisch algoritme}
 \label{ssub:genetic}
-Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het samenbrengen tot het geheel.
+Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het samenbrengen tot een geheel.
 
 \subsubsection{Algoritme}
 	\begin{algorithm}[H]
@@ -10,7 +10,7 @@ Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het
 		\Require $n$, het aantal te plaatsen punten
 		\Ensure een goede benadeering van een oplossing die aan de voorwaarden van een oplossing voldoet wordt eteeruggegeven
 		\Function{darwinsPoints}{}
-		\State $P \gets $ $N_p$ random oplossingen 
+		\State $P \gets $ $N_p$ random individuen 
 		\Comment Sec \ref{ssub:rand_generation}
 		\While{niet stopconditie} 
 		\Comment Sec \ref{ssub:stop_cond}
@@ -31,7 +31,7 @@ Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het
 		\end{algorithmic}
 		\label{alg:genetic}
 	\end{algorithm}		
-    Merk op dat we in dit algoritme tournament selection gebruikt voor zowel het selecteren van wie sterft als voor het selecteren wie seks heeft. 
+    Merk op dat we in dit algoritme tournament selection gebruikt voor zowel het selecteren van wie sterft als voor het selecteren wie seks heeft. We hebben de verklaring hiervoor geformuleerd in Sectie~\ref{sub:algLoverSelection}. 
 \subsubsection{Complexiteisanalyse}
   Overlopen de stappen in Algoritme~\ref{alg:genetic} om de complexiteit te bepalen:
 \begin{enumerate}
@@ -48,5 +48,7 @@ Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het
 \end{enumerate}
 
 In de 2de grafiek van figuur \ref{graf:algLoverSelection} op pagina \pageref{graf:algLoverSelection} zien we dat het aantal iteraties $\Theta(n)$ is. We komen dus uit op een totale complexiteit van \[T(n)=\Theta\left(n^3\right)\]
+
+Er dient opgemerkt te worden dat het aantal iteraties begrensd is in onze implementatie. Dus als $n$ zo groot is dat het maximaal aantal iteraties wordt overschreden, dan in de complexiteit $\Theta{n^2}$.
 
 %\input{footer}

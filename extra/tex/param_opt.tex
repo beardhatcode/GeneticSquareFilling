@@ -21,11 +21,12 @@ Tijdens het optimaliseren van ons project hebben we hier en daar verschillende a
 \caption{Vergelijking van Stochastic Universal Sampling (blauw) en Tournament Selection (oranje) voor selectie van individu's om voort te planten bij het plaatsen van een variabel aantal punten in \texttt{vierkant}.}
 \label{graf:algLoverSelection}
 \end{figure}
-Kijken we naar de grafieken in figuur \ref{graf:algLoverSelection} dan zien we dat Stochastic Universal Sampeling steeds een factor slechter trager is terwijl het resultaat even goed is. We merken ook dat het tijdsverschil komt door het hoger aantal iteraties bij Sotochastic Universal Selection. Met andere woorden, hier hebben we getoond dat Tournament de betere keuze is in tegenstelling tot wat enkele bronnen ons trachten te doen geloven. Dit kan uiteraard liggen aan het soort probleem.
+Kijken we naar de grafieken in figuur \ref{graf:algLoverSelection} dan zien we dat Stochastic Universal Sampeling steeds een factor slechter trager is terwijl het resultaat even goed is. We merken ook dat het tijdsverschil ontstaat door het hoger aantal iteraties bij Sotochastic Universal Sampling. Met andere woorden, hier hebben we getoond dat Tournament de betere keuze is in tegenstelling tot wat enkele bronnen ons trachten te doen geloven. Dit kan uiteraard liggen aan het soort probleem.
 
 % subsection  (end)
 
 \subsection{Crossover}
+\label{ssub:crossover_type}
 We hebben nog niet genoeg seks gehad om dit te weten. (Lees: we hebben nog geen resultaten voor deze test, but hey we're woring on it)
 
 Maar hypothetisch gezien moet ons random algoritme slechter scoren, hier volgt mijn brainfart over hoe het in elkaar steekt.
@@ -112,7 +113,7 @@ Als kinderen geboren worden krijgen ze door ons genetisch algoritme een mutatie.
 \caption{Corelatie \texttt{MUTATION\_DELTA} en uitvoertijd voor 15 punten in \texttt{vierkant.poly}}
 \label{graf:mutationDeltaTime}
 \end{figure}
-In de grafieken van figuur~\ref{graf:mutationDeltaFig} zien we dat er telkens een waarde is voor \texttt{MUTATION\_DELTA} die de fitheid optimaliseerd. Helaas zien we ook dat deze sterk afhankelijk is van de figuur. Na veel testen kunnen we besluiten dat de waarde tussen 10 en 100 moet liggen.
+In de grafieken van figuur~\ref{graf:mutationDeltaFig} zien we dat er telkens een waarde is voor \texttt{MUTATION\_DELTA} die de fitheid optimaliseert. Helaas zien we ook dat deze sterk afhankelijk is van de figuur. Na veel testen kunnen we besluiten dat de waarde tussen 10 en 100 moet liggen.
 
 We merken op dat als \texttt{MUTATION\_DELTA} te groot is, dat betekend dus heel kleine stappen, de punten zich trager verplaatsen. Waardoor ze trager tot een optimum komen. Deze observatie zien we gereflecteerd in figuur \ref{graf:mutationDeltaTime}.
 
@@ -155,12 +156,13 @@ Niet alle kinderen worden gemuteerd. De kans dat een kind muteert wordt voorgest
 
 \label{graf:mutation1In}
 \end{figure}
-De grafieken in Fig. \ref{graf:mutation1In} tonen ons dat hoe kleiner de kans om te muteren is, hoe slechter de fitheid. Om de fitheid te optimaiseren kiezen we dus best een grote kans. We kiezen: \textbf{1 mutatie per 3 kinderen}.
+De grafieken in Fig. \ref{graf:mutation1In} tonen ons dat hoe kleiner de kans om te muteren is, hoe slechter de fitheid. Om de fitheid te optimaliseren kiezen we dus best een grote kans. We kiezen: \textbf{1 mutatie per 3 kinderen}.
 
 
 
 \subsection{Selectie druk}
-De selectie druk is een maat voor de waarschijnlijkheid dat enkel de beste individuen zich kunnen voortplanten en lang kunnen leven. In ons programma is deze waarde voorgesteld door de parameter \texttt{SELECTION\_PRESSURE}. Deze parameter wordt gebruikt om de toernooigroote te bepalen bij tournament selection\footnote{Zie sectie \ref{sub:tournament}}.
+\label{sub:selection_pressure}
+De selectie druk is een maat voor de waarschijnlijkheid dat enkel de beste individuen zich kunnen voortplanten en lang kunnen leven. In ons programma is deze waarde voorgesteld door de parameter \texttt{SELECTION\_PRESSURE}. Deze parameter wordt gebruikt om de toernooigrootte te bepalen bij tournament selection\footnote{Zie sectie \ref{sub:tournament}}.
 \begin{figure}[H]
 \lxaxis{Fitness}{Toernooigrootte}{
 	\addplotf{SELECTION_PRESSURE_vierkant_15};
@@ -179,7 +181,7 @@ De selectie druk is een maat voor de waarschijnlijkheid dat enkel de beste indiv
 \caption{Inpact van de selectiedruk op de convergentie snelheid en kwaliteit voor het plaatsen van 15 punten in \texttt{vierkant} en \texttt{soos}}
 \label{graf:selectionPressure}
 \end{figure}
-Kijken we naar de grafieken in figuur \ref{graf:selectionPressure}, dan zien we dat de bekomen fitheid nagenoeg constant blijft ongeacht de selectiedruk. Wat wel sterk beïnvloed wordt door de selectie druk is de uitvoertijd en het aantal iteraties. We zien dat de uitvoertijd stijgt als de druk te hoog wordt. Hiervoor kunnen we tweee verkklaringen geven. \begin{itemize}\item de uitvoertijd ligt hoger omdat de toernooien langer duren \item en de uitvoertijd ligt hoger odat enkel de besten gekozen worden waardoor de genetsche diversiteit vernietigd wordt en er dus enkel met mutaties tot een goede oplossing moet worden gekomen.\end{itemize}
+Kijken we naar de grafieken in figuur \ref{graf:selectionPressure}, dan zien we dat de bekomen fitheid nagenoeg constant blijft ongeacht de selectiedruk. Wat wel sterk afhangt van de selectie druk is de uitvoeringstijd en het aantal iteraties. We zien dat de uitvoertijd stijgt als de druk te hoog wordt. Hiervoor kunnen we tweee verklaringen geven. \begin{itemize}\item de uitvoertijd ligt hoger omdat de toernooien langer duren \item en de uitvoertijd ligt hoger omdat enkel de besten gekozen worden waardoor de genetische diversiteit vernietigd wordt en er dus enkel met mutaties tot een goede oplossing moet worden gekomen.\end{itemize}
 
 Wij hebben gekozen voor een selectiedruk van 5. Wat wil zeggen dat de toernooigrootte 5\% is van de populatiegrootte.
 
@@ -187,7 +189,7 @@ Wij hebben gekozen voor een selectiedruk van 5. Wat wil zeggen dat de toernooigr
 
 \subsection{Weegfactor exponentieel lopend gemidelde}
 \label{sub:weightingFactor}
-om te weten of het programma klaar is met optimalisteren, houden we een gewogen exponentieel gemiddelde bij\footnote{zie ook sectie~\ref{sub:stopcond}}. De weegfactor die we kiezen is dus ook een parrameter die wel willen optimaliseren.
+om te weten of het programma klaar is met optimaliseren, houden we een gewogen exponentieel gemiddelde bij\footnote{zie ook sectie~\ref{ssub:stop_cond}}. De weegfactor die we kiezen is dus ook een parrameter die wel willen optimaliseren.
 \begin{figure}[H]
 \rnxaxis{Fitness}{Weegfactor}{
 	\addplotf{WEIGHTING_DECREASE_vierkant_15};
@@ -202,7 +204,7 @@ om te weten of het programma klaar is met optimalisteren, houden we een gewogen 
 \label{graf:weightingFactor}
 \end{figure}
 We zien wat we verwachten te zien. Hoe hoger de weegfactor hoe beter het resultaat maar ook hoe langer het zal duren om tot dat resultaat te komen. 
-We kiezen voor een weegfactor van \textbf{0.95} omdat we een optimaal antwoord willen. Merk op dat we niet kiezen voor 100 omdat het algoritme dat niet meer de waarde zou updateën. 
+We kiezen voor een weegfactor van \textbf{0.95} omdat we een optimaal antwoord willen. Merk op dat we niet kiezen voor 100 omdat het algoritme dat niet meer de waarde zou updaten. 
 % subsection  (end)
 
 %\input{footer}

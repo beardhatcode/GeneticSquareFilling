@@ -1,5 +1,6 @@
 %\input{header}
 \subsection{Stopvoorwaarde}
+\label{ssub:stop_cond}
 We moeten nu nog een voorwaarde opstellen om te stoppen met itereren. We willen pas stoppen als we er nagenoeg zeker van zijn dat er geen verbetering meer zal zijn.
 \subsubsection{Idee}
 We willen een waarde hebben die een maat is voor de grootte van recente verandering van de maximale fitheid in de populatie. Hiervoor zouden we een exponentieel lopend gemiddelde kunnen bijhouden van de verandering van de maximale fitheid per iteratie. Als we de maximale fitheid na de $i$-de iteratie $\bar f(i)$ noemen,dan kunnen we zo'n exponenteel lopend gemiddelde als volgt defineeren:

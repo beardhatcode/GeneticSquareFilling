@@ -44,7 +44,6 @@ void deserialize_individu(float* source, individu* i, int numpoints)
 int transfer_individus(population * popu, int task_id)
 {
     int i, j, start_pos, start_pos_pro, procces, target_id;
-
     /* sizes */
     int req_lovers = popu->num_lovers / (NUM_TASKS - 1);
     int lover_size = (popu->numpoints * 2);
@@ -55,19 +54,22 @@ int transfer_individus(population * popu, int task_id)
     float recv_indi[NUM_TASKS * req_lovers * lover_size];
 
     /* Select a->num_lovers/num_pro UNIQUE random individu's */
+    send_indi[0] = 0.0;
     for (i = 0; i < req_lovers; i++)
     {
-        selected[i] = do_pos_tournament(popu, popu->size * SELECTION_PRESSURE / 100);
+        selected[i] = do_pos_tournament(popu, 2 * popu->size * SELECTION_PRESSURE / 100);
         for (j = 0; j < i; j++)
             if (selected[i] == selected[j])
             {
                 i--;
                 break;
             }
+        if (popu->list[selected[i]].fitness > send_indi[0])
+        {
+            send_indi[0] = popu->list[selected[i]].fitness;
+        }
 
     }
-
-
     /* Convert to float-array                       */
     /* fill array as | pt1.x | pt1.y | pt2.x | ... |*/
     for (i = 0; i < req_lovers; i++)
@@ -93,7 +95,6 @@ int transfer_individus(population * popu, int task_id)
             start_pos = start_pos_pro + i * lover_size;
 
             deserialize_individu(recv_indi + start_pos, popu->list + target_id, popu->numpoints);
-
             get_fitness(popu, popu->list + target_id);
             target_id++;
         }
@@ -149,14 +150,14 @@ int main(int argc, char *argv[])
 
 int mpi_parse_input(int argc, char *argv[], polygon* poly, int* num)
 {
-    int r = polygon_read("../tests/vierkant.poly", poly);
-    *num = 50;
+    int r = polygon_read(argv[2], poly);
+    *num = atoi(argv[1]);
     return r;
 }
 
 int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itters, loop_checker end_loop)
 { // <editor-fold defaultstate="collapsed">
-    int r, best, i;
+    int r, i;
     int loopsatatus;
     individu* best_ndi;
 
@@ -210,7 +211,7 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
                 MPI_Status status;
                 MPI_Recv(recv_indi, popu->numpoints * 2, MPI_FLOAT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
                 deserialize_individu(recv_indi, popu->list, popu->numpoints);
-                get_fitness(popu,popu->list);
+                get_fitness(popu, popu->list);
             }
         }
         printf("%.9f\n", best_ndi->fitness);
@@ -246,6 +247,7 @@ int master_loop(population* a, int done_itters, int itters, int id)
     int i;
     int time_to_end = 1;
     static int times_to_end = 0;
+    static int times_to_end_2 = 0;
     double cur_best;
     int best_pro = 0;
     total_itters += done_itters;
@@ -273,14 +275,17 @@ int master_loop(population* a, int done_itters, int itters, int id)
         }
     }
 
-    if (fabs(prev_best - cur_best) > 0.01)
+
+    if (fabs(prev_best - cur_best) > 0.01 * cur_best)
     {
-        printf("Not neglectable change %f\n", fabs(prev_best - cur_best));
+        printf("Can't ignore change %f\n", fabs(prev_best - cur_best));
         prev_best = cur_best;
         time_to_end = 0;
+        times_to_end_2 = 0;
     }
 
-    if (time_to_end)
+
+    if (time_to_end || times_to_end_2 > 10)
     {
         printf("\x1b[31mIt is time (%d)\x1b[0m\n", times_to_end);
         times_to_end++;
@@ -288,7 +293,7 @@ int master_loop(population* a, int done_itters, int itters, int id)
     else
     {
         times_to_end = 0;
-        printf("\x1b[32mTime reset\x1b[0m\n");
+        printf("\x1b[32mTime reset (%d)\x1b[0m\n", times_to_end_2);
     }
 
 
@@ -347,13 +352,13 @@ int slave_loop(population* a, int done_itters, int itters, int id)
 
 int master_main(polygon* poly, int numpoints, int id)
 {
-    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS, 5000, &master_loop);
+    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS / 2, 100, &master_loop);
     return 0;
 }
 
 int slave_main(polygon* poly, int numpoints, int id)
 {
-    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS, 5000, &slave_loop);
+    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS / 2, 100, &slave_loop);
 
     return 0;
 }

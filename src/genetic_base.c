@@ -122,9 +122,8 @@ int do_iterations(population* population, int num_generations)
 
     int i, num_kids;
     double best = population->list[get_best(population)].fitness; /* elite magic number for good luck */
-    double best_diff = 50000;
+    static double best_diff = 50000;
     double prev_best = best;
-
     if (NULL == lovers_indices)
         return -1;
 
@@ -148,8 +147,8 @@ int do_iterations(population* population, int num_generations)
                 + (((double) 1 - (double) WEIGHTING_DECREASE) * fabs(best - prev_best));
 
 
-
-       log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, best, best - prev_best, best_diff);
+        if(0==(i % 100))
+            log_dbg("|  %-3d  | % 3.3f | %+3.8f | %3.8f |\n", i, best, best - prev_best, best_diff);
 
         prev_best = best;
 

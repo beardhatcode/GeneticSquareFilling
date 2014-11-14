@@ -49,10 +49,11 @@ int init_population(int size, int numpoints, polygon* poly, population** popu_pt
         return -3;
     }
 
-    popu->best = -1.0; //set firt as best
+    popu->best = -1.0;
     /* Fill with random points */
     for (i = 0; i < size + popu->num_lovers; i++)
     {
+        /*Generate random individu's and add them*/
         init_individu(popu, popu->list + i, popu->_allpoints + (i * numpoints));
     }
 

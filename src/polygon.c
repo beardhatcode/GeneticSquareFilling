@@ -14,7 +14,7 @@ int polygon_init(int size, polygon* poly)
         return -1;
     }
 
-    //Set up links to next en prev
+    /* Set up links to next en prev */
     for (i = 0; i < size; i++)
     {
         poly->verts[i].next = &(poly->verts[(i + 1) % size]);
@@ -41,7 +41,7 @@ void polygon_free(polygon* poly)
  */
 int polygon_read(char* filename, polygon* poly)
 {
-    FILE *fptr = fopen(filename, "r"); //Open file
+    FILE *fptr = fopen(filename, "r"); /* Open file */
     float x, y;
     int num, r, i = 0;
     double dx, dy, a, b;
@@ -49,7 +49,7 @@ int polygon_read(char* filename, polygon* poly)
     if (NULL == fptr)
         return -1;
 
-    //Get number of lines and initiate polygon
+    /* Get number of lines and initiate polygon */
     r = fscanf(fptr, "%d", &num);
     if (r < 0)
         return r;
@@ -65,7 +65,7 @@ int polygon_read(char* filename, polygon* poly)
 
 
 
-        // Keep boundaries up to date
+        /* Keep boundaries up to date */
         if (x < poly->bound_min_x)
             poly->bound_min_x = x;
         if (x > poly->bound_max_x)
@@ -79,7 +79,7 @@ int polygon_read(char* filename, polygon* poly)
     }
 
     fclose(fptr);
-    //Generate a function for each of the edges (y=ax+b)
+    /*Generate a function for each of the edges (y=ax+b) */
     for (i = 0; i < poly->num_vert; i++)
     {
         dx = (double) poly->verts[i].x - (double) poly->verts[i].next->x;
@@ -91,7 +91,7 @@ int polygon_read(char* filename, polygon* poly)
         poly->verts[i].line_b = b;
     }
 
-    //Rough approximation of diameter
+    /*Rough approximation of diameter */
     poly->diagonal = sqrt(
                           (poly->bound_min_x - poly->bound_max_x)*(poly->bound_min_x - poly->bound_max_x) +
                           (poly->bound_min_y - poly->bound_max_y)*(poly->bound_min_y - poly->bound_max_y)
@@ -118,7 +118,7 @@ int polygon_contains(float x, float y, polygon* poly)
     int i, count = 0;
     double a, b, yintersect;
 
-    //Loop over the vertices
+    /*Loop over the vertices */
     for (i = 0; i < poly->num_vert; i++)
     {
         a = poly->verts[i].line_a;
@@ -127,20 +127,20 @@ int polygon_contains(float x, float y, polygon* poly)
 
         if (!isinf(a))
         {
-            //"if not line that is parallel to y axis"
+            /*"if not line that is parallel to y axis" */
 
-            //Use product of differences to determine if between points on line
+            /*Use product of differences to determine if between points on line */
             double deltaproduct = (poly->verts[i].x - x) * (poly->verts[i].next->x - x);
             if (deltaproduct <= 0 && yintersect >= y)
             {
 
-                //special case: point on line -> accept
+                /* special case: point on line -> accept */
                 if (yintersect == y)
                     return 1;
 
                 if (!(deltaproduct == 0 && poly->verts[i].x == x && poly->verts[i].next->x != x))
                 {
-                    //If deltaproduct == 0 it is exactly beneath a point (don't double count it)
+                    /*If deltaproduct == 0 it is exactly beneath a point (don't double count it) */
                     count++;
                     if (count > 1)
                         break;
@@ -149,7 +149,7 @@ int polygon_contains(float x, float y, polygon* poly)
         }
         else
         {
-            //line parrallel with y axis
+            /* line parrallel with y axis */
             if (poly->verts[i].x == x)
             {
                 if ((poly->verts[i].y - y)*(poly->verts[i].next->y - y) <= 0)

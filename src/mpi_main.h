@@ -37,6 +37,15 @@ int mpi_parse_input(int argc, char *argv[], polygon* poly, int* num);
  * @return 
  */
 int master_main(polygon* poly, int numpoints, int id);
+
+/**
+ * Called to start slave
+ * should call parrallel_loops
+ * @param poly          polygon 
+ * @param numpoints     number of points to place
+ * @param id            procces id
+ * @return 
+ */
 int  slave_main(polygon* poly, int numpoints, int id);
 
 
@@ -58,14 +67,30 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
 
 
 /**
- * Transfer tournament selected individus to olther proccesses.
+ * Transfer individus between prosesses
+ * Simply calls transfer_individus_island of transfer_individus_gather .
  * @param popu      Population of current proccess
  * @param task_id   Numer of current procces
  * @return 0 on succes else mpi error
  */
 int transfer_individus(population * popu, int task_id);
-
-
+/*
+ * Transfer individus between prosesses by sending to a limited number of 
+ * processes
+ * @param popu      Population of current proccess
+ * @param task_id   Numer of current procces
+ * @return 0 on succes else mpi error
+ */
+int transfer_individus_gather(population * popu, int task_id);
+ 
+/*
+ * Transfer individus between prosesses by sending to a limited number of 
+ * processes
+ * @param popu      Population of current proccess
+ * @param task_id   Numer of current procces
+ * @return 0 on succes else mpi error
+ */
+int transfer_individus_island(population * popu, int task_id);
 
 
 

@@ -170,7 +170,6 @@ int main(int argc, char *argv[])
     polygon poly = {0};
     int numpoints;
 
-
     r = MPI_Init(&argc, &argv);
     if (r != MPI_SUCCESS)
     {
@@ -179,7 +178,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    MPI_Errhandler_set(MPI_COMM_WORLD, MPI_ERRORS_RETURN);
+    MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN);
 
 
     r = MPI_Comm_size(MPI_COMM_WORLD, &NUM_TASKS);

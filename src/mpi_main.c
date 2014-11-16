@@ -10,7 +10,8 @@
 #include <assert.h>
 #include <time.h>
 #include <math.h>
-#include <unistd.h> 
+#include <unistd.h>
+#include <sys/select.h> 
 #include "mpi.h"
 #include "debugmacro.h"
 #include "polygon.h"
@@ -40,6 +41,8 @@ void deserialize_individu(float* source, individu* i, int numpoints)
         i->points[j].y = source[j * 2 + 1];
     }
 }
+
+//TODO:: FIX
 
 int transfer_individus_gather(population * popu, int task_id)
 {
@@ -86,10 +89,10 @@ int transfer_individus_gather(population * popu, int task_id)
 
 int transfer_individus_island(population * popu, int task_id)
 {
-    int i, target_id, r;
+    int i, j, target_id, r;
 
     /* sizes */
-    int req_lovers = popu->num_lovers;
+    int req_lovers = 2 * popu->num_lovers;
     int lover_size = (popu->numpoints * 2);
 
     float recv_indi[req_lovers][lover_size];
@@ -98,13 +101,27 @@ int transfer_individus_island(population * popu, int task_id)
 
     /* Make some space */
     float send_indi[req_lovers][lover_size];
-    int selected;
-
+    int selected[req_lovers];
+    int succes;
     /* Select a->num_lovers random individu's */;
     for (i = 0; i < req_lovers; i++)
     {
-        selected = do_pos_tournament(popu, 2 * popu->size * SELECTION_PRESSURE / 100);
-        serialize_individu(send_indi[i], popu->list + selected, popu->numpoints);
+        do
+        {
+            succes = 1;
+            selected[i] = do_pos_tournament(popu, popu->size * SELECTION_PRESSURE / 100);
+
+            for (j = 0; j < i; j++)
+            {
+                if (selected[i] == selected[j])
+                {
+                    succes = 0;
+                    break;
+                }
+            }
+        }
+        while (succes == 0);
+        serialize_individu(send_indi[i], popu->list + selected[i], popu->numpoints);
     }
 
 
@@ -290,8 +307,8 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
             printf("%f %f\n", best_ndi->points[i].x, best_ndi->points[i].y);
         }
 #else
-        printf("%d proc\n",NUM_TASKS);
-        printf("%d points\n",numpoints);
+        printf("%d proc\n", NUM_TASKS);
+        printf("%d points\n", numpoints);
 #endif
     }
     else

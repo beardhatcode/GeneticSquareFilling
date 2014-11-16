@@ -289,6 +289,9 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
         {
             printf("%f %f\n", best_ndi->points[i].x, best_ndi->points[i].y);
         }
+#else
+        printf("%d proc\n",NUM_TASKS);
+        printf("%d points\n",numpoints);
 #endif
     }
     else

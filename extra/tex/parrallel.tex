@@ -18,8 +18,8 @@ We merken op dat individuen gekozen door een positieve Touranament Selection\foo
 
 
   
-  \foreach \a in {1,2,...,8}{
-  \node[main node] (\a) at (\a*-360/8: 3cm) {\a};
+  \foreach \a [count=\c] in {4,5,6,7,8,1,2,3}{
+  \node[main node] (\a) at (\c*-360/8: 3cm) {\a};
 }
 
 
@@ -60,8 +60,8 @@ We merken op dat individuen gekozen door een positieve Touranament Selection\foo
 \begin{tikzpicture}[->,>=angle 45,shorten >=0pt,auto,node distance=2cm,
   thick,main node/.style={circle,fill=mymark,draw,font=\ttfamily\Large}]
 
-\foreach \a in {1,2,...,5}{
-  \node[main node] (\a) at (\a*-360/5: 3cm) {\a};
+\foreach \a [count=\c]in {1,2,...,5}{
+  \node[main node] (\a) at (162+\c*-360/5: 3cm) {\a};
 }
 
 

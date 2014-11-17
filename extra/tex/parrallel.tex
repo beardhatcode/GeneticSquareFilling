@@ -6,11 +6,16 @@ Om ons algoritme te parallelliseren gaan we parallel meerdere keren naast elkaar
 In de grafieken van figuur \ref{graf:numLovers} zien we dat hoe meer individuen we hebben, hoe minder iteraties er nodig zijn maar ook hoe groter de uitvoeringstijd. Nu kunnen we een grotere populatie bestaande uit verschillende deelpopulaties nabootsen. Elke deelpopulatie geven we zijn eigen processor.  
 
 %todo
-We merken op dat individuen gekozen door een positieve Touranament Selection\footnote{zie sectie \ref{sec:positiveTournament} en \ref{sub:tournament}} ideaal zijn om gedeeld te worden over processen heen. We zullen op zo'n manier individuen selecteren uit de populatie van het huidige proces en die injecteren in de populaties van de andere processen. 
+We merken op dat individuen gekozen door een positieve Touranament Selection\footnote{zie sectie \ref{sec:positiveTournament} en \ref{sub:tournament}} ideaal zijn om gedeeld te worden over processen heen. We zullen op zo'n manier individuen selecteren uit de populatie van het huidige proces en die verplaatsen naar de populaties van de andere processen. 
 
 \section{Algoritme}
 
 
+\section{Communticatie}
+Er kunnen zich 2 gevallen voordoen. Ofwel is de hoeveelheid individuen die we willen versturen per iteratie groter dan het aantal prosessen. Ofwel is dat niet zo.
+\subsection{Meer doelen dan individuen}
+We willen er voor zorgen dat de individuen gelijkmatig worden doorgegeven en bij
+elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo kan zijn dat de communicatie graaf meer dan 1 component bevat. Om te voorkomen dat er meerdere componenten zijn gaan we steeds naar het proces dat op ons volgt sturen\footnote{formeel is dat dus process $i+1 \mod n$ voor $i$ de huidige id en $n$ het aantal processen}. Verder moeten we ervoor zorgen dat data van onze populatie zo goed moegelijk wordt verspreid over de andere processen.
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[->,>=angle 45,shorten >=0pt,auto,node distance=2cm,

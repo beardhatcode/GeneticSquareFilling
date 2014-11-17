@@ -46,39 +46,57 @@ void deserialize_individu(float* source, individu* i, int numpoints)
 
 int transfer_individus_gather(population * popu, int task_id)
 {
-    int i, target_id, r;
+    int i, target_id, r,j;
     /* sizes */
-    int req_lovers = popu->num_lovers;
+    int req_lovers = 2*popu->num_lovers;
     int lover_size = (popu->numpoints * 2);
     int per_target = popu->num_lovers / (NUM_TASKS - 1);
 
     /* Make some space */
     float send_indi[req_lovers][lover_size];
-    int selected;
     /* Gather */
     float recv_indi[NUM_TASKS][per_target][lover_size];
     int procces;
 
     /* Select a->num_lovers random individu's */;
+    int selected[req_lovers];
+    int succes;
+    
+    /* Select a->num_lovers random individu's */;
     for (i = 0; i < req_lovers; i++)
     {
-        selected = do_pos_tournament(popu, 2 * popu->size * SELECTION_PRESSURE / 100);
-        serialize_individu(send_indi[i], popu->list + selected, popu->numpoints);
+        do
+        {
+            succes = 1;
+            selected[i] = do_pos_tournament(popu, popu->size * SELECTION_PRESSURE / 100);
+
+            for (j = 0; j < i; j++)
+            {
+                if (selected[i] == selected[j])
+                {
+                    succes = 0;
+                    break;
+                }
+            }
+        }
+        while (succes == 0);
+        serialize_individu(send_indi[i], popu->list + selected[i], popu->numpoints);
     }
 
     r = MPI_Allgather(send_indi, per_target * lover_size, MPI_INT, recv_indi, per_target * lover_size, MPI_FLOAT, MPI_COMM_WORLD);
     MYMPIERRORHANDLE(r);
     target_id = popu->size;
+    j=0;
     for (procces = 0; procces < NUM_TASKS; procces++)
     {
         if (procces == task_id) continue;
         for (i = 0; i < per_target && target_id < popu->size + popu->num_lovers; i++)
         {
             /* Define the start of a "block" */
-            deserialize_individu(recv_indi[procces][i], popu->list + target_id, popu->numpoints);
-            get_fitness(popu, popu->list + target_id);
+            deserialize_individu(recv_indi[procces][i], popu->list + selected[j], popu->numpoints);
+            get_fitness(popu, popu->list + selected[j]);
             //log_mpidbg("\x1b[3%dm %d Received form %d-%d nr %d: %f %f\x1b[0m\n", task_id, task_id, procces, i,target_id, (popu->list + target_id)->fitness, recv_indi[procces][i][0]);
-            target_id++;
+            j++;
         }
     }
     do_deathmatch(popu, target_id - popu->size);
@@ -103,6 +121,7 @@ int transfer_individus_island(population * popu, int task_id)
     float send_indi[req_lovers][lover_size];
     int selected[req_lovers];
     int succes;
+    
     /* Select a->num_lovers random individu's */;
     for (i = 0; i < req_lovers; i++)
     {
@@ -134,6 +153,8 @@ int transfer_individus_island(population * popu, int task_id)
         r = MPI_Isend(send_indi[i], lover_size, MPI_FLOAT, target_id, 5, MPI_COMM_WORLD, &(req[i]));
         MYMPIERRORHANDLE(r);
     }
+                                                
+                                                
     //log_mpidbg("%d has sent 1 to %d (%d), waiting...\n", task_id, req_lovers, req_lovers);
     for (i = 0; i < req_lovers; i++)
     {
@@ -143,14 +164,18 @@ int transfer_individus_island(population * popu, int task_id)
 
     //log_mpidbg("%d got %d/%d, waiting for recv...\n", task_id, req_lovers, req_lovers);
 
-    target_id = popu->size;
-    for (i = 0; i < req_lovers; i++)
+    j=0;
+    for (i =0; i < req_lovers; i++)
     {
-        deserialize_individu(recv_indi[i], popu->list + target_id, popu->numpoints);
-        get_fitness(popu, popu->list + target_id);
-        target_id++;
-    }
+        
+        deserialize_individu(recv_indi[i], popu->list + selected[j], popu->numpoints);
+        get_fitness(popu, popu->list + selected[j]);
+        j++;
+    }    
 
+    j = get_best(popu);
+    popu->best = popu->list[j].fitness;
+    
     for (i = 0; i < req_lovers; i++)
     {
         r = MPI_Wait(&(req[i]), &(status[i]));
@@ -159,7 +184,6 @@ int transfer_individus_island(population * popu, int task_id)
     //log_mpidbg("%d done waiting\n", task_id);
     r = MPI_Barrier(MPI_COMM_WORLD);
     MYMPIERRORHANDLE(r);
-    do_deathmatch(popu, target_id - popu->size);
 
     return 0;
 }
@@ -168,7 +192,7 @@ int transfer_individus(population * popu, int task_id)
 {
 
 
-    if (popu->num_lovers / (NUM_TASKS - 1) >= 1)
+    if (2*popu->num_lovers / (NUM_TASKS - 1) >= 1)
     {
         transfer_individus_gather(popu, task_id);
     }
@@ -471,13 +495,13 @@ int slave_loop(population* a, int done_itters, int itters, int id)
 
 int master_main(polygon* poly, int numpoints, int id)
 {
-    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS / 2, 50, &master_loop);
+    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS / 4, 50, &master_loop);
     return 0;
 }
 
 int slave_main(polygon* poly, int numpoints, int id)
 {
-    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS / 2, 50, &slave_loop);
+    parrallel_loops(poly, numpoints, id, NUM_INDIVIDUS / 4, 50, &slave_loop);
 
     return 0;
 }

@@ -1,0 +1,12 @@
+2014-11-15 23:30:26,459 WARNING    mympirun.OpenMPI_PBS.__init__ MainThread  make_mpdboot: mpd.conf file not found at /user/home/gent/vsc413/vsc41328/.mpd.conf. Creating this file (text file with minimal entry 'password=<somesecretpassword>')
+mympirun maxdist_mpi 10 vierkant.poly
+4.61 real
+5.00 user
+2.66 sys
+
+mympirun maxdist_mpi 100 vierkant.poly
+31.28 real
+473.53 user
+2.17 sys
+
+=>> PBS: job killed: walltime 644 exceeded limit 600

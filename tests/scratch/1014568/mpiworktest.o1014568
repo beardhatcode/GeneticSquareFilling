@@ -1,0 +1,20 @@
+183.964217449
+32 proc
+10 points
+18836.839146421
+8 proc
+100 points
+18836.955637805
+16 proc
+100 points
+18837.076026516
+32 proc
+100 points
+--------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 64 slots 
+that were requested by the application:
+  maxdist_mpi
+
+Either request fewer slots for your application, or make more slots available
+for use.
+--------------------------------------------------------------------------

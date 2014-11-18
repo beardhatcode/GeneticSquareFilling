@@ -12,10 +12,14 @@ We merken op dat individuen gekozen door een positieve Touranament Selection\foo
 
 
 \section{Communticatie}
-Er kunnen zich 2 gevallen voordoen. Ofwel is de hoeveelheid individuen die we willen versturen per iteratie groter dan het aantal prosessen. Ofwel is dat niet zo.
-\subsection{Meer doelen dan individuen}
+We willen een vaste hoeveelheid individuen laten versturen door elk proces ongeacht het aantal lopende processen.  
+Er kunnen zich 2 gevallen voordoen. Ofwel is de hoeveelheid individuen die we willen versturen per iteratie groter dan het aantal processen. Ofwel is dat niet zo.
+\subsection{Meer processen dan aantal te versturen}
 We willen er voor zorgen dat de individuen gelijkmatig worden doorgegeven en bij
-elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo kan zijn dat de communicatie graaf meer dan 1 component bevat. Om te voorkomen dat er meerdere componenten zijn gaan we steeds naar het proces dat op ons volgt sturen\footnote{formeel is dat dus process $i+1 \mod n$ voor $i$ de huidige id en $n$ het aantal processen}. Verder moeten we ervoor zorgen dat data van onze populatie zo goed moegelijk wordt verspreid over de andere processen.
+elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo kan zijn dat de communicatie graaf meer dan 1 component bevat. Om te voorkomen dat er meerdere componenten zijn gaan we steeds naar het proces dat op ons volgt sturen\footnote{formeel is dat dus process $i+1 \mod n$ voor $i$ de huidige id en $n$ het aantal processen}. Verder moeten we ervoor zorgen dat data van onze populatie zo goed mogelijk wordt verspreid over de andere processen. We kunnen dit doen door vanuit het $i$ de te versuren naar de processen uit de verzameling \[
+\left\{\left.\left(i + 1 + \frac{k \cdot p}{b}\right) \mod p  ~ \right\rvert   k \in \{0,\dots,b-1\}\right\}
+\] met $p$ het aantal processen en $b$ het aantal te versturen individuen. Als we kijken naar figuur~\ref{parr_conn_8} zien we dat de de uitgaande en binnenkomende pijlen min of meer gelijkmatig verdeeld worden over de andere processen. 
+
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[->,>=angle 45,shorten >=0pt,auto,node distance=2cm,
@@ -56,13 +60,18 @@ elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo ka
 
 ;
 \end{tikzpicture}
-\caption{Punten binnen en buiten de figuur \texttt{soos.poly} met snijpunten.}
+\caption{De overdracht tussen 8 processen met een buffergrootte van 3. Uitgaande individuen van 1 zijn in het rood aangeduid. Binnenkomende individuen zijn in het blauw aangeduid.}
+\label{parr_conn_8}
 \end{figure}
 
-
+\subsection{Minder processen dan aantal te versturen}
+Als er minder procesen zijn dan te verzenden individu's dan zullen alle processen van alle andere processen minstens 1 individu krijgen. We sturen \[
+\#(\text{per proces}) = \left\lfloor \frac{b}{p-1} \right\rfloor
+\] individuen door naar elk ander proces.
+Figuur~\ref{parr_conn_5} toont hoe de communicatie verloopt bij 5 processen en een buffergrootte van 8. We zien dat elk proces 2 individuen krijgt.
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[->,>=angle 45,shorten >=0pt,auto,node distance=2cm,
+\begin{tikzpicture}[->>,>=angle 90,shorten >=1pt,auto,node distance=2cm,
   thick,main node/.style={circle,fill=mymark,draw,font=\ttfamily\Large}]
 
 \foreach \a [count=\c]in {1,2,...,5}{
@@ -73,23 +82,23 @@ elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo ka
 
   \path[every node/.style={font=\sffamily\small}]
 
-(1)	edge [bend left] node [] {} (2)
-	edge node [] {} (3)
-	edge node [] {} (4)
-	edge [bend right] node [] {} (5)
+(1)	edge [draw=red,bend left] node [] {} (2)
+	edge [draw=red] node [] {} (3)
+	edge [draw=red] node [] {} (4)
+	edge [draw=red,bend right] node [] {} (5)
 (2)	edge [bend left] node [] {} (3)
 	edge node [] {} (4)
 	edge node [] {} (5)
-	edge [bend right] node [] {} (1)
+	edge [bend right,draw=red] node [] {} (1)
 (3)	edge [bend left] node [] {} (4)
 	edge node [] {} (5)
-	edge node [] {} (1)
+	edge [draw=red] node [] {} (1)
 	edge [bend right] node [] {} (2)
 (4)	edge [bend left] node [] {} (5)
-	edge node [] {} (1)
+	edge [draw=red] node [] {} (1)
 	edge node [] {} (2)
 	edge [bend right] node [] {} (3)
-(5)	edge [bend left] node [] {} (1)
+(5)	edge [bend left, draw=red] node [] {} (1)
 	edge node [] {} (2)
 	edge node [] {} (3)
 	edge [bend right] node [] {} (4)
@@ -99,13 +108,31 @@ elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo ka
 
 ;
 \end{tikzpicture}
-\caption{Punten binnen en buiten de figuur \texttt{soos.poly} met snijpunten.}
+\caption{De overdracht tussen 5 processen met 8 te versturen individuen. Uitgaande en binnenkomende individuen van 1 zijn in het rood aangeduid.}
+\label{parr_conn_5}
 \end{figure}
 
- % \node[main node] (1) {1};
- % \node[main node] (2) [below right of=1] {2};
- % \node[main node] (3) [below of=2] {3};
- % \node[main node] (5) [below left of=1] {4};
- % \node[main node] (4) [below of=5] {5};
-% section  (end)
+\section{Copieëren of verplaatsen}
+Elk process krigt nu evenveel individuen binnen als hij verstuurd. Wij kunnen nu 2 dingen doen:
+\begin{enumerate}
+	\item De verstuurde individuen overschrijven met de nieuwe individuen.
+	\item De ontvangen individuen gewoon toevoegen aan de populatie en dan de populatie terug naar zijn oorspronkelijke grootte brengen zoals beschreven in sectie~\ref{sub:tournament}.
+\end{enumerate}
+
+Figuur~\ref{graf:nocopycopy} toont ons dat kopiëren nefast is voor de performantie.
+We kunnen dit verklaren door op te merken dat bij het kopiëren de populatie als het ware veel duplicaten zal bevatten van verstuurde individuen. Dit zorgt er voor dat de ,genetische diversiteit afneemt. Wat op zijn beurt de daling in prestatie verklaart. 
+\section{Complexiteit}
+We bepalen nu de complexiteit van het algoritme rekening houdend met het aantal processoren $p$.
+
+
+Als we kijken naar de graieken uit \ref{graf:numIndividus} zien we dat zien we dat het aantal nodige iteraties exponentieel afneemt met stijgende populatiegrootte en dan stabliseert. We merken op dat de sterke stijging in uitvoeringstijd er net toe doet daar we het parallel uitvoeren met kleine populaties. Hoe meer processoren, hoe minder tijd er nodig zal zijn om te convergeren tot op het moment van stabilisatie. We kunnen schrijven dat, tot er stabilisatie is, het aantal iteraties $\Theta\left(\frac{n}{\log{p}}\right)$ is.
+
+Daar we telkens even veel individuen versturen om kunnen we er van uitgaan dat het aantal het aantal uitwisselingen lineair is in het aantal te verzenden punten\footnote{wat evenredig is met $n$, het aantal te plaatsen punten}. We bekomen dus een complexiteit van $T(n)=\Theta\left(\frac{p\cdot n}{\log{p}}\right)$ voor de communicatie. 
+
+%cat coppy | sed  "/^\s*$/{N;N;x;N;N;x;N;N;N;s/\n/,/g;s/^,//}; s/[^0-9.,]//g" | awk 'BEGIN{FS=",";OFS=",";print "np","fit","time","usr","sys";} $3 {print $2,$1,$3,$4,$5}' | sort -n
+
+Zoals besproken in sectie~\ref{ssub:genetic} heeft het genetisch algoritme zelf een complexiteit van $T(n)=\Theta(n^2)$ per iteratie. 
+
+De totale compleiteit is in theorie dus  \[T(n)=\Theta\left(\frac{p\cdot n + n^2}{\log{p}}\right) = \Theta\left(\frac{p\cdot n + n^3}{\log{p}}\right)\]. 
+
 \input{footer}

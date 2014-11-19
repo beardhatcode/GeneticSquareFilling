@@ -1,0 +1,36 @@
+mympirun maxdist_mpi 10 vierkant.poly
+4.52 real
+5.27 user
+2.44 sys
+
+mympirun -h 4 maxdist_mpi 100 vierkant.poly
+32.45 real
+122.00 user
+0.44 sys
+
+mympirun -h 8 maxdist_mpi 100 vierkant.poly
+28.06 real
+207.44 user
+1.02 sys
+
+mympirun -h 16 maxdist_mpi 100 vierkant.poly
+31.36 real
+470.68 user
+1.97 sys
+
+2014-11-16 01:23:06,202 ERROR      mympirun.RunAsyncLoopStdout.__init__ MainThread  _post_exitcode: problem occured with cmd ['mpirun', '-machinefile /user/home/gent/vsc413/vsc41328/.mympirun/1014568.master15.delcatty.gent.vsc_20141116_012304/nodes', '--mca MKL_NUM_THREADS 1', '--mca btl sm,openib,self', '--mca LOADEDMODULES cluster/delcatty:GCC/4.8.3:numactl/2.0.9-GCC-4.8.3:hwloc/1.9-GCC-4.8.3:OpenMPI/1.8.1-GCC-4.8.3:OpenBLAS/0.2.9-GCC-4.8.3-LAPACK-3.5.0:gompi/2014b:FFTW/3.3.4-gompi-2014b:ScaLAPACK/2.0.2-gompi-2014b-OpenBLAS-0.2.9-LAPACK-3.5.0:foss/2014b:vsc-base/1.9.1:setuptools/1.4.2:vsc-mympirun/3.4.2:scripts/4.0.0', '--mca MODULESHOME /usr/share/Modules', '--mca MODULEPATH /apps/gent/SL6/sandybridge/modules/all:/etc/modulefiles/vsc:/usr/share/Modules/modulefiles:/etc/modulefiles', '-np 64', '-x LD_LIBRARY_PATH', '-x PATH', '-x PYTHONPATH', '-x OMP_NUM_THREADS', 'maxdist_mpi 100 vierkant.poly']: output --------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 64 slots 
+that were requested by the application:
+  maxdist_mpi
+
+Either request fewer slots for your application, or make more slots available
+for use.
+--------------------------------------------------------------------------
+
+2014-11-16 01:23:06,210 WARNING    mympirun.OpenMPI_PBS.__init__ MainThread  main: exitcode 1 > 0; cmd ['mpirun', '-machinefile /user/home/gent/vsc413/vsc41328/.mympirun/1014568.master15.delcatty.gent.vsc_20141116_012304/nodes', '--mca MKL_NUM_THREADS 1', '--mca btl sm,openib,self', '--mca LOADEDMODULES cluster/delcatty:GCC/4.8.3:numactl/2.0.9-GCC-4.8.3:hwloc/1.9-GCC-4.8.3:OpenMPI/1.8.1-GCC-4.8.3:OpenBLAS/0.2.9-GCC-4.8.3-LAPACK-3.5.0:gompi/2014b:FFTW/3.3.4-gompi-2014b:ScaLAPACK/2.0.2-gompi-2014b-OpenBLAS-0.2.9-LAPACK-3.5.0:foss/2014b:vsc-base/1.9.1:setuptools/1.4.2:vsc-mympirun/3.4.2:scripts/4.0.0', '--mca MODULESHOME /usr/share/Modules', '--mca MODULEPATH /apps/gent/SL6/sandybridge/modules/all:/etc/modulefiles/vsc:/usr/share/Modules/modulefiles:/etc/modulefiles', '-np 64', '-x LD_LIBRARY_PATH', '-x PATH', '-x PYTHONPATH', '-x OMP_NUM_THREADS', 'maxdist_mpi 100 vierkant.poly']
+mympirun -h 32 maxdist_mpi 100 vierkant.poly
+1.63 real
+0.20 user
+0.05 sys
+
+=>> PBS: job killed: walltime 3607 exceeded limit 3600

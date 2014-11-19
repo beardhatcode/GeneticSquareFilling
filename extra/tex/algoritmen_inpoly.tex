@@ -73,7 +73,7 @@ veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte 
 		\For{\textbf{each} z $\in$ zijden} 
 		\State $(x_1,y_1)$ $\gets$ $1^{ste}$ gedefinieerde punt van z
 		\State $(x_2,y_2)$ $\gets$ $2^{de}$ gedefinieerde punt van z
-		\If{z.$a = \infty$} 	\Comment Als z $\parallel$ $y$-as 
+		\If{z.$a = \infty \wedge x_1 = P_x$} 	\Comment z $\parallel$ $y$-as 
 			\If{$P_y \in  \left \lbrack y_1,y_2\right\lbrack$}
 			\State \Return \texttt{true} \Comment{Op lijn}
 			\ElsIf{$y_1 > P_y$}
@@ -101,7 +101,7 @@ veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte 
 	\end{algorithm}		
 
 Waarbij z$.a$ en z$.b$ de cooificienten zijn van de vergelijking $y=ax+b$ die de zijde 
-voorstelt 
+voorstelt. De notatie van de intervallen houden geen rekening met de verhouding van de waarden ten opzichte van elkaar, wij bedoelen steeds de waarden tussen de gegeven waarden in of exclusief de grenzen.
 
 \subsubsection{Complexiteit}
 Kijken we naar algoritme \ref{alg:inPolygon} dan is het duidelijk dat de complexiteit $O(z)$ is met $z$ het aantal zijden.
@@ -109,15 +109,18 @@ Kijken we naar algoritme \ref{alg:inPolygon} dan is het duidelijk dat de complex
 % subsection  (end)
 
 \subsubsection{Implementatie}
-Deze methode is geimplementeerd in \\ \texttt{polygon.c} als \\ \texttt{polygon\_contains()}. 
+Deze methode is geimplementeerd in \\ \texttt{polygon.c} als  \texttt{polygon\_contains()}. 
 We wijzen nog even op enkele details:
 \begin{itemize}
 \item We gebruiken $(P_x-x_1)\cdot(P_x-x_2)\leq0$ om te bepalen of een waarde al dan niet 
 		tussen 2 waarden ligt. We doen dit zo omdat we niet weten hoe $x_1$ en $x_2$ 
 		zich onderling verhouden.
 \item Om het herberekenen van $a$ en $b$ te vermijden, berekenen we deze eenmalig bij het inlezen van de veelhoek.
-
 \end{itemize}
+
+\subsubsection{Genereren random punten}
+\label{ssub:rand_generation}
+Om random individuen voor de populatie te creëren genereren we telkens een random $x$ en $y$ binnen het omsloten vierkant. Vervolgens gaan we na of het ook wel degelijk in de veelhoek ligt. Telkens zo'n punt is gevonden wordt het toegevoegd aan het te genereren random individu tot er $n$ punten zijn. Voor het genereren van $N_p$ individuen heeft dit een complexiteit van $T(n)=\Theta(N_p\cdot n) = \Theta(n)$
 
 % subsection  (end)
 

@@ -18,6 +18,7 @@
 \usepackage{pgfplots}
 \usepackage{multirow}
 \usepackage{tikz}
+\usetikzlibrary{arrows}
 \usetikzlibrary{calc}
 
 \floatname{algorithm}{Algoritme}
@@ -157,6 +158,9 @@ cycle list name=exotic,
 	\item[$\boldsymbol{#1}$:]
 }
 
+\newcommand{\itembf}[1]{
+	\item \textbf{#1}:
+}
 
 
 
@@ -174,4 +178,11 @@ cycle list name=exotic,
 
 \twocolumn[\begin{@twocolumnfalse}
     \maketitle
+    
+    \begin{abstract}
+    	{\em
+    	\input{abstract}
+    	}
+    \end{abstract}
+    
 \end{@twocolumnfalse}]

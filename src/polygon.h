@@ -26,12 +26,12 @@ typedef struct vertex {
  * Struct of a pollygon
  */
 typedef struct polygon {
-    // Number of vertices
+    /* Number of vertices */
     int num_vert;
-    // the vertices
+    /* the vertices */
     vertex* verts;
     float bound_min_x,bound_min_y,bound_max_x,bound_max_y;
-    float diagonal; //WET FINGER
+    float diagonal; /*WET FINGER*/
 } polygon;
 
 

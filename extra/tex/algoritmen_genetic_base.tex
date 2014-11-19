@@ -1,0 +1,54 @@
+%\input{header}
+\subsection{Het genetisch algoritme}
+\label{ssub:genetic}
+Nu we alle onderdelen van het genetisch algoritme hebben besproken kunnen we het samenbrengen tot een geheel.
+
+\subsubsection{Algoritme}
+	\begin{algorithm}[H]
+	 	\caption{Het genetisch algoritme}
+		\begin{algorithmic}
+		\Require $n$, het aantal te plaatsen punten
+		\Ensure een goede benadeering van een oplossing die aan de voorwaarden van een oplossing voldoet wordt eteeruggegeven
+		\Function{darwinsPoints}{}
+		\State $P \gets $ $N_p$ random individuen 
+		\Comment Sec \ref{ssub:rand_generation}
+		\While{niet stopconditie} 
+		\Comment Sec \ref{ssub:stop_cond}
+			\State $L \gets$ \Call{selectLovers}{$N_l$} 
+			\Comment Sec \ref{sec:positiveTournament}
+			\For{$i\gets 0 \dots \lfloor \abs{L}/2 \rfloor$ }
+				\State Maak 2 kinderen met ouders 
+				\State $L\lbrack2i\rbrack$ en  $L\lbrack2i+1\rbrack$ en voeg ze 
+				\State toe aan $P$ 
+				\Comment Sec \ref{sub:crossover}
+				\State Bereken fitheid kinden
+			\EndFor
+			\State \Call{tournament}{$P$,$N_p$} 
+			\Comment Sec \ref{sub:tournament}
+		\EndWhile 
+		\State \Return  $\displaystyle opl \in \lbrace x \in P \mid f(x) = \max_{y\in P}{f(y)}  \rbrace$
+		\EndFunction
+		\end{algorithmic}
+		\label{alg:genetic}
+	\end{algorithm}		
+    Merk op dat we in dit algoritme tournament selection gebruikt voor zowel het selecteren van wie sterft als voor het selecteren wie seks heeft. We hebben de verklaring hiervoor geformuleerd in Sectie~\ref{sub:algLoverSelection}. 
+\subsubsection{Complexiteisanalyse}
+  Overlopen de stappen in Algoritme~\ref{alg:genetic} om de complexiteit te bepalen:
+\begin{enumerate}
+	\itembf{Random generatie} Sectie~\ref{ssub:rand_generation} geeft ons:\\ $T_{gen}(n)=\Theta(N_p\cdot n) = \Theta(n)$ 
+	\itembf{Iteraties}
+		\begin{enumerate}
+			\itembf{Lover selection} \\$T(n)= \cdot P_M \cdot N_p = \Theta(1)$ 
+			\itembf{Crossover} Uit sectie \ref{sub:alg_crossover_compl}\\$T_{\text{1}}(n)= \Theta(N_l\cdot n) = \Theta(n)$
+			\itembf{Fitheid kinderen berekenen} \\$T_{\text{1}}(n)= \Theta(n^2)$
+			\itembf{Tournament Selection} \\$T(n)= \Theta(N_p\cdot P_M) = \Theta(1)$
+		\end{enumerate}
+	\itembf{Beste teruggeven}
+		\\Alles overlopen dus $T(n)=\Theta(N_p)=\Theta(1)$
+\end{enumerate}
+
+In de 2de grafiek van figuur \ref{graf:algLoverSelection} op pagina \pageref{graf:algLoverSelection} zien we dat het aantal iteraties $\Theta(n)$ is. We komen dus uit op een totale complexiteit van \[T(n)=\Theta\left(n^3\right)\]
+
+Er dient opgemerkt te worden dat het aantal iteraties begrensd is in onze implementatie. Dus als $n$ zo groot is dat het maximaal aantal iteraties wordt overschreden, dan in de complexiteit $\Theta{n^2}$.
+
+%\input{footer}

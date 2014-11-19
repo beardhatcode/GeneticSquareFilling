@@ -1,0 +1,80 @@
+mympirun maxdist_mpi 10 vierkant.poly
+4.44 real
+5.49 user
+2.36 sys
+
+mympirun maxdist_mpi 500 vierkant.poly
+1478.15 real
+23599.01 user
+4.10 sys
+
+mympirun maxdist_mpi_coppy 10 vierkant.poly
+2.75 real
+5.26 user
+2.19 sys
+
+mympirun maxdist_mpi_coppy 500 vierkant.poly
+3199.97 real
+51144.78 user
+6.25 sys
+
+mympirun -h 4 maxdist_mpi 500 vierkant.poly
+3067.90 real
+12267.32 user
+6.30 sys
+
+mympirun -h 8 maxdist_mpi 500 vierkant.poly
+1667.34 real
+13332.38 user
+2.64 sys
+
+mympirun -h 16 maxdist_mpi 500 vierkant.poly
+1552.87 real
+24797.95 user
+3.86 sys
+
+2014-11-18 04:37:45,642 ERROR      mympirun.RunAsyncLoopStdout.__init__ MainThread  _post_exitcode: problem occured with cmd ['mpirun', '-machinefile /user/home/gent/vsc413/vsc41328/.mympirun/1015306.master15.delcatty.gent.vsc_20141118_043744/nodes', '--mca MKL_NUM_THREADS 1', '--mca btl sm,openib,self', '--mca LOADEDMODULES cluster/delcatty:GCC/4.8.3:numactl/2.0.9-GCC-4.8.3:hwloc/1.9-GCC-4.8.3:OpenMPI/1.8.1-GCC-4.8.3:OpenBLAS/0.2.9-GCC-4.8.3-LAPACK-3.5.0:gompi/2014b:FFTW/3.3.4-gompi-2014b:ScaLAPACK/2.0.2-gompi-2014b-OpenBLAS-0.2.9-LAPACK-3.5.0:foss/2014b:vsc-base/1.9.1:setuptools/1.4.2:vsc-mympirun/3.4.2:scripts/4.0.0', '--mca MODULESHOME /usr/share/Modules', '--mca MODULEPATH /apps/gent/SL6/sandybridge/modules/all:/etc/modulefiles/vsc:/usr/share/Modules/modulefiles:/etc/modulefiles', '-np 64', '-x LD_LIBRARY_PATH', '-x PATH', '-x PYTHONPATH', '-x OMP_NUM_THREADS', 'maxdist_mpi 500 vierkant.poly']: output --------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 64 slots 
+that were requested by the application:
+  maxdist_mpi
+
+Either request fewer slots for your application, or make more slots available
+for use.
+--------------------------------------------------------------------------
+
+2014-11-18 04:37:45,649 WARNING    mympirun.OpenMPI_PBS.__init__ MainThread  main: exitcode 1 > 0; cmd ['mpirun', '-machinefile /user/home/gent/vsc413/vsc41328/.mympirun/1015306.master15.delcatty.gent.vsc_20141118_043744/nodes', '--mca MKL_NUM_THREADS 1', '--mca btl sm,openib,self', '--mca LOADEDMODULES cluster/delcatty:GCC/4.8.3:numactl/2.0.9-GCC-4.8.3:hwloc/1.9-GCC-4.8.3:OpenMPI/1.8.1-GCC-4.8.3:OpenBLAS/0.2.9-GCC-4.8.3-LAPACK-3.5.0:gompi/2014b:FFTW/3.3.4-gompi-2014b:ScaLAPACK/2.0.2-gompi-2014b-OpenBLAS-0.2.9-LAPACK-3.5.0:foss/2014b:vsc-base/1.9.1:setuptools/1.4.2:vsc-mympirun/3.4.2:scripts/4.0.0', '--mca MODULESHOME /usr/share/Modules', '--mca MODULEPATH /apps/gent/SL6/sandybridge/modules/all:/etc/modulefiles/vsc:/usr/share/Modules/modulefiles:/etc/modulefiles', '-np 64', '-x LD_LIBRARY_PATH', '-x PATH', '-x PYTHONPATH', '-x OMP_NUM_THREADS', 'maxdist_mpi 500 vierkant.poly']
+mympirun -h 32 maxdist_mpi 500 vierkant.poly
+1.53 real
+0.20 user
+0.06 sys
+
+mympirun -h 4 maxdist_mpi_coppy 500 vierkant.poly
+2613.44 real
+10447.89 user
+3.40 sys
+
+mympirun -h 8 maxdist_mpi_coppy 500 vierkant.poly
+3063.46 real
+24504.70 user
+5.06 sys
+
+mympirun -h 16 maxdist_mpi_coppy 500 vierkant.poly
+3430.10 real
+54821.36 user
+6.04 sys
+
+2014-11-18 07:09:34,356 ERROR      mympirun.RunAsyncLoopStdout.__init__ MainThread  _post_exitcode: problem occured with cmd ['mpirun', '-machinefile /user/home/gent/vsc413/vsc41328/.mympirun/1015306.master15.delcatty.gent.vsc_20141118_070933/nodes', '--mca MKL_NUM_THREADS 1', '--mca btl sm,openib,self', '--mca LOADEDMODULES cluster/delcatty:GCC/4.8.3:numactl/2.0.9-GCC-4.8.3:hwloc/1.9-GCC-4.8.3:OpenMPI/1.8.1-GCC-4.8.3:OpenBLAS/0.2.9-GCC-4.8.3-LAPACK-3.5.0:gompi/2014b:FFTW/3.3.4-gompi-2014b:ScaLAPACK/2.0.2-gompi-2014b-OpenBLAS-0.2.9-LAPACK-3.5.0:foss/2014b:vsc-base/1.9.1:setuptools/1.4.2:vsc-mympirun/3.4.2:scripts/4.0.0', '--mca MODULESHOME /usr/share/Modules', '--mca MODULEPATH /apps/gent/SL6/sandybridge/modules/all:/etc/modulefiles/vsc:/usr/share/Modules/modulefiles:/etc/modulefiles', '-np 64', '-x LD_LIBRARY_PATH', '-x PATH', '-x PYTHONPATH', '-x OMP_NUM_THREADS', 'maxdist_mpi_coppy 500 vierkant.poly']: output --------------------------------------------------------------------------
+There are not enough slots available in the system to satisfy the 64 slots 
+that were requested by the application:
+  maxdist_mpi_coppy
+
+Either request fewer slots for your application, or make more slots available
+for use.
+--------------------------------------------------------------------------
+
+2014-11-18 07:09:34,364 WARNING    mympirun.OpenMPI_PBS.__init__ MainThread  main: exitcode 1 > 0; cmd ['mpirun', '-machinefile /user/home/gent/vsc413/vsc41328/.mympirun/1015306.master15.delcatty.gent.vsc_20141118_070933/nodes', '--mca MKL_NUM_THREADS 1', '--mca btl sm,openib,self', '--mca LOADEDMODULES cluster/delcatty:GCC/4.8.3:numactl/2.0.9-GCC-4.8.3:hwloc/1.9-GCC-4.8.3:OpenMPI/1.8.1-GCC-4.8.3:OpenBLAS/0.2.9-GCC-4.8.3-LAPACK-3.5.0:gompi/2014b:FFTW/3.3.4-gompi-2014b:ScaLAPACK/2.0.2-gompi-2014b-OpenBLAS-0.2.9-LAPACK-3.5.0:foss/2014b:vsc-base/1.9.1:setuptools/1.4.2:vsc-mympirun/3.4.2:scripts/4.0.0', '--mca MODULESHOME /usr/share/Modules', '--mca MODULEPATH /apps/gent/SL6/sandybridge/modules/all:/etc/modulefiles/vsc:/usr/share/Modules/modulefiles:/etc/modulefiles', '-np 64', '-x LD_LIBRARY_PATH', '-x PATH', '-x PYTHONPATH', '-x OMP_NUM_THREADS', 'maxdist_mpi_coppy 500 vierkant.poly']
+mympirun -h 32 maxdist_mpi_coppy 500 vierkant.poly
+1.63 real
+0.21 user
+0.04 sys
+

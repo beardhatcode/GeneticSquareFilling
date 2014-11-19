@@ -1,12 +1,12 @@
 %\input{header}
-\subsection{Stochastic Universal Sampeling}
+\subsection{Selectie Paren}
 \label{sub:SUS}
 In het genetisch algoritme moeten er individuen worden geselecteerd die seks zullen hebben ter vorming van nieuwe individuen.
-Tijdens deze selectie moeten we er op letten dat dat we niet enkel de fitste individuen kiezen. De kans is namelijk reëel dat de genetische informatie van een ``slecht"" individu aanleiding kan geven tot een zeer goed individu na paring. Natuurlijk willen we diegenen met een hogere fitheid wel een grotere kans geven zich voort te planten.
+Tijdens deze selectie moeten we er op letten dat dat we niet enkel de fitste individuen kiezen. De kans is namelijk reëel dat de genetische informatie van een ``slecht'' individu aanleiding kan geven tot een zeer goed individu na paren. Natuurlijk willen we diegenen met een hogere fitheid wel een grotere kans geven zich voort te planten.
 
 \subsubsection{Idee}
-Stellen we onze individuen voor als blokjes met een grote die evenredig is met hun fitheid, dan kunnen we ze na elkaar plaatsen en iets bekomen als in figuur \ref{fig:SUS}. 
-We kunnen dan ergens stappen en met gelijke stappen vooruitgaan. Bij elke stap nemen we het stuk waar we bijstaan. Zo is de kans dat een stuk gekozen wordt recht evenredig met zijn fitness.
+Stellen we onze individuen voor als blokjes met een grootte die evenredig is met hun fitheid, dan kunnen we ze na elkaar plaatsen en iets bekomen als in figuur \ref{fig:SUS}. 
+We kunnen dan ergens starten en met gelijke stappen vooruitgaan. Bij elke stap nemen we het stuk waar we bijstaan. Zo is de kans dat een stuk gekozen wordt recht evenredig met zijn fitness. Deze aanpak wordt Stochastic Universal Sampeling genoemd.
 %todo
 
 \begin{center}
@@ -74,5 +74,9 @@ Het algoritme die het voorgaande idee implementeert heeft volgende vorm:
 \label{ssub:SUSComplexity}
 We moeten nagenoeg alle individuen in de populatie overopen. We kunnen dus stellen dat de complexiteit $ \Theta(\abs{P})$ is, met $\abs{P}$ de grootte van de populatie. Nu is $\abs{P}$ geen argument van ons programma. Dus bekomen we een complexiteit van \[T(n) = \Theta(1)\]
 % subsubsection  (end)
+
+\subsubsection{Alternatief}
+\label{sec:positiveTournament}
+Een alternatief bestaat er in tournament selcetion te gebruiken zoals in Algoritme~\ref{alg:tournament} uit sectie~\ref{sub:tournament}. Hierbij moeten we natuurlijk wel groter dan gebruiken in plaats van kleiner dan om meer kans te geven aan betere individuen. De complexiteit hiervan is  \[T(n) = \Theta(\abs{P} \cdot P_M) = \Theta(1)\]
 
 %\input{footer}

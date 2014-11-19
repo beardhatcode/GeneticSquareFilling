@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <mpi.h>
 #include <assert.h>
 #include <time.h>  
 #include "debugmacro.h"

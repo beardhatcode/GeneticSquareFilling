@@ -1,10 +1,14 @@
 \input{header}
-% grep  '\s*\\label' * | sed "s/\s\s*/ /g;s/:/+/;s/\+ /+/;s/^/%/" | column -t -s+
+% grep  '^[^%]*\s*\\label' * | sed "s/\s\s*/ /g;s/:/+/;s/\+ /+/;s/^/%/" | column -t -s+
 %algoritmen_crossover.tex                      \label{sub:crossover}
 %algoritmen_crossover.tex                      \label{alg:crossover-1point}
 %algoritmen_crossover.tex                      \label{alg:crossover-random}
+%algoritmen_crossover.tex                      \label{sub:alg_crossover_compl}
+%algoritmen_genetic_base.tex                   \label{ssub:genetic}
+%algoritmen_genetic_base.tex                   \label{alg:genetic}
 %algoritmen_inpoly.tex                         \label{sub:algo-pt-in-poly}
 %algoritmen_inpoly.tex                         \label{alg:inPolygon}
+%algoritmen_inpoly.tex                         \label{ssub:rand_generation}
 %algoritmen_mutation.tex                       \label{sub:Mutation}
 %algoritmen_mutation.tex                       \label{ssub:MutationAlgorithm}
 %algoritmen_mutation.tex                       \label{alg:Mutation}
@@ -14,13 +18,32 @@
 %algoritmen_stochastic_universal_sampling.tex  \label{fig:SUS}
 %algoritmen_stochastic_universal_sampling.tex  \label{alg:SUS}
 %algoritmen_stochastic_universal_sampling.tex  \label{ssub:SUSComplexity}
+%algoritmen_stochastic_universal_sampling.tex  \label{sec:positiveTournament}
+%algoritmen_stop.tex                           \label{ssub:stop_cond}
 %algoritmen.tex                                \label{sec:algoritmen}
 %algoritmen_tournament.tex                     \label{sub:tournament}
 %algoritmen_tournament.tex                     \label{alg:tournament}
 %algoritmen_tournament.tex                     \label{ssub:notetournament}
+%param_opt.tex                                 \label{sub:algLoverSelection}
+%param_opt.tex                                 \label{graf:algLoverSelection}
+%param_opt.tex                                 \label{ssub:crossover_type}
+%param_opt.tex                                 \label{graf:numIndividus}
+%param_opt.tex                                 \label{graf:numLovers}
+%param_opt.tex                                 \label{graf:mutationDeltaFig}
+%param_opt.tex                                 \label{graf:mutationDeltaTime}
+%param_opt.tex                                 \label{graf:mutation1In}
+%param_opt.tex                                 \label{sub:selection_pressure}
+%param_opt.tex                                 \label{graf:selectionPressure}
+%param_opt.tex                                 \label{sub:weightingFactor}
+%param_opt.tex                                 \label{graf:weightingFactor}
+%parrallel.tex                                 \label{sec:idee}
+%toelichting_code.tex                          \label{sec:explainationcode}
+%toelichting_code.tex                          \label{sub:heap}
+%toelichting_code.tex                          \label{sub:explain_tests}
+%toelichting_code.tex                          \label{sub:explain_debug_analyse}
 %verslag.tex                                   \label{sec:inleiding}
-%verslag.tex                                   \label{sec:explainationcode}
-%verslag.tex                                   \label{sub:pointer}
+
+
 
 \part{Genetisch algoritme}
 \section{Inleiding}
@@ -35,7 +58,8 @@ Tenzij anders vermeld betekenen volgende symbolen het volgende:
 \itemMB{X_i} Het i-de individu 
 \itemMB{z} Het aantal zijden van de veelhoek
 \itemMB{N_p} Populatiegrootte
-\itemMB{P_M} Mutatiedruk 
+\itemMB{N_l} Aantal geliefden
+\itemMB{P_M} Selectie druk 
 \itemMB{f} De fitheidsfunctie \[f(X_k)= \sum_{P_1 \in X_k}\sum_{P_2 \in X_k} \sqrt{d_2(P_1,P_2)} \]
 \end{itemize}
 
@@ -46,22 +70,18 @@ Tenzij anders vermeld betekenen volgende symbolen het volgende:
 % section inleiding (end)
 
 \section{Algortitmen}
+
 \input{algoritmen_inpoly}
 \input{algoritmen_tournament}
 \input{algoritmen_stochastic_universal_sampling}
 \input{algoritmen_mutation}
 \input{algoritmen_crossover}
+\input{algoritmen_stop}
+\input{algoritmen_genetic_base}
 
 \input {param_opt}
+\input {toelichting_code}
 
-\section{Toelichting Code}
-Life is life, nanananana....
-\label{sec:explainationcode}
-\subsection{Pointers}
-\label{sub:pointer}
-We hebben er voor gekozen om een array van individu's te gebruiken in de plaats van een array van pointers. We kiezen er ook voor om zo weinig \texttt{malloc} en \texttt{free} te gebruiken. Dat is dus dat we de bestaande individuen overschrijven in plaats van nieuwe ruimte te alloceren en dan de vorige te verwijderen.
-% subsection  (end)
-% section explainationcode (end)
 
 \part{Parralelisering}
 Nog niet gedaan...

@@ -1,15 +1,16 @@
 %\input{header}
 \subsection{Tournament Selection}
 \label{sub:tournament}
-Tijdens de uitvoering van het genetisch algoriptme zullen er steeds meer individuën bijkomen. We willen er echter voor zorgen dat onze populatie een vaste grootte ($N_p$) behoud. Er zullen dus individuën moeten worden vermoord.
+Tijdens de uitvoering van het genetisch algoritme zullen er steeds meer individuen bijkomen. We willen er echter voor zorgen dat onze populatie een vaste grootte ($N_p$) behoud. Er zullen dus individuen vermoord\footnote{Dat is dus verwijderden uit de populatie} moeten worden.
 \subsubsection{Algoritme}
-Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie} gebruiken we ``tournament selection''. Bij deze selectie word er telkens een vast aantal arbitraire individüen gekozen. Het individu met de slechtste fitheid uit te groep wordt telkens vermoord.
+Om te bepalen we we vermoorden gebruiken we ``tournament selection''. Bij deze selectie word er telkens een vast aantal arbitraire individuen gekozen. Het individu met de slechtste fitheid uit deze groep wordt vervolgens vermoord. Dit wordt herhaald tot de populatie terug de juiste grootte heeft.
 	\begin{algorithm}[H]
 	 	\caption{Tournament-Select}
 		\begin{algorithmic}
 		\Require 
 			\State $P$, te grote lijst van individuën 
 			\State $N_p$, gewenste populatiegrootte
+			\State $P_M$, de selectiedruk
 		\Ensure returnt de index van verliezer
 		\Function{tournamentSelection}{$P$,$N_t$}
 		\State loser $\gets$ arbitraire waarde uit $\lbrace 0, \dots, \abs{P} \rbrace$
@@ -20,12 +21,12 @@ Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie
 			\State $loser \gets j$
 		\EndIf
 		\EndFor		
-		\State \Return i
+		\State \Return $loser$
 		\EndFunction
 		\\
 		\\
 		\While{$\abs{P} >  N_p$}
-			\State $N_t \gets \left\lfloor\frac{\texttt{SELECTION\_PRESSURE}}{100} \cdot \abs{P}\right\rfloor$ 
+			\State $N_t \gets \left\lfloor\frac{P_M}{100} \cdot \abs{P}\right\rfloor$ 
 			\State slachtoffer $\gets$ \Call{tournamentSelect}{$P$,$N_t$}
 			\State $P \gets P\setminus$slachtoffer
 		\EndWhile
@@ -34,10 +35,10 @@ Om te bepalen we we vermoorden\footnote{Dat is dus verwijderden uit de populatie
 		\label{alg:tournament}
 	\end{algorithm}		
 \subsubsection{Complexiteit}
-In algoritme \ref{alg:tournament} wordt er $\abs{P}-N_p$ keer een slachtoffer gekozen door een tournooi uit te voeren. Tijdens een toernooi wordt er $N_t$ keer een willikeurig individu gekozen en vergeleken. De complexiteit is dus $\Theta((\abs{P}-N_p)\cdot N_t)$. Met $N_t$ de tournooigrootte\footnote{Zie sectie \ref{sub:selection_pressure}} en $N_p$ de gewenste populatiegrootte. We zien dat $N_t$ hier gelijk is aan
- $\left\lfloor\frac{\texttt{SELECTION\_PRESSURE}}{100} \cdot \abs{P}\right\rfloor$.
- We bekomen dus: \[\Theta\left(\left(\abs{P}-N_p\right)\cdot \texttt{SELECTION\_PRESSURE} \cdot \abs{P}\right)\]
- Nu merken we op dat dit allemaal constanten\footnote{Enkel aanpasbaar bij compilatie} zijn binnen ons programmma dus hebben we dat de complexiteit $T(n) = \Theta(1)$. Voorgaande resultaten zullen we nog gebuiken verder in dit verslag. %TODO waar?
+In algoritme \ref{alg:tournament} wordt er $\abs{P}-N_p$ keer een slachtoffer gekozen door een toernooi uit te voeren. Tijdens een toernooi wordt er $N_t$ keer een willekeurig individu gekozen en vergeleken. De complexiteit is dus $\Theta((\abs{P}-N_p)\cdot N_t)$. Met $N_t$ de toernooigrootte\footnote{Zie sectie \ref{sub:selection_pressure}} en $N_p$ de gewenste populatiegrootte. We zien dat $N_t$ hier gelijk is aan
+ $\left\lfloor\frac{P_M}{100} \cdot \abs{P}\right\rfloor$.
+ We bekomen dus: \[\Theta\left(\left(\abs{P}-N_p\right)\cdot P_m \cdot \abs{P}\right)\]
+ Nu merken we op dat dit allemaal constanten\footnote{Enkel aanpasbaar bij compilatie} zijn binnen ons programma dus hebben we dat de complexiteit $T(n) = \Theta(1)$. 
 
 % subsection  (end)
 
@@ -55,7 +56,7 @@ Het bestand \texttt{genetic\_base.c} bevat de implementatie van Algoritme \ref{a
   \setlength{\parskip}{0pt}
   \setlength{\parsep}{0pt}
 \item\texttt{do\_deathmatch()} en
-\item\texttt{do\_tournament\_selection()}.
+\item\texttt{do\_neg\_tournament()}.
  \end{itemize}  
 
 

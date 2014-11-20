@@ -1,0 +1,33 @@
+
+471270.543180863
+12 proc
+500 points
+mympirun -h 6 maxdist_mpi 500 vierkant.poly
+1674.03 real
+10014.53 user
+2.43 sys
+
+471277.225392947
+20 proc
+500 points
+mympirun -h 10 maxdist_mpi 500 vierkant.poly
+1591.50 real
+15900.21 user
+2.80 sys
+
+471280.769251383
+24 proc
+500 points
+mympirun -h 12 maxdist_mpi 500 vierkant.poly
+1646.58 real
+19740.23 user
+3.23 sys
+
+471281.012813270
+28 proc
+500 points
+mympirun -h 14 maxdist_mpi 500 vierkant.poly
+1660.83 real
+23237.68 user
+3.82 sys
+

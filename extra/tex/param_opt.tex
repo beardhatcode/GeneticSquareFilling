@@ -27,14 +27,26 @@ Kijken we naar de grafieken in figuur \ref{graf:algLoverSelection} dan zien we d
 
 \subsection{Crossover}
 \label{ssub:crossover_type}
-We hebben nog niet genoeg seks gehad om dit te weten. (Lees: we hebben nog geen resultaten voor deze test, but hey we're woring on it)
 
-Maar hypothetisch gezien moet ons random algoritme slechter scoren, hier volgt mijn brainfart over hoe het in elkaar steekt.
-%todo
 
-We (zouden) zien dat het algoritme met random wijzigingen slechter presteert zowel in uitvoeringstijd als in kwaliteit.
+\begin{figure}[H]
+\nxaxis{Fitness}{Aantal punten}{
+	\addplotf{RANDOM_CROSSOVER_1_vierkant};
+	\addplotf{RANDOM_CROSSOVER_0_vierkant};
+}
+\nxaxis{Iteraties}{Aantal punten}{
+	\addploti{RANDOM_CROSSOVER_1_icosagon};
+	\addploti{RANDOM_CROSSOVER_0_icosagon};
+}
+\nxaxis{Tijd}{Aantal punten}{
+	\addplott{RANDOM_CROSSOVER_1_vierkant};
+	\addplott{RANDOM_CROSSOVER_0_vierkant};
+}
+\caption{Vergelijking van random crossover (blauw) en 1-point crossover (oranje) bij het plaatsen van een variabel aantal punten in \texttt{vierkant}.}
+\label{graf:algCrossover}
+\end{figure}
 
-Dit is te verwachten omdat de fitheid afhangt van de onderlinge ligging van de punten. Als de punten random worden gekozen in de kinderen, verlies je de samenhang die er reeds bestond. Waardoor de fitheid over het algemeen slechter zal zijn dan bij 1-point crossover.
+De grafieken in figuur~\ref{graf:algCrossover} geven een resultaat dat we niet verwachten. Random crossover presteert beter dan 1-Point crossover. We vermoeden dat dit komt doordat het random wisselen van punten er voor zorgt dat de punten aan de uiteinden minder gekopelt zijn aan elkaar waardoor er meer genetische diversiteit is wat zorgt voor meer genetische diversiteit. Wat op zijn beurt bijdraagt aan een snellere convergentie. 
 
 \section{Parameter Optimalisatie}
 \subsection{Aantal individuen}
@@ -206,5 +218,4 @@ om te weten of het programma klaar is met optimaliseren, houden we een gewogen e
 We zien wat we verwachten te zien. Hoe hoger de weegfactor hoe beter het resultaat maar ook hoe langer het zal duren om tot dat resultaat te komen. 
 We kiezen voor een weegfactor van \textbf{0.95} omdat we een optimaal antwoord willen. Merk op dat we niet kiezen voor 100 omdat het algoritme dat niet meer de waarde zou updaten. 
 % subsection  (end)
-
 %\input{footer}

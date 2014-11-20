@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   mpi.c
  * Author: garonn
  *
@@ -11,7 +11,7 @@
 #include <time.h>
 #include <math.h>
 #include <unistd.h>
-#include <sys/select.h> 
+#include <sys/select.h>
 #include "mpi.h"
 #include "debugmacro.h"
 #include "polygon.h"
@@ -61,7 +61,7 @@ int transfer_individus_gather(population * popu, int task_id)
     /* Select a->num_lovers random individu's */;
     int selected[req_lovers];
     int succes;
-    
+
     /* Select a->num_lovers random individu's */;
     for (i = 0; i < req_lovers; i++)
     {
@@ -121,7 +121,7 @@ int transfer_individus_island(population * popu, int task_id)
     float send_indi[req_lovers][lover_size];
     int selected[req_lovers];
     int succes;
-    
+
     /* Select a->num_lovers random individu's */;
     for (i = 0; i < req_lovers; i++)
     {
@@ -153,8 +153,8 @@ int transfer_individus_island(population * popu, int task_id)
         r = MPI_Isend(send_indi[i], lover_size, MPI_FLOAT, target_id, 5, MPI_COMM_WORLD, &(req[i]));
         MYMPIERRORHANDLE(r);
     }
-                                                
-                                                
+
+
     //log_mpidbg("%d has sent 1 to %d (%d), waiting...\n", task_id, req_lovers, req_lovers);
     for (i = 0; i < req_lovers; i++)
     {
@@ -167,15 +167,15 @@ int transfer_individus_island(population * popu, int task_id)
     j=0;
     for (i =0; i < req_lovers; i++)
     {
-        
+
         deserialize_individu(recv_indi[i], popu->list + selected[j], popu->numpoints);
         get_fitness(popu, popu->list + selected[j]);
         j++;
-    }    
+    }
 
     j = get_best(popu);
     popu->best = popu->list[j].fitness;
-    
+
     for (i = 0; i < req_lovers; i++)
     {
         r = MPI_Wait(&(req[i]), &(status[i]));
@@ -419,7 +419,7 @@ int master_loop(population* a, int done_itters, int itters, int id)
     }
 
 
-    if (times_staturated > 3)
+    if (times_staturated > 10)
     {
         /* Send */
         {

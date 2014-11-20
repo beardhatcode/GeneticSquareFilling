@@ -1,0 +1,182 @@
+#5
+mpirun -np 4 ./maxdist_mpi 5 ../tests/vierkant.poly
+1.07 real
+0.09 user
+0.05 sys
+
+44.306355892
+./maxdist 5 ../tests/vierkant.poly
+0.05 real
+0.05 user
+0.00 sys
+
+44.307038
+#10
+mpirun -np 4 ./maxdist_mpi 10 ../tests/vierkant.poly
+1.11 real
+0.33 user
+0.03 sys
+
+183.932861383
+./maxdist 10 ../tests/vierkant.poly
+0.14 real
+0.14 user
+0.00 sys
+
+183.854943
+#15
+mpirun -np 4 ./maxdist_mpi 15 ../tests/vierkant.poly
+1.19 real
+0.61 user
+0.05 sys
+
+418.240011634
+./maxdist 15 ../tests/vierkant.poly
+0.50 real
+0.51 user
+0.00 sys
+
+418.263550
+#20
+mpirun -np 4 ./maxdist_mpi 20 ../tests/vierkant.poly
+1.37 real
+1.31 user
+0.05 sys
+
+747.081132518
+./maxdist 20 ../tests/vierkant.poly
+0.54 real
+0.54 user
+0.00 sys
+
+747.041744
+#25
+mpirun -np 4 ./maxdist_mpi 25 ../tests/vierkant.poly
+1.69 real
+2.56 user
+0.04 sys
+
+1170.367310689
+./maxdist 25 ../tests/vierkant.poly
+1.51 real
+1.51 user
+0.00 sys
+
+1170.456669
+#30
+mpirun -np 4 ./maxdist_mpi 30 ../tests/vierkant.poly
+2.19 real
+4.54 user
+0.05 sys
+
+1688.055163989
+./maxdist 30 ../tests/vierkant.poly
+2.61 real
+2.61 user
+0.00 sys
+
+1688.103722
+#35
+mpirun -np 4 ./maxdist_mpi 35 ../tests/vierkant.poly
+2.55 real
+6.04 user
+0.04 sys
+
+2300.055507922
+./maxdist 35 ../tests/vierkant.poly
+3.07 real
+3.07 user
+0.00 sys
+
+2300.042684
+#40
+mpirun -np 4 ./maxdist_mpi 40 ../tests/vierkant.poly
+3.21 real
+8.72 user
+0.03 sys
+
+3006.228217977
+./maxdist 40 ../tests/vierkant.poly
+5.73 real
+5.74 user
+0.00 sys
+
+3006.446809
+#45
+mpirun -np 4 ./maxdist_mpi 45 ../tests/vierkant.poly
+3.06 real
+8.12 user
+0.06 sys
+
+3806.835864739
+./maxdist 45 ../tests/vierkant.poly
+10.96 real
+10.97 user
+0.00 sys
+
+3807.014819
+#50
+mpirun -np 4 ./maxdist_mpi 50 ../tests/vierkant.poly
+3.50 real
+9.84 user
+0.03 sys
+
+4701.715952346
+./maxdist 50 ../tests/vierkant.poly
+9.65 real
+9.66 user
+0.00 sys
+
+4701.925212
+#55
+mpirun -np 4 ./maxdist_mpi 55 ../tests/vierkant.poly
+5.83 real
+19.14 user
+0.04 sys
+
+5690.855725813
+./maxdist 55 ../tests/vierkant.poly
+13.68 real
+13.69 user
+0.00 sys
+
+5691.172645
+#60
+mpirun -np 4 ./maxdist_mpi 60 ../tests/vierkant.poly
+6.72 real
+22.75 user
+0.03 sys
+
+6774.276329653
+./maxdist 60 ../tests/vierkant.poly
+14.68 real
+14.69 user
+0.00 sys
+
+6774.408453
+#65
+mpirun -np 4 ./maxdist_mpi 65 ../tests/vierkant.poly
+9.69 real
+34.60 user
+0.07 sys
+
+7951.644423103
+./maxdist 65 ../tests/vierkant.poly
+20.23 real
+20.25 user
+0.00 sys
+
+7952.295928
+#70
+mpirun -np 4 ./maxdist_mpi 70 ../tests/vierkant.poly
+6.18 real
+20.60 user
+0.03 sys
+
+9223.637869405
+./maxdist 70 ../tests/vierkant.poly
+27.15 real
+27.17 user
+0.00 sys
+
+9224.434440

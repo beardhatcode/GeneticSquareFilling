@@ -136,6 +136,24 @@ cycle list name=exotic,
 \end{tikzpicture}}
 
 
+\newcommand{\nxaxisr}[3]{\begin{tikzpicture}
+\begin{axis}[scale only axis,
+cycle list name=exotic, 
+	%x-as	
+	xlabel=#2,	
+	%y-as
+	ylabel=#1,
+	ymin=0,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
+
+\end{axis}
+\end{tikzpicture}}
+
 \newcommand{\rnxaxis}[3]{\begin{tikzpicture}
 \begin{axis}[scale only axis, 
 cycle list name=exotic,
@@ -153,6 +171,25 @@ cycle list name=exotic,
 
 \end{axis}
 \end{tikzpicture}}
+
+
+\newcommand{\rnxaxisr}[3]{\begin{tikzpicture}
+\begin{axis}[scale only axis, 
+cycle list name=exotic,
+	%x-as	
+	xlabel=#2,	
+	%y-as
+	ylabel=#1,
+	%Style
+	height=5em,width=.37\textwidth,
+	enlargelimits=0.05,
+	grid=major,	legend pos=south east
+]
+#3
+
+\end{axis}
+\end{tikzpicture}}
+
 
 \newcommand{\itemMB}[1]{
 	\item[$\boldsymbol{#1}$:]

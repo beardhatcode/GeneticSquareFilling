@@ -1,6 +1,5 @@
 GENETICS=genetic_base.c polygon.c
-OPTIONS=-DPERFORMANCE_PRINT=1
-
+OPTIONS=
 
 
 all: maxdist

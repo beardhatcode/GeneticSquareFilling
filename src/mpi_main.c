@@ -23,8 +23,56 @@
 static int NUM_TASKS = -1;
 
 
+int main(int argc, char *argv[])
+{
+    int taskid, r;
+    polygon poly = {0};
+    int numpoints;
 
-//TODO:: FIX
+    r = MPI_Init(&argc, &argv);
+    if (r != MPI_SUCCESS)
+    {
+        printfe("An MPI error occured at initialisation: ERROR %d", r);
+        MPI_Finalize();
+        return -1;
+    }
+
+    /* Don't error fatally, give return codes and continu*/
+    MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN);
+
+
+    r = MPI_Comm_size(MPI_COMM_WORLD, &NUM_TASKS);
+    MYMPIERRORHANDLE(r);
+    r = MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
+    MYMPIERRORHANDLE(r);
+
+    /* read in parameters */
+    r = mpi_parse_input(argc, argv, &poly, &numpoints);
+
+    if (r == 0)
+    {
+        if (taskid == MASTER)
+        {
+            srand(time(NULL));
+            master_main(&poly, numpoints, taskid);
+        }
+        else
+        {
+            srand(time(NULL) * (taskid + 1));
+            slave_main(&poly, numpoints, taskid);
+        }
+
+        MPI_Finalize();
+    }
+    else
+    {
+        printfe("An error occured while parsing the parameters...\n");
+        MPI_Finalize();
+        return r;
+    }
+
+    return 0;
+}
 
 int transfer_individus_gather(population * popu, int task_id)
 {
@@ -186,65 +234,12 @@ int transfer_individus(population * popu, int task_id)
     return 0;
 }
 
-int main(int argc, char *argv[])
-{
-    int taskid, r;
-    polygon poly = {0};
-    int numpoints;
-
-    r = MPI_Init(&argc, &argv);
-    if (r != MPI_SUCCESS)
-    {
-        printfe("An MPI error occured at initialisation: ERROR %d", r);
-        MPI_Finalize();
-        return -1;
-    }
-
-    /* Don't error fatally, give return codes and continu*/
-    MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN);
-
-
-    r = MPI_Comm_size(MPI_COMM_WORLD, &NUM_TASKS);
-    MYMPIERRORHANDLE(r);
-    r = MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
-    MYMPIERRORHANDLE(r);
-
-    /* read in parameters */
-    r = mpi_parse_input(argc, argv, &poly, &numpoints);
-
-    if (r == 0)
-    {
-        if (taskid == MASTER)
-        {
-            srand(time(NULL));
-            master_main(&poly, numpoints, taskid);
-        }
-        else
-        {
-            srand(time(NULL) * (taskid + 1));
-            slave_main(&poly, numpoints, taskid);
-        }
-
-        MPI_Finalize();
-    }
-    else
-    {
-        printfe("An error occured while parsing the parameters...\n");
-        MPI_Finalize();
-        return r;
-    }
-
-    return 0;
-}
-
 int mpi_parse_input(int argc, char *argv[], polygon* poly, int* num)
 {
     int r = polygon_read(argv[2], poly);
     *num = atoi(argv[1]);
     return r;
 }
-
-
 
 void serialize_individu(float* target, individu* i, int numpoints)
 {

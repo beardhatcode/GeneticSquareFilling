@@ -65,23 +65,22 @@ int transfer_individus_gather(population * popu, int task_id)
         serialize_individu(send_indi[i], popu->list + selected[i], popu->numpoints);
     }
 
+    /* Gather individus */
     r = MPI_Allgather(send_indi, per_target * lover_size, MPI_INT, recv_indi, per_target * lover_size, MPI_FLOAT, MPI_COMM_WORLD);
     MYMPIERRORHANDLE(r);
-    target_id = popu->size;
+    
     j=0;
     for (procces = 0; procces < NUM_TASKS; procces++)
     {
         if (procces == task_id) continue;
-        for (i = 0; i < per_target && target_id < popu->size + popu->num_lovers; i++)
+        for (i = 0; i < per_target ; i++)
         {
             /* Define the start of a "block" */
             deserialize_individu(recv_indi[procces][i], popu->list + selected[j], popu->numpoints);
             get_fitness(popu, popu->list + selected[j]);
-            //log_mpidbg("\x1b[3%dm %d Received form %d-%d nr %d: %f %f\x1b[0m\n", task_id, task_id, procces, i,target_id, (popu->list + target_id)->fitness, recv_indi[procces][i][0]);
             j++;
         }
     }
-    do_deathmatch(popu, target_id - popu->size);
 
     return 0;
 
@@ -104,7 +103,7 @@ int transfer_individus_island(population * popu, int task_id)
     int selected[req_lovers];
     int succes;
 
-    /* Select a->num_lovers random individu's */;
+    /* Select req_lovers unique random individu's and serialize them*/;
     for (i = 0; i < req_lovers; i++)
     {
         do
@@ -126,8 +125,7 @@ int transfer_individus_island(population * popu, int task_id)
     }
 
 
-    /* Star */
-    //log_mpidbg("%d is sending 1 to some (%d)\n", task_id, req_lovers);
+    /* Send */
     for (i = 0; i < req_lovers; i++)
     {
         /* One for peers */
@@ -137,15 +135,14 @@ int transfer_individus_island(population * popu, int task_id)
     }
 
 
-    //log_mpidbg("%d has sent 1 to %d (%d), waiting...\n", task_id, req_lovers, req_lovers);
+    /* Receive */
     for (i = 0; i < req_lovers; i++)
     {
         r = MPI_Recv(recv_indi[i], lover_size, MPI_FLOAT, MPI_ANY_SOURCE, 5, MPI_COMM_WORLD, &(status[i]));
         MYMPIERRORHANDLE(r);
     }
 
-    //log_mpidbg("%d got %d/%d, waiting for recv...\n", task_id, req_lovers, req_lovers);
-
+    /* parse data */
     j=0;
     for (i =0; i < req_lovers; i++)
     {
@@ -155,15 +152,18 @@ int transfer_individus_island(population * popu, int task_id)
         j++;
     }
 
+    /* Update best value*/
     j = get_best(popu);
     popu->best = popu->list[j].fitness;
 
+    /* Wait for sends to complete */
     for (i = 0; i < req_lovers; i++)
     {
         r = MPI_Wait(&(req[i]), &(status[i]));
         MYMPIERRORHANDLE(r);
     }
-    //log_mpidbg("%d done waiting\n", task_id);
+    
+    /* Syncronize to prevent deadlocks*/
     r = MPI_Barrier(MPI_COMM_WORLD);
     MYMPIERRORHANDLE(r);
 
@@ -182,7 +182,6 @@ int transfer_individus(population * popu, int task_id)
     {
         transfer_individus_island(popu, task_id);
     }
-    /* Convert back from float-array for each process and add to population */
 
     return 0;
 }
@@ -394,12 +393,13 @@ int master_loop(population* a, int done_itters, int itters, int id)
         log_mpidbg("\t\x1b[1mP%d: %4.10f (%1.2f)\x1b[0m \n", i, gathered_best[2 * i], gathered_best[2 * i + 1]);
     log_mpidbg("\n");
 
-    
+    /* Count te number of saturated loops and get best one*/
     for (i = 0; i < NUM_TASKS; i++)
     {
         if (gathered_best[2 * i + 1] < 0.95)
         {
-            loops_saturated++; /*One of the things did not converge*/
+            /*processor has converged*/
+            loops_saturated++; 
         }
         if (gathered_best[2 * i] > cur_best)
         {
@@ -408,7 +408,7 @@ int master_loop(population* a, int done_itters, int itters, int id)
         }
     }
 
-
+    /* If change between is to large, dont stop*/
     if (fabs(prev_best - cur_best) > 0.0000000001 * cur_best)
     {
         log_mpidbg("Can't ignore change %f\n", fabs(prev_best - cur_best));
@@ -421,7 +421,7 @@ int master_loop(population* a, int done_itters, int itters, int id)
     }
     prev_best = cur_best;
 
-
+    /* Check if more than 30% finished and there is stagnation or there is stagnation */
     if ((float) loops_saturated / (float) NUM_TASKS > 0.3 || times_stagnation > 5)
     {
         log_mpidbg("\x1b[31mIt is time (%d)\x1b[0m\n", times_staturated);
@@ -434,11 +434,15 @@ int master_loop(population* a, int done_itters, int itters, int id)
     }
 
 
+    /* If saturated, stop and send end requsts*/
     if (times_staturated > 10)
     {
         /* Send */
         {
+            /* Send */
             MPI_Request endrequests[NUM_TASKS - 1];
+            MPI_Status status;
+            
             /* Send end signal */
             for (i = 1; i < NUM_TASKS; i++)
             {
@@ -446,7 +450,7 @@ int master_loop(population* a, int done_itters, int itters, int id)
                 MYMPIERRORHANDLE(r);
             }
 
-            MPI_Status status;
+            /* Wait for arrival */
             for (i = 1; i < NUM_TASKS; i++)
             {
                 int r = MPI_Wait(&(endrequests[i - 1]), &status);
@@ -491,13 +495,17 @@ int slave_loop(population* a, int done_itters, int itters, int id)
     send_stat[1] = (double) done_itters / (double) itters;
     r = MPI_Gather(send_stat, 2, MPI_DOUBLE, NULL, 2, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MYMPIERRORHANDLE(r);
+    
     /*A end broadcast might occur here (in master_loop) */
 
     /* Transfer individus */
     transfer_individus(a, id);
+    
+    /* Check for end message from master */
     r = MPI_Iprobe(MPI_ANY_SOURCE, 55, MPI_COMM_WORLD, &flag, &status);
     MYMPIERRORHANDLE(r);
 
+    /* If endmessage occures, read it*/
     if (flag)
     {
         r = MPI_Recv(&flag, 1, MPI_INT, MPI_ANY_SOURCE, 55, MPI_COMM_WORLD, &status);

@@ -11,10 +11,16 @@
 #include "polygon.h"
 #define  MASTER		0
 
+/**
+ * Define some Macro's for return values
+ */
 #define GENETIC_CONTINUE 0x6060
 #define GENETIC_NOT_BEST 0xFA11
 #define GENETIC_BEST     0xB00B5
  
+/**
+ * Type of the functions that are called after finishing iterations
+ */
 typedef int (*loop_checker)(population*, int, int, int);
 
 /**
@@ -39,7 +45,7 @@ int mpi_parse_input(int argc, char *argv[], polygon* poly, int* num);
 int master_main(polygon* poly, int numpoints, int id);
 
 /**
- * Called to start slave
+ * Called to start a slave
  * should call parrallel_loops
  * @param poly          polygon 
  * @param numpoints     number of points to place
@@ -47,8 +53,6 @@ int master_main(polygon* poly, int numpoints, int id);
  * @return 
  */
 int  slave_main(polygon* poly, int numpoints, int id);
-
-
 
 /**
  * Run the default program on poly for numpoints. 
@@ -74,6 +78,7 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
  * @return 0 on succes else mpi error
  */
 int transfer_individus(population * popu, int task_id);
+
 /*
  * Transfer individus between prosesses by sending to a limited number of 
  * processes
@@ -92,7 +97,22 @@ int transfer_individus_gather(population * popu, int task_id);
  */
 int transfer_individus_island(population * popu, int task_id);
 
+/**
+ * Serializes a individu to a float array
+ * @param target        the target float array
+ * @param individu      the individu             
+ * @param numpoints     the number of points withing that individu
+ */
+void serialize_individu(float* target, individu* individu, int numpoints);
 
+/**
+ * Deserializes a individu to from float array
+ * Note: does not calculate fitness
+ * @param source        the target float array
+ * @param individu      the individu             
+ * @param numpoints     the number of points withing that individu
+ */
+void deserialize_individu(float* source, individu* i, int numpoints);
 
 
 #endif	/* MPI_MAIN_H */

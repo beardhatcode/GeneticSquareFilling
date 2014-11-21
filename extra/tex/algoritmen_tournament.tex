@@ -1,10 +1,10 @@
 %\input{header}
 \subsection{Tournament Selection}
 \label{sub:tournament}
-Tijdens de uitvoering van het genetisch algoritme zullen er steeds meer individuen bijkomen. We willen er echter voor zorgen dat onze populatie een vaste grootte ($N_p$) behoud. Er zullen dus individuen vermoord\footnote{Dat is dus verwijderden uit de populatie} moeten worden.
+Tijdens de uitvoering van het genetisch algoritme zullen er steeds meer individuen bijkomen. We willen er echter voor zorgen dat onze populatie een vaste grootte $N_p$ behoud. Er zullen dus individuen vermoord\footnote{Dat is dus verwijderden uit de populatie} moeten worden.
 \subsubsection{Algoritme}
-Om te bepalen we we vermoorden gebruiken we ``tournament selection''. Bij deze selectie word er telkens een vast aantal arbitraire individuen gekozen. Het individu met de slechtste fitheid uit deze groep wordt vervolgens vermoord. Dit wordt herhaald tot de populatie terug de juiste grootte heeft.
-	\begin{algorithm}[H]
+Om te bepalen wie we vermoorden gebruiken we ``tournament selection''. Bij deze selectie word er telkens een vast aantal arbitraire individuen gekozen. Het individu met de slechtste fitheid uit deze groep wordt vervolgens vermoord. Dit wordt herhaald tot de populatie terug de juiste grootte heeft.
+	\begin{algorithm}
 	 	\caption{Tournament-Select}
 		\begin{algorithmic}
 		\Require 

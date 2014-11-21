@@ -1,6 +1,6 @@
 \subsection{Punt in veelhoek}
 \label{sub:algo-pt-in-poly}
-Eén van de voorwaarden waaraan een oplossing moet voldoen is dat alle punten \textbf{in} de veelhoek liggen.Het is dus noodzakelijk om een algoritme te hebben dat bepaalt of een punt zich al dan niet in de convexe veelhoek bevind.
+Eén van de voorwaarden waaraan een oplossing moet voldoen is dat alle punten \textbf{in} de veelhoek liggen. Het is dus noodzakelijk om een algoritme te hebben dat bepaalt of een punt zich al dan niet in de convexe veelhoek bevind.
 \subsubsection{Idee}
 Trekken we een lijn vanuit het punt ``naar boven'', dan kunnen we 3 gevallen onderscheiden:
 \begin{itemize}
@@ -58,7 +58,7 @@ juist één keer snijd.
 \subsubsection{Algoritme}
 Om te tellen hoe vaak we de veelhoek snijden, gaan we als volgt te werk:
 Bij het inlezen van de veelhoek stellen we vergelijkingen op van de zijden van de 
-veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte evenwijdig is met de $y$-as. 
+veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte evenwijdig is met de $y$-as. Daarna gaan we te werk zoals algoritme~\ref{alg:inPolygon} beschrijft.
 
 
 
@@ -100,7 +100,7 @@ veelhoek. Deze zijn van de vorm $y=a \cdot x+b$. Met $a = \infty$ als de rechte 
 		\label{alg:inPolygon}
 	\end{algorithm}		
 
-Waarbij z$.a$ en z$.b$ de cooificienten zijn van de vergelijking $y=ax+b$ die de zijde 
+In algoritme~\ref{alg:inPolygon} zijn z$.a$ en z$.b$ de coëfficiënten zijn van de vergelijking $y=ax+b$ die de zijde 
 voorstelt. De notatie van de intervallen houden geen rekening met de verhouding van de waarden ten opzichte van elkaar, wij bedoelen steeds de waarden tussen de gegeven waarden in of exclusief de grenzen.
 
 \subsubsection{Complexiteit}
@@ -109,7 +109,7 @@ Kijken we naar algoritme \ref{alg:inPolygon} dan is het duidelijk dat de complex
 % subsection  (end)
 
 \subsubsection{Implementatie}
-Deze methode is geimplementeerd in \\ \texttt{polygon.c} als  \texttt{polygon\_contains()}. 
+Deze methode is geïmplementeerd in \\ \texttt{polygon.c} als  \texttt{polygon\_contains()}. 
 We wijzen nog even op enkele details:
 \begin{itemize}
 \item We gebruiken $(P_x-x_1)\cdot(P_x-x_2)\leq0$ om te bepalen of een waarde al dan niet 
@@ -120,7 +120,7 @@ We wijzen nog even op enkele details:
 
 \subsubsection{Genereren random punten}
 \label{ssub:rand_generation}
-Om random individuen voor de populatie te creëren genereren we telkens een random $x$ en $y$ binnen het omsloten vierkant. Vervolgens gaan we na of het ook wel degelijk in de veelhoek ligt. Telkens zo'n punt is gevonden wordt het toegevoegd aan het te genereren random individu tot er $n$ punten zijn. Voor het genereren van $N_p$ individuen heeft dit een complexiteit van $T(n)=\Theta(N_p\cdot n) = \Theta(n)$
+Om random individuen voor de populatie te creëren genereren we telkens een random $x$ en $y$ binnen het omsloten vierkant van de figuur. Vervolgens gaan we na of het ook wel degelijk in de veelhoek ligt. Telkens zo'n punt is gevonden wordt het toegevoegd aan het te genereren random individu tot er $n$ punten zijn. Voor het genereren van $N_p$ individuen heeft dit een complexiteit van $T(n)=\Theta(N_p\cdot n) = \Theta(n)$
 
 % subsection  (end)
 

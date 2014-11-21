@@ -22,25 +22,7 @@
 /* Keep number of procceses globaly */
 static int NUM_TASKS = -1;
 
-void serialize_individu(float* target, individu* i, int numpoints)
-{
-    int j;
-    for (j = 0; j < numpoints; j++)
-    {
-        target[j * 2 + 0] = i->points[j].x;
-        target[j * 2 + 1] = i->points[j].y;
-    }
-}
 
-void deserialize_individu(float* source, individu* i, int numpoints)
-{
-    int j;
-    for (j = 0; j < numpoints; j++)
-    {
-        i->points[j].x = source[j * 2 + 0];
-        i->points[j].y = source[j * 2 + 1];
-    }
-}
 
 //TODO:: FIX
 
@@ -219,6 +201,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    /* Don't error fatally, give return codes and continu*/
     MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN);
 
 
@@ -227,6 +210,7 @@ int main(int argc, char *argv[])
     r = MPI_Comm_rank(MPI_COMM_WORLD, &taskid);
     MYMPIERRORHANDLE(r);
 
+    /* read in parameters */
     r = mpi_parse_input(argc, argv, &poly, &numpoints);
 
     if (r == 0)
@@ -246,7 +230,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printfe("An error occured...");
+        printfe("An error occured while parsing the parameters...\n");
         MPI_Finalize();
         return r;
     }
@@ -256,25 +240,48 @@ int main(int argc, char *argv[])
 
 int mpi_parse_input(int argc, char *argv[], polygon* poly, int* num)
 {
-    /* handle errors */
     int r = polygon_read(argv[2], poly);
     *num = atoi(argv[1]);
     return r;
 }
 
+
+
+void serialize_individu(float* target, individu* i, int numpoints)
+{
+    int j;
+    for (j = 0; j < numpoints; j++)
+    {
+        target[j * 2 + 0] = i->points[j].x;
+        target[j * 2 + 1] = i->points[j].y;
+    }
+}
+
+void deserialize_individu(float* source, individu* i, int numpoints)
+{
+    int j;
+    for (j = 0; j < numpoints; j++)
+    {
+        i->points[j].x = source[j * 2 + 0];
+        i->points[j].y = source[j * 2 + 1];
+    }
+}
+
 int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itters, loop_checker end_loop)
-{ /* <editor-fold defaultstate="collapsed"> */
+{ 
     int r, i;
     int loopsatatus;
     individu* best_ndi;
 
     population* popu = NULL;
     log_mpidbg("Procces %d will place %d points in %p %d atempts\n", id, numpoints, poly, itters);
+    
+    /* create a population */
     r = init_population(pop_size, numpoints, poly, &popu);
 
     if (r != 0)
     {
-        printfe("Could not allocate enough space!\n");
+        printfe("Could not allocate enough space for population!\n");
         return -2;
     }
 
@@ -288,23 +295,23 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
                 printfe("Failed iteration (code %d)!\n", r);
                 break;
             }
+            
+            /* Call end loop to sync */
             loopsatatus = end_loop(popu, r, itters, id);
         }
         while (loopsatatus == GENETIC_CONTINUE);
-
-
-
     }
     else
     {
-        /* one point, everything is optimal*/
+        /* one point, everything is optimal let master print it's value */
         r = 1;
         loopsatatus = id == 0 ? GENETIC_BEST : GENETIC_NOT_BEST;
     }
-    /*get best*/
+
 
     if (id == MASTER)
     {
+        /* Get the best individu*/
         if (loopsatatus == GENETIC_BEST)
         {
             best_ndi = popu->list + get_best(popu);
@@ -317,6 +324,7 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
             float recv_indi[popu->numpoints * 2];
             MPI_Status status;
 
+            /* Receive best individu and deserialize at index zero of popu->list*/
             r = MPI_Recv(recv_indi, popu->numpoints * 2, MPI_FLOAT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
             MYMPIERRORHANDLE(r);
             deserialize_individu(recv_indi, popu->list, popu->numpoints);
@@ -337,13 +345,15 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
     }
     else
     {
-
+        /* If best and not master, send best to master*/
         if (loopsatatus == GENETIC_BEST)
         {
 
             {
                 int r;
                 float send_indi[popu->numpoints * 2];
+                
+                /* serialize the individu with index get_best(popu)*/
                 serialize_individu(send_indi, popu->list + get_best(popu), popu->numpoints);
                 r = MPI_Send(send_indi, popu->numpoints * 2, MPI_FLOAT, 0, 0, MPI_COMM_WORLD);
                 MYMPIERRORHANDLE(r);
@@ -351,9 +361,10 @@ int parrallel_loops(polygon* poly, int numpoints, int id, int pop_size, int itte
         }
 
     }
+    
     free_population(&popu);
     return 0;
-}/* </editor-fold> */
+}
 
 int master_loop(population* a, int done_itters, int itters, int id)
 {
@@ -370,20 +381,24 @@ int master_loop(population* a, int done_itters, int itters, int id)
     total_itters += done_itters;
     log_mpidbg("Results after %d iterations, \x1b[1mbefore\x1b[0m  migration\n", total_itters);
 
+    
+    /* Gather best fitnesses from all processors*/
     send_stat[0] = a->best;
     send_stat[1] = (double) done_itters / (double) itters;
 
     r = MPI_Gather(send_stat, 2, MPI_DOUBLE, gathered_best, 2, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MYMPIERRORHANDLE(r);
+    
+    /* If in debug mode, print them (i not in debug optimized away by compiler)*/
     for (i = 0; i < NUM_TASKS; i++)
         log_mpidbg("\t\x1b[1mP%d: %4.10f (%1.2f)\x1b[0m \n", i, gathered_best[2 * i], gathered_best[2 * i + 1]);
     log_mpidbg("\n");
 
+    
     for (i = 0; i < NUM_TASKS; i++)
     {
         if (gathered_best[2 * i + 1] < 0.95)
         {
-            //log_mpidbg("No convergence yet %d did %f of loops\n", i, gathered_best[2 * i + 1]);
             loops_saturated++; /*One of the things did not converge*/
         }
         if (gathered_best[2 * i] > cur_best)

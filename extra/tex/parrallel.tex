@@ -41,7 +41,7 @@ Er kunnen zich 2 gevallen voordoen. Ofwel is de hoeveelheid individuen die we wi
 \subsection{Meer processen dan aantal te versturen}
 We willen er voor zorgen dat de individuen gelijkmatig worden doorgegeven en bij
 elk proces kunnen terechtkomen. We moeten er dus voor zorgen dat het nooit zo kan zijn dat de communicatie graaf meer dan 1 component bevat. Om te voorkomen dat er meerdere componenten zijn gaan we steeds naar het proces dat op ons volgt sturen\footnote{formeel is dat dus process $i+1 \mod n$ voor $i$ de huidige id en $n$ het aantal processen}. Verder moeten we ervoor zorgen dat data van onze populatie zo goed mogelijk wordt verspreid over de andere processen. We kunnen dit doen door vanuit het $i$ de te versuren naar de processen uit de verzameling \[
-\left\{\left.\left(i + 1 + \frac{k \cdot p}{b}\right) \mod p  ~ \right\rvert   k \in \{0,\dots,b-1\}\right\}
+\left\{\left.\left\lfloor i + 1 + \frac{k \cdot p}{b}\right\rfloor \mod p  ~ \right\rvert   k \in \{0,\dots,b-1\}\right\}
 \] met $p$ het aantal processen en $b$ het aantal te versturen individuen. Als we kijken naar figuur~\ref{parr_conn_8} zien we dat de de uitgaande en binnenkomende pijlen min of meer gelijkmatig verdeeld worden over de andere processen. 
 
 \begin{figure}[H]
@@ -166,7 +166,7 @@ We kunnen dit verklaren door op te merken dat bij het kopiëren de populatie als
 We bepalen nu de complexiteit van het algoritme rekening houdend met het aantal processoren $p$.
 
 
-Als we kijken naar de graieken uit \ref{graf:numIndividus} zien we dat zien we dat het aantal nodige iteraties exponentieel afneemt met stijgende populatiegrootte en dan stabliseert. We merken op dat de sterke stijging in uitvoeringstijd er net toe doet daar we het parallel uitvoeren met kleine populaties. Hoe meer processoren, hoe minder tijd er nodig zal zijn om te convergeren tot op het moment van stabilisatie. We kunnen schrijven dat, tot er stabilisatie is, het aantal iteraties $\Theta\left(\frac{n}{\log{p}}\right)$ is.
+Als we kijken naar de grafieken uit \ref{graf:numIndividus} zien we dat zien we dat het aantal nodige iteraties exponentieel afneemt met stijgende populatiegrootte en dan stabiliseert. We merken op dat de sterke stijging in uitvoeringstijd er net toe doet daar we het parallel uitvoeren met kleine populaties. Hoe meer processoren, hoe minder tijd er nodig zal zijn om te convergeren tot op het moment van stabilisatie. We kunnen schrijven dat, tot er stabilisatie is, het aantal iteraties $\Theta\left(\frac{n}{\log{p}}\right)$ is.
 
 Daar we telkens even veel individuen versturen om kunnen we er van uitgaan dat het aantal het aantal uitwisselingen lineair is in het aantal te verzenden punten\footnote{wat evenredig is met $n$, het aantal te plaatsen punten}. We bekomen dus een complexiteit van $T(n)=\Theta\left(\frac{p\cdot n}{\log{p}}\right)$ voor de communicatie. 
 
@@ -177,7 +177,7 @@ Zoals besproken in sectie~\ref{ssub:genetic} heeft het genetisch algoritme zelf 
 Zolang de winst door het vergroten van de populatiegrootte niet stagneert is de complexiteit  \[T(n)=\Theta\left(\frac{p\cdot n + n^2}{\log{p}}\right) = \Theta\left(\frac{p\cdot n + n^3}{\log{p}}\right)\]. Nadat de winst door populatievergroting stagneert, wordt de noemer gewoon een constante. In figuur~\ref{delcaty} kan je dit fenomeen zien in de groene grafiek. Deze grafiek is geproduceerd door te weinig communicatie te voeren tussen processen waardoor de winst door populatievergroting verkleint. Bij ongeveer 24 processoren wordt de overhead door communicatie ($\Theta(p\cdot n)$) groter dan de winst door populatievergroting.
 
 \section{Uitvoeren op HPC}
-Om onze gedistribueerde code te testen maken we gebruik van de Pokémon\footnote{Dat is dus een supercomputer van het HPC} Delcatty. In figuur \ref{delcaty} zien we op de oranje grafiek bij het vergoten van het aantal processoren de fitheid stijgt en de uitvoeringstijd daalt. We merken echter op dat het dalen verbeteren initieel sterk is en daarna stagneert dit komt omdat er geen winst meer gehaald wordt uit het vergroten van de totale populatie. De groene graffiek geeft aan wat er gebeurt als er te men te veel tijd laat tussen synchronisaties (500 iteraties van het gewone algoritme in plaats van 50). Als we niet vaak genoeg synchroniseren emuleren we geen grotere populatie waardoor de winst door grotere populatie sterk wordt verminderd. We zien ook dat het eens de communicatie de overhand neemt de grafiek linear stijgt zoals uitgelerd in sectie \ref{sub:parrcomplex}.
+Om onze gedistribueerde code te testen maken we gebruik van de Pokémon\footnote{Dat is dus een supercomputer van het HPC} Delcatty. In figuur \ref{delcaty} zien we op de oranje grafiek bij het vergoten van het aantal processoren de fitheid stijgt en de uitvoeringstijd daalt. We merken echter op dat het dalen verbeteren initieel sterk is en daarna stagneert dit komt omdat er geen winst meer gehaald wordt uit het vergroten van de totale populatie. De groene grafiek geeft aan wat er gebeurt als er te men te veel tijd laat tussen synchronisaties (500 iteraties van het gewone algoritme in plaats van 50). Als we niet vaak genoeg synchroniseren emuleren we geen grotere populatie waardoor de winst door grotere populatie sterk wordt verminderd. We zien ook dat het eens de communicatie de overhand neemt de grafiek lineair stijgt zoals uitgelegd in sectie \ref{sub:parrcomplex}.
 
 \begin{figure}[H]
 
@@ -210,7 +210,7 @@ Om onze gedistribueerde code te testen maken we gebruik van de Pokémon\footnote
 \label{graf:perf}
 \end{figure}
 
-Figuur \ref{graf:perf} toont ons dat het gedistridueerde algoritme sneller is dan het serieel algoritme voor een groter aantal punten. Als er wijnig punten te plaatsen zijn zorgt de communicatie voor te veel overhead. In de data die tot de grafiieken leid zien we ook dat het parallel algoritme ook over het algemeen een fitheid geeft die net iets hoger ($< 0.1\%$) is dan bij serieel.
+Figuur \ref{graf:perf} toont ons dat het gedistribueerde algoritme sneller is dan het serieel algoritme voor een groter aantal punten. Als er weinig punten te plaatsen zijn zorgt de communicatie voor te veel overhead. In de data die tot de grafieken leid zien we ook dat het parallel algoritme ook over het algemeen een fitheid geeft die net iets hoger ($< 0.1\%$) is dan bij serieel.
 
 
 \section{Implementatie}

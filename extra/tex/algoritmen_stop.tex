@@ -6,7 +6,7 @@ We moeten nu nog een voorwaarde opstellen om te stoppen met itereren. We willen 
 We willen een waarde hebben die een maat is voor de grootte van recente verandering van de maximale fitheid in de populatie. Hiervoor zouden we een exponentieel lopend gemiddelde kunnen bijhouden van de verandering van de maximale fitheid per iteratie. Als we de maximale fitheid na de $i$-de iteratie $\bar f(i)$ noemen,dan kunnen we zo'n exponenteel lopend gemiddelde als volgt defineeren:
 \[\Delta_i = \bar f(i) - \bar f(i-1)\]
 \[g(i) =  \Delta_i \cdot (1-\alpha) + g(i-1)\cdot \alpha\]
-met $\alpha$ een weegfactor\footnote{In ons project is dit \texttt{WEIGHTING\_DECREASE}; Zie Sectie~\ref{sub:weightingFactor} voor een bespreking van de optimale waarde.} die in $\rbrack 0,1 \lbrack$.
+met $\alpha$ een weegfactor\footnote{In ons project is dit \texttt{WEIGHTING\_DECREASE}; Zie Sectie~\ref{sub:weightingFactor} voor een bespreking van de optimale waarde.} die in $\rbrack 0,1 \lbrack$ ligt.
 
 Als we dit in expliciete vorm herschrijven zien we dat het verleden steeds minder waarde heeft.
 \[g(i) = (1-\alpha) \sum^i_{j=0} \Delta_j \cdot \alpha^j + g(0)\cdot \alpha^{i+1}\]

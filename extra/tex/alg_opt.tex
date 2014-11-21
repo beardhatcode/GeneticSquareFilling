@@ -1,0 +1,48 @@
+\section{Keuzes alogoritmen}
+Tijdens het optimaliseren van ons project hebben we hier en daar verschillende algoritmen uitgeprobeert om te zien welk resultaat ze opleveren. Hierna bespreken we welke dat zijn en welke we gekozen hebben.
+\subsection{Selectie methode geliefden}
+\label{sub:algLoverSelection}
+
+
+\begin{figure}[H]
+\nxaxis{Fitness}{Aantal punten}{
+	\addplotf{SUS_1_vierkant};
+	\addplotf{SUS_0_vierkant};
+}
+\nxaxis{Iteraties}{Aantal punten}{
+	\addploti{SUS_1_icosagon};
+	\addploti{SUS_0_icosagon};
+}
+\nxaxis{Tijd}{Aantal punten}{
+	\addplott{SUS_1_vierkant};
+	\addplott{SUS_0_vierkant};
+}
+\caption{Vergelijking van Stochastic Universal Sampling (blauw) en Tournament Selection (oranje) voor selectie van individu's om voort te planten bij het plaatsen van een variabel aantal punten in \texttt{vierkant}.}
+\label{graf:algLoverSelection}
+\end{figure}
+Kijken we naar de grafieken in figuur \ref{graf:algLoverSelection} dan zien we dat Stochastic Universal Sampeling steeds een factor slechter trager is terwijl het resultaat even goed is. We merken ook dat het tijdsverschil ontstaat door het hoger aantal iteraties bij Sotochastic Universal Sampling. Met andere woorden, hier hebben we getoond dat Tournament de betere keuze is in tegenstelling tot wat enkele bronnen ons trachten te doen geloven. Dit kan uiteraard liggen aan het soort probleem.
+
+% subsection  (end)
+
+\subsection{Crossover}
+\label{ssub:crossover_type}
+
+
+\begin{figure}[H]
+\nxaxis{Fitness}{Aantal punten}{
+	\addplotf{RANDOM_CROSSOVER_1_vierkant};
+	\addplotf{RANDOM_CROSSOVER_0_vierkant};
+}
+\nxaxis{Iteraties}{Aantal punten}{
+	\addploti{RANDOM_CROSSOVER_1_icosagon};
+	\addploti{RANDOM_CROSSOVER_0_icosagon};
+}
+\nxaxis{Tijd}{Aantal punten}{
+	\addplott{RANDOM_CROSSOVER_1_vierkant};
+	\addplott{RANDOM_CROSSOVER_0_vierkant};
+}
+\caption{Vergelijking van random crossover (blauw) en 1-point crossover (oranje) bij het plaatsen van een variabel aantal punten in \texttt{vierkant}.}
+\label{graf:algCrossover}
+\end{figure}
+
+De grafieken in figuur~\ref{graf:algCrossover} geven een resultaat dat we niet verwachten. Random crossover presteert beter dan 1-Point crossover. We vermoeden dat dit komt doordat het random wisselen van punten er voor zorgt dat de punten aan de uiteinden minder gekopelt zijn aan elkaar waardoor er meer genetische diversiteit is wat bijdraagt aan een snellere convergentie. 

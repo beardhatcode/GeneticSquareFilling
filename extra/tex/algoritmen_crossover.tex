@@ -1,10 +1,10 @@
 %\input{header}
 \subsection{Crossover}
+\subsubsection{Algoritme}
 \label{sub:crossover}
 Als 2 individuen geselecteerd zijn om te paren, dan moeten wij daaruit een kind creëren dat eigenschappen van beide ouders bevat. Dit doen we door het eerste deel van de ene ouder samen te stellen met het tweede deel van de andere ouder (en omgekeerd voor het genereren van een 2de kind). Deze aanpak staat beschreven in Algoritme~\ref{alg:crossover-1point}.
 Alternatief kunnen we er ook voor kiezen om een willekeurig aantal keer te wissen (Algoritme \ref{alg:crossover-random}).
-\subsubsection{Algoritme}
-	\begin{algorithm}[H]
+	\begin{algorithm}
 	 	\caption{1-point Crossover}
 		\begin{algorithmic}
 		\Require \State $mama, papa$ de ouders \State $n$ het aantal te plaatsen punten
@@ -19,8 +19,7 @@ Alternatief kunnen we er ook voor kiezen om een willekeurig aantal keer te wisse
 		\end{algorithmic}
 		\label{alg:crossover-1point}
 	\end{algorithm}		
-
-	\begin{algorithm}[H]
+	\begin{algorithm}
 	 	\caption{random Crossover}
 		\begin{algorithmic}
 		\Require \State $mama, papa$ de ouders \State $n$ het aantal te plaatsen punten
@@ -50,7 +49,7 @@ Een crossover kopieert $n$ waarden. Het is dus \[T(n)=\Theta(n)\]
 \subsubsection{Implementatie}
 Het bestand \texttt{genetic\_base.c} bevat de implementatie van Algoritme \ref{alg:crossover-1point} en \ref{alg:crossover-random} in de functie 
 \\ \texttt{do\_crossover()}. 
-Het bestand bevat beide implementaties, bij compilatie kan er tussen beide gekozen worden door we waarde van \\ \texttt{RANDOM\_CROSSOVER} in te stellen met de \texttt{-D} vlag van de compiler. Standaard staat deze waarde ingesteld op 1-point, de reden hiervoor vind u in sectie \ref{ssub:crossover_type}.
+Het bestand bevat beide implementaties, bij compilatie kan er tussen beide gekozen worden door we waarde van \\ \texttt{RANDOM\_CROSSOVER} in te stellen met de \texttt{-D} vlag van de compiler. Standaard staat deze waarde ingesteld op random, de reden hiervoor vind u in sectie \ref{ssub:crossover_type}.
 
 
 %\input{footer}
